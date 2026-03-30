@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Himmelblå Checklist</title>
+
+<style>
+    :root {
+        --bg: #f4f6f8;
+        --card: #ffffff;
+        --text: #222;
+        --muted: #5f6b7a;
+        --primary: #1e3a5f;
+        --primary-soft: #e8eef5;
+        --success-bg: #d4edda;
+        --success-text: #155724;
+        --shadow: 0 2px 6px rgba(0,0,0,0.05);
+        --radius: 12px;
+    }
+
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+    }
+
+    .container {
+        max-width: 500px;
+        margin: auto;
+        padding: 10px;
+    }
+
+    .logo {
+        width: 100%;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    h2 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        margin-bottom: 8px;
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        font-size: 16px;
+    }
+
+    .item input[type="checkbox"] {
+        transform: scale(1.35);
+        margin: 0;
+        flex: 0 0 auto;
+    }
+
+    .item-label {
+        flex: 1 1 auto;
+        min-width: 0;
+        line-height: 1.35;
+    }
+
+    .info-btn {
+        flex: 0 0 auto;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .info-btn:disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+
+    .checked {
+        background: var(--success-bg);
+        color: var(--success-text);
+    }
+
+    .checked .info-btn {
+        background: rgba(21, 87, 36, 0.12);
+        color: var(--success-text);
+    }
+
+    .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    button.main-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        background: var(--primary);
+        color: white;
+        cursor: pointer;
+    }
+
+    .back-row {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 52px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        background: var(--primary);
+        color: white;
+        box-shadow: var(--shadow);
+    }
+
+    .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal.open {
+        display: flex;
+    }
+
+    .modal-sheet {
+        width: 100%;
+        max-width: 560px;
+        max-height: 85vh;
+        overflow-y: auto;
+        background: white;
+        border-radius: 18px 18px 0 0;
+        padding: 18px;
+        box-shadow: 0 -8px 30px rgba(0,0,0,0.18);
+    }
+
+    .modal-title {
+        margin: 0 0 10px;
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .modal-desc {
+        margin: 0 0 14px;
+        color: var(--muted);
+        line-height: 1.45;
+    }
+
+    .modal-steps {
+        padding-left: 20px;
+        margin: 0;
+    }
+
+    .modal-steps li {
+        margin-bottom: 10px;
+        line-height: 1.45;
+    }
+
+    .guide-image {
+        width: 100%;
+        border-radius: 12px;
+        margin-top: 12px;
+        display: block;
+        box-shadow: var(--shadow);
+    }
+
+    .modal-close {
+        width: 100%;
+        margin-top: 16px;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: var(--primary);
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .modal-empty {
+        color: var(--muted);
+        font-style: italic;
+        margin: 0;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <img src="logo.png" class="logo" alt="Himmelblå logo">
+
+    <div class="controls">
+        <button class="main-btn" onclick="resetList()">Reset</button>
+        <button class="main-btn" onclick="checkAll()">All Done</button>
+    </div>
+
+    <div id="list"></div>
+
+    <div class="back-row">
+        <a class="back-link" href="index.html">Tilbake</a>
+    </div>
+
+</div>
+
+<div id="guideModal" class="modal" onclick="closeGuide(event)">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+        <h3 id="modalTitle" class="modal-title"></h3>
+        <p id="modalDesc" class="modal-desc"></p>
+        <ol id="modalSteps" class="modal-steps"></ol>
+        <p id="modalEmpty" class="modal-empty" style="display:none;">No guide added for this item yet.</p>
+        <div id="modalImages"></div>
+        <button class="modal-close" onclick="closeGuide()">Close</button>
+    </div>
+</div>
+
+<script>
+const data = [
+    {
+        section: "Bathroom",
+        items: [
+            {
+                id: "bath-water-shutoff",
+                label: "Water shut off valve OFF",
+                guide: {
+                    description: "Turn off the main water supply before leaving the cabin.",
+                    steps: [
+                        "Open the service access area in the bathroom.",
+                        "Locate the main shut off valve.",
+                        "Turn the valve fully to the OFF position.",
+                        "Check that no more water is coming through the system."
+                    ],
+                    images: [
+                        "assets/guides/bath-water-shutoff-1.jpg",
+                        "assets/guides/bath-water-shutoff-2.jpg"
+                    ]
+                }
+            },
+            {
+                id: "bath-floor-heating",
+                label: "Bathroom floor heating 20˚C",
+                guide: {
+                    description: "Set the bathroom floor heating to standby level.",
+                    steps: [
+                        "Find the bathroom thermostat.",
+                        "Wake the display if necessary.",
+                        "Set the target temperature to 20˚C.",
+                        "Confirm the setpoint is stored."
+                    ],
+                    images: []
+                }
+            },
+            {
+                id: "bath-windows",
+                label: "Windows CLOSED",
+                guide: null
+            },
+            {
+                id: "bath-tap",
+                label: "Tap OPEN",
+                guide: {
+                    description: "Leave the tap open after shutting off water to relieve pressure and reduce freeze risk.",
+                    steps: [
+                        "Go to the bathroom tap.",
+                        "Open the tap so the line is no longer pressurised.",
+                        "Leave it in the open position before departure."
+                    ],
+                    images: []
+                }
+            }
+        ]
+    },
+    {
+        section: "Kitchen and Livingroom",
+        items: [
+            {
+                id: "living-floor-heating",
+                label: "Living room floor heating OFF",
+                guide: null
+            },
+            {
+                id: "sink-valve",
+                label: "Sink valve OFF",
+                guide: {
+                    description: "Close the local water valve serving the kitchen sink if that is part of your shutdown routine.",
+                    steps: [
+                        "Open the cupboard beneath the sink.",
+                        "Locate the valve on the water line.",
+                        "Turn it fully to OFF.",
+                        "Verify it has stopped the line."
+                    ],
+                    images: [
+                        "assets/guides/sink-valve-1.jpg"
+                    ]
+                }
+            },
+            {
+                id: "kitchen-tap",
+                label: "Tap OPEN",
+                guide: null
+            },
+            {
+                id: "dishwasher-off",
+                label: "Dishwasher OFF",
+                guide: null
+            },
+            {
+                id: "dishwasher-open",
+                label: "Dishwasher OPEN",
+                guide: {
+                    description: "Leave the dishwasher door slightly open to prevent odour and moisture build-up.",
+                    steps: [
+                        "Check the dishwasher is switched off.",
+                        "Empty it if needed.",
+                        "Leave the door slightly ajar."
+                    ],
+                    images: [
+                        "assets/guides/dishwasher-open-1.jpg"
+                    ]
+                }
+            },
+            {
+                id: "heat-pump-mode",
+                label: "Heat pump mode: HEATING",
+                guide: null
+            },
+            {
+                id: "heat-pump-temp",
+                label: "Heat pump temperature 17˚C",
+                guide: null
+            },
+            {
+                id: "mill-heat",
+                label: "Mill heat living room 15˚C",
+                guide: null
+            },
+            {
+                id: "kids-heater",
+                label: "Kids bedroom heater PLUGGED IN & ON",
+                guide: null
+            },
+            {
+                id: "lights-stue",
+                label: "All lights stue OFF",
+                guide: null
+            },
+            {
+                id: "kitchen-bin",
+                label: "Kitchen bin EMPTIED",
+                guide: null
+            },
+            {
+                id: "balcony",
+                label: "Balcony LOCKED",
+                guide: null
+            },
+            {
+                id: "chargers",
+                label: "Nothing plugged into chargers living room",
+                guide: null
+            },
+            {
+                id: "fireplace",
+                label: "Fireplace READY",
+                guide: {
+                    description: "Leave the fireplace safe, clean, and ready for the next arrival.",
+                    steps: [
+                        "Check all embers are fully out.",
+                        "Remove excess ash if required.",
+                        "Place kindling and firewood if that is your standard setup.",
+                        "Confirm the area around the fireplace is safe and tidy."
+                    ],
+                    images: []
+                }
+            }
+        ]
+    },
+    {
+        section: "Bod",
+        items: [
+            {
+                id: "bod-battery-charger",
+                label: "Bod batter charger OFF",
+                guide: null
+            },
+            {
+                id: "back-door",
+                label: "Back door LOCKED",
+                guide: null
+            },
+            {
+                id: "wifi-repeater",
+                label: "WiFi repeater ON",
+                guide: null
+            }
+        ]
+    },
+    {
+        section: "Hallway",
+        items: [
+            {
+                id: "front-light",
+                label: "Front door light ON",
+                guide: null
+            },
+            {
+                id: "wall-lights",
+                label: "Wall lights OFF",
+                guide: null
+            },
+            {
+                id: "underfloor",
+                label: "Under floor heating 20 DEG",
+                guide: null
+            },
+            {
+                id: "front-door",
+                label: "Front door LOCKED",
+                guide: null
+            },
+            {
+                id: "cameras",
+                label: "Cameras set AWAY MODE",
+                guide: null
+            }
+        ]
+    }
+];
+
+const container = document.getElementById("list");
+
+function playSound() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+
+    o.type = "sine";
+    o.frequency.value = 1200;
+
+    o.connect(g);
+    g.connect(ctx.destination);
+
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
+}
+
+function saveState() {
+    const states = [];
+    document.querySelectorAll('.item input[type="checkbox"]').forEach(i => states.push(i.checked));
+    localStorage.setItem("checklist", JSON.stringify(states));
+}
+
+function loadState() {
+    const states = JSON.parse(localStorage.getItem("checklist") || "[]");
+    document.querySelectorAll('.item input[type="checkbox"]').forEach((i, idx) => {
+        if (states[idx]) {
+            i.checked = true;
+            i.closest(".item").classList.add("checked");
+        }
+    });
+}
+
+function openGuide(item) {
+    const modal = document.getElementById("guideModal");
+    const title = document.getElementById("modalTitle");
+    const desc = document.getElementById("modalDesc");
+    const steps = document.getElementById("modalSteps");
+    const images = document.getElementById("modalImages");
+    const empty = document.getElementById("modalEmpty");
+
+    title.textContent = item.label;
+    desc.textContent = item.guide?.description || "";
+    steps.innerHTML = "";
+    images.innerHTML = "";
+
+    const hasGuide = item.guide && (
+        (item.guide.description && item.guide.description.trim() !== "") ||
+        (item.guide.steps && item.guide.steps.length > 0) ||
+        (item.guide.images && item.guide.images.length > 0)
+    );
+
+    if (!hasGuide) {
+        desc.textContent = "";
+        empty.style.display = "block";
+    } else {
+        empty.style.display = "none";
+    }
+
+    if (item.guide?.steps) {
+        item.guide.steps.forEach(step => {
+            const li = document.createElement("li");
+            li.textContent = step;
+            steps.appendChild(li);
+        });
+    }
+
+    if (item.guide?.images) {
+        item.guide.images.forEach(src => {
+            const img = document.createElement("img");
+            img.src = src;
+            img.className = "guide-image";
+            img.alt = item.label;
+            images.appendChild(img);
+        });
+    }
+
+    modal.classList.add("open");
+}
+
+function closeGuide(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById("guideModal").classList.remove("open");
+}
+
+function createList() {
+    data.forEach(section => {
+        const title = document.createElement("h2");
+        title.textContent = section.section;
+        container.appendChild(title);
+
+        section.items.forEach(item => {
+            const row = document.createElement("div");
+            row.className = "item";
+
+            const input = document.createElement("input");
+            input.type = "checkbox";
+
+            input.addEventListener("change", () => {
+                if (input.checked) {
+                    row.classList.add("checked");
+                    playSound();
+                } else {
+                    row.classList.remove("checked");
+                }
+                saveState();
+            });
+
+            const label = document.createElement("div");
+            label.className = "item-label";
+            label.textContent = item.label;
+
+            const infoBtn = document.createElement("button");
+            infoBtn.className = "info-btn";
+            infoBtn.type = "button";
+            infoBtn.setAttribute("aria-label", `Guide for ${item.label}`);
+            infoBtn.textContent = "i";
+            infoBtn.addEventListener("click", () => openGuide(item));
+
+            row.appendChild(input);
+            row.appendChild(label);
+            row.appendChild(infoBtn);
+            container.appendChild(row);
+        });
+    });
+
+    loadState();
+}
+
+function resetList() {
+    localStorage.removeItem("checklist");
+    location.reload();
+}
+
+function checkAll() {
+    document.querySelectorAll('.item input[type="checkbox"]').forEach(i => {
+        i.checked = true;
+        i.closest(".item").classList.add("checked");
+    });
+    saveState();
+}
+
+createList();
+</script>
+
+</body>
+</html>
