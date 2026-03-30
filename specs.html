@@ -140,6 +140,12 @@
       cursor: pointer;
     }
 
+    .manual-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
     .manual-link {
       display: inline-flex;
       align-items: center;
@@ -202,14 +208,14 @@
       </div>
       <h1 class="page-title">Technical Specifications</h1>
       <p class="page-subtitle">
-          Måssårabben 3
-          <br> 2550 Os i Østerdalen
-          <br> -
-          <br> <a href="https://ut.no/kart#17/62.47479/11.224522" target="_blank" style="color:#2c5f87; font-weight:600;"> Open map (UT.no)</a>
-          <br> -
-          <br> Areal (BRA/P-ROM): 72/66 kvm
-          <br> Byggeår: 2002
-          <br> 807 moh.
+        Måssårabben 3
+        <br>2550 Os i Østerdalen
+        <br>-
+        <br><a href="https://ut.no/kart#17/62.47479/11.224522" target="_blank" rel="noopener noreferrer" style="color:#2c5f87; font-weight:600;">Open map (UT.no)</a>
+        <br>-
+        <br>Areal (BRA/P-ROM): 72/66 kvm
+        <br>Byggeår: 2002
+        <br>807 moh.
       </p>
     </header>
 
@@ -224,18 +230,23 @@
     const entries = [
       {
         title: "Sauna Oven",
-        description: "Main sauna heater. Add model details: <br> E.g., serial number, power rating, or any operating notes here.",
+        description: "Main sauna heater. Add model details: <br>E.g., serial number, power rating, or any operating notes here.",
         images: [
           "images/sauna_1.jpg",
           "images/sauna_2.jpg"
         ],
-        manual: {
-          href: "files/sauna.pdf",
-          label: "User Manual"
-        }
+        manuals: [
+          {
+            href: "files/sauna.pdf",
+            label: "User Manual"
+          },
+          {
+            href: "files/sauna_installation.pdf",
+            label: "Installation Manual"
+          }
+        ]
       },
 
-    
       {
         title: "Electricity Cupboard",
         description: "230V / 40A",
@@ -246,7 +257,7 @@
           "images/Sikring_3.jpg",
           "images/Sikring_4.jpg"
         ],
-        manual: null
+        manuals: []
       },
 
       {
@@ -256,7 +267,7 @@
           "images/paint_kitchen_1.jpg",
           "images/paint_kitchen_2.jpg"
         ],
-        manual: null
+        manuals: []
       },
 
       {
@@ -265,18 +276,20 @@
         images: [
           "heat_pump_1.jpg"
         ],
-       manual: {
-          href: "files/heatpump.pdf",
-          label: "User Manual"
-        }
+        manuals: [
+          {
+            href: "files/heatpump.pdf",
+            label: "User Manual"
+          }
+        ]
       }
-
-      
     ];
 
     const cardsEl = document.getElementById("cards");
 
     function renderCards() {
+      cardsEl.innerHTML = "";
+
       const sortedEntries = [...entries].sort((a, b) =>
         a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
       );
@@ -318,14 +331,25 @@
           card.appendChild(gallery);
         }
 
-        if (entry.manual && entry.manual.href) {
-          const link = document.createElement("a");
-          link.className = "manual-link";
-          link.href = entry.manual.href;
-          link.textContent = entry.manual.label || "Manual";
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          card.appendChild(link);
+        if (entry.manuals && entry.manuals.length) {
+          const linksWrap = document.createElement("div");
+          linksWrap.className = "manual-links";
+
+          entry.manuals.forEach(manual => {
+            if (!manual.href) return;
+
+            const link = document.createElement("a");
+            link.className = "manual-link";
+            link.href = manual.href;
+            link.textContent = manual.label || "Manual";
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            linksWrap.appendChild(link);
+          });
+
+          if (linksWrap.children.length) {
+            card.appendChild(linksWrap);
+          }
         }
 
         cardsEl.appendChild(card);
