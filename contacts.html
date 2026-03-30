@@ -1,252 +1,235 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Contacts</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Himmelblå Checklist</title>
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Himmelblå">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="apple-touch-icon" href="logo.png">
-  <link rel="icon" href="logo.png">
-
-  <style>
-    :root {
-      --bg: #eef3f7;
-      --card: rgba(255, 255, 255, 0.9);
-      --text: #18324a;
-      --muted: #58718a;
-      --accent: #2c5f87;
-      --accent-2: #6fa8dc;
-      --border: rgba(44, 95, 135, 0.12);
-      --shadow: 0 10px 30px rgba(24, 50, 74, 0.10);
-      --radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background:
-        radial-gradient(circle at top, rgba(111, 168, 220, 0.18), transparent 35%),
-        linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      min-height: 100%;
-    }
-
+<style>
     body {
-      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f4f6f8;
+        color: #222;
     }
 
-    .app {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 14px 14px 28px;
-    }
-
-    .header {
-      margin-bottom: 18px;
-    }
-
-    .logo-wrap {
-      background: rgba(255,255,255,0.65);
-      border: 1px solid rgba(255,255,255,0.65);
-      border-radius: 24px;
-      padding: 10px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+    .container {
+        max-width: 500px;
+        margin: auto;
+        padding: 10px;
     }
 
     .logo {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 18px;
+        width: 100%;
+        border-radius: 12px;
+        margin-bottom: 10px;
     }
 
-    .page-title {
-      margin: 18px 4px 6px;
-      font-size: 1.75rem;
-      line-height: 1.1;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      text-align: center;
+    h2 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 18px;
     }
 
-    .page-subtitle {
-      margin: 0 10px 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.35;
+    .item {
+        display: flex;
+        align-items: center;
+        padding: 14px;
+        margin-bottom: 8px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        font-size: 16px;
     }
 
-    .cards {
-      display: grid;
-      gap: 14px;
+    .item input {
+        transform: scale(1.4);
+        margin-right: 14px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
-      backdrop-filter: blur(10px);
+    .checked {
+        background: #d4edda;
+        color: #155724;
     }
 
-    .card-title {
-      margin: 0 0 8px;
-      font-size: 1.25rem;
-      line-height: 1.15;
-      font-weight: 800;
-      letter-spacing: -0.02em;
+    .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
     }
 
-    .card-desc {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.4;
-    }
-
-    .contact-name {
-      margin: 0 0 6px;
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
-    .contact-number {
-      margin: 0 0 14px;
-      font-size: 1rem;
-      color: var(--text);
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-
-    .actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .btn {
-      appearance: none;
-      border: none;
-      border-radius: 16px;
-      min-height: 52px;
-      padding: 0 16px;
-      font-size: 1rem;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-shadow: 0 6px 16px rgba(44, 95, 135, 0.14);
-      transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-    }
-
-    .btn:active {
-      transform: scale(0.985);
-    }
-
-    .btn-call {
-      background: linear-gradient(180deg, #2f6f9f 0%, #25577d 100%);
-      color: white;
-    }
-
-    .btn-sms {
-      background: linear-gradient(180deg, #ffffff 0%, #eef4f8 100%);
-      color: var(--accent);
-      border: 1px solid rgba(44, 95, 135, 0.18);
+    button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        background: #1e3a5f;
+        color: white;
     }
 
     .back-row {
-      margin-top: 18px;
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
 
     .back-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 52px;
-      border-radius: 16px;
-      text-decoration: none;
-      font-weight: 700;
-      background: rgba(255,255,255,0.8);
-      color: var(--accent);
-      border: 1px solid rgba(44, 95, 135, 0.14);
-      box-shadow: var(--shadow);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 52px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        background: #1e3a5f;
+        color: white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-
-    @media (min-width: 700px) {
-      .cards {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <main class="app">
-    <header class="header">
-      <div class="logo-wrap">
-        <img src="logo.png" alt="Himmelblå logo" class="logo">
-      </div>
-      <h1 class="page-title">Useful Contacts</h1>
-      <p class="page-subtitle">
-        Useful contacts for the cabin and Hummelfjell.
-      </p>
-    </header>
 
-    <section class="cards">
-      <article class="card">
-        <h2 class="card-title">Cabin Owner</h2>
-        <p class="card-desc">Cabin Owner 1.</p>
-        <p class="contact-name">Darren Wilkinson</p>
-        <p class="contact-number">+47 466 36 501</p>
-        <div class="actions">
-          <a class="btn btn-call" href="tel:+4746636501">Ring</a>
-          <a class="btn btn-sms" href="sms:+4746636501">SMS</a>
-        </div>
-      </article>
-    
+<div class="container">
 
-    <section class="cards">
-      <article class="card">
-        <h2 class="card-title">Strøing og Brøyting</h2>
-        <p class="card-desc">Langøien Grus og Transport AS.</p>
-        <p class="contact-name">Alternativ 1</p>
-        <p class="contact-number">+47 480 21 042</p>
-        <div class="actions">
-          <a class="btn btn-call" href="tel:+47480 21 042">Ring</a>
-          <a class="btn btn-sms" href="sms:+47480 21 042">SMS</a>
-        </div>
-      </article>
+    <!-- Logo -->
+    <img src="logo.png" class="logo">
 
-          <section class="cards">
-      <article class="card">
-        <h2 class="card-title">Strøing og Brøyting</h2>
-        <p class="card-desc">Langøien Grus og Transport AS.</p>
-        <p class="contact-name">Alternativ 2</p>
-        <p class="contact-number">+47 414 34 311</p>
-        <div class="actions">
-          <a class="btn btn-call" href="tel:+4741434311">Ring</a>
-          <a class="btn btn-sms" href="sms:+4741434311">SMS</a>
-        </div>
-      </article>
-
-      
-    <div class="back-row">
-      <a class="back-link" href="index.html">Back to Menu</a>
+    <!-- Controls -->
+    <div class="controls">
+        <button onclick="resetList()">Reset</button>
+        <button onclick="checkAll()">All Done</button>
     </div>
-  </main>
+
+    <!-- Checklist -->
+    <div id="list"></div>
+
+    <!-- Back Button -->
+    <div class="back-row">
+        <a class="back-link" href="index.html">Tilbake</a>
+    </div>
+
+</div>
+
+<script>
+const data = [
+    ["Bathroom",
+        "Water shut off valve OFF",
+        "Bathroom floor heating 20˚C",
+        "Windows CLOSED",
+        "Tap OPEN"
+    ],
+    ["Kitchen and Livingroom",
+        "Living room floor heating OFF",
+        "Sink valve OFF",
+        "Tap OPEN",
+        "Dishwasher OFF",
+        "Dishwasher OPEN",
+        "Heat pump mode: HEATING",
+        "Heat pump temperature 17˚C",
+        "Mill heat living room 15˚C",
+        "Kids bedroom heater PLUGGED IN & ON",
+        "All lights stue OFF",
+        "Kitchen bin EMPTIED",
+        "Balcony LOCKED",
+        "Nothing plugged into chargers living room",
+        "Fireplace READY"
+    ],
+    ["Bod",
+        "Bod batter charger OFF",
+        "Back door LOCKED",
+        "WiFi repeater ON"
+    ],
+    ["Hallway",
+        "Front door light ON",
+        "Wall lights OFF",
+        "Under floor heating 20 DEG",
+        "Front door LOCKED",
+        "Cameras set AWAY MODE"
+    ]
+];
+
+const container = document.getElementById("list");
+
+function playSound() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+
+    o.type = "sine";
+    o.frequency.value = 1200;
+
+    o.connect(g);
+    g.connect(ctx.destination);
+
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
+}
+
+function saveState() {
+    const states = [];
+    document.querySelectorAll("input").forEach(i => states.push(i.checked));
+    localStorage.setItem("checklist", JSON.stringify(states));
+}
+
+function loadState() {
+    const states = JSON.parse(localStorage.getItem("checklist") || "[]");
+    document.querySelectorAll("input").forEach((i, idx) => {
+        if (states[idx]) {
+            i.checked = true;
+            i.parentElement.classList.add("checked");
+        }
+    });
+}
+
+function createList() {
+    data.forEach(section => {
+        const title = document.createElement("h2");
+        title.innerText = section[0];
+        container.appendChild(title);
+
+        section.slice(1).forEach(item => {
+            const div = document.createElement("div");
+            div.className = "item";
+
+            const input = document.createElement("input");
+            input.type = "checkbox";
+
+            input.addEventListener("change", () => {
+                if (input.checked) {
+                    div.classList.add("checked");
+                    playSound();
+                } else {
+                    div.classList.remove("checked");
+                }
+                saveState();
+            });
+
+            div.appendChild(input);
+            div.appendChild(document.createTextNode(item));
+            container.appendChild(div);
+        });
+    });
+
+    loadState();
+}
+
+function resetList() {
+    localStorage.removeItem("checklist");
+    location.reload();
+}
+
+function checkAll() {
+    document.querySelectorAll("input").forEach(i => {
+        i.checked = true;
+        i.parentElement.classList.add("checked");
+    });
+    saveState();
+}
+
+createList();
+</script>
+
 </body>
 </html>
