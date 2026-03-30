@@ -590,19 +590,36 @@ const data = [
 
 const container = document.getElementById("list");
 
+let audioCtx = null;
+
 function playSound() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
+    try {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
 
-    o.type = "sine";
-    o.frequency.value = 1200;
+        if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
 
-    o.connect(g);
-    g.connect(ctx.destination);
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
 
-    o.start();
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(1200, now);
+
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.12);
+    } catch (err) {
+        console.error("Sound playback failed:", err);
+    }
 }
 
 function saveState() {
