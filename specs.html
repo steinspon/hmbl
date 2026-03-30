@@ -8,8 +8,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Himmelblå">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="apple-touch-icon" href="logo.png">
-  <link rel="icon" href="logo.png">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
+  <link id="favicon-icon" rel="icon" href="logo.png">
 
   <style>
     :root {
@@ -22,6 +22,51 @@
       --border: rgba(44, 95, 135, 0.12);
       --shadow: 0 10px 30px rgba(24, 50, 74, 0.10);
       --radius: 20px;
+
+      --bg-top: rgba(111, 168, 220, 0.18);
+      --bg-grad-top: #f7fbff;
+      --bg-grad-bottom: var(--bg);
+
+      --logo-wrap-bg: rgba(255,255,255,0.65);
+      --logo-wrap-border: rgba(255,255,255,0.65);
+
+      --back-bg: rgba(255,255,255,0.8);
+      --back-border: rgba(44, 95, 135, 0.14);
+
+      --manual-bg-top: #2f6f9f;
+      --manual-bg-bottom: #25577d;
+      --manual-shadow: 0 6px 16px rgba(44, 95, 135, 0.14);
+
+      --image-shadow: 0 6px 18px rgba(24, 50, 74, 0.10);
+      --map-link: #2c5f87;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0a1220;
+      --card: rgba(20, 31, 48, 0.9);
+      --text: #e7eef8;
+      --muted: #9fb0c7;
+      --accent: #6de3b0;
+      --accent-2: #4eb7ff;
+      --border: rgba(170, 190, 220, 0.10);
+      --shadow: 0 10px 30px rgba(0,0,0,0.28);
+
+      --bg-top: rgba(80, 220, 170, 0.14);
+      --bg-grad-top: #0f1b2b;
+      --bg-grad-bottom: #09111d;
+
+      --logo-wrap-bg: rgba(255,255,255,0.04);
+      --logo-wrap-border: rgba(255,255,255,0.06);
+
+      --back-bg: rgba(255,255,255,0.04);
+      --back-border: rgba(109, 227, 176, 0.15);
+
+      --manual-bg-top: #26415b;
+      --manual-bg-bottom: #1b2f44;
+      --manual-shadow: 0 6px 16px rgba(0,0,0,0.24);
+
+      --image-shadow: 0 6px 18px rgba(0,0,0,0.22);
+      --map-link: #6de3b0;
     }
 
     * {
@@ -33,11 +78,12 @@
       margin: 0;
       padding: 0;
       background:
-        radial-gradient(circle at top, rgba(111, 168, 220, 0.18), transparent 35%),
-        linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
+        radial-gradient(circle at top, var(--bg-top), transparent 35%),
+        linear-gradient(180deg, var(--bg-grad-top) 0%, var(--bg-grad-bottom) 100%);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       min-height: 100%;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     body {
@@ -55,12 +101,14 @@
     }
 
     .logo-wrap {
-      background: rgba(255,255,255,0.65);
-      border: 1px solid rgba(255,255,255,0.65);
+      background: var(--logo-wrap-bg);
+      border: 1px solid var(--logo-wrap-border);
       border-radius: 24px;
       padding: 10px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .logo {
@@ -87,6 +135,12 @@
       line-height: 1.35;
     }
 
+    .page-subtitle a {
+      color: var(--map-link);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
     .cards {
       display: grid;
       gap: 14px;
@@ -99,6 +153,8 @@
       box-shadow: var(--shadow);
       padding: 16px;
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card-title {
@@ -135,9 +191,10 @@
       max-width: 280px;
       display: block;
       border-radius: 14px;
-      box-shadow: 0 6px 18px rgba(24, 50, 74, 0.10);
+      box-shadow: var(--image-shadow);
       scroll-snap-align: start;
       cursor: pointer;
+      transition: box-shadow 0.3s ease;
     }
 
     .manual-links {
@@ -155,9 +212,10 @@
       border-radius: 14px;
       text-decoration: none;
       font-weight: 700;
-      background: linear-gradient(180deg, #2f6f9f 0%, #25577d 100%);
+      background: linear-gradient(180deg, var(--manual-bg-top) 0%, var(--manual-bg-bottom) 100%);
       color: white;
-      box-shadow: 0 6px 16px rgba(44, 95, 135, 0.14);
+      box-shadow: var(--manual-shadow);
+      transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.3s ease;
     }
 
     .manual-link:active {
@@ -177,10 +235,11 @@
       border-radius: 16px;
       text-decoration: none;
       font-weight: 700;
-      background: rgba(255,255,255,0.8);
+      background: var(--back-bg);
       color: var(--accent);
-      border: 1px solid rgba(44, 95, 135, 0.14);
+      border: 1px solid var(--back-border);
       box-shadow: var(--shadow);
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .empty-note {
@@ -191,6 +250,7 @@
       padding: 18px;
       color: var(--muted);
       text-align: center;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     @media (min-width: 700px) {
@@ -204,14 +264,14 @@
   <main class="app">
     <header class="header">
       <div class="logo-wrap">
-        <img src="logo.png" alt="Himmelblå logo" class="logo">
+        <img id="main-logo" src="logo.png" alt="Himmelblå logo" class="logo">
       </div>
       <h1 class="page-title">Technical Specifications</h1>
       <p class="page-subtitle">
         Måssårabben 3
         <br>2550 Os i Østerdalen
         <br>-
-        <br><a href="https://ut.no/kart#17/62.47479/11.224522" target="_blank" rel="noopener noreferrer" style="color:#2c5f87; font-weight:600;">Open map (UT.no)</a>
+        <br><a href="https://ut.no/kart#17/62.47479/11.224522" target="_blank" rel="noopener noreferrer">Open map (UT.no)</a>
         <br>-
         <br>Areal (BRA/P-ROM): 72/66 kvm
         <br>Byggeår: 2002
@@ -246,7 +306,6 @@
           }
         ]
       },
-
       {
         title: "Electricity Cupboard",
         description: "230V / 40A",
@@ -259,7 +318,6 @@
         ],
         manuals: []
       },
-
       {
         title: "Paint, Kitchen",
         description: "Dark grey colour, kitchen and kitchen furniture.",
@@ -269,18 +327,17 @@
         ],
         manuals: []
       },
-
       {
-      title: "Heat Pump",
-      description: "Wilfa Nordkapp 40W.<br>7 year warranty<br>Installed May 2025",
-      images: [
-        "images/heat_pump_1.jpg"
-      ],
-      manuals: [
-        { href: "files/heatpump.pdf", label: "User Manual" },
-        { href: "files/heatpump_2.pdf", label: "Spec Sheet" }
-      ]
-    }
+        title: "Heat Pump",
+        description: "Wilfa Nordkapp 40W.<br>7 year warranty<br>Installed May 2025",
+        images: [
+          "images/heat_pump_1.jpg"
+        ],
+        manuals: [
+          { href: "files/heatpump.pdf", label: "User Manual" },
+          { href: "files/heatpump_2.pdf", label: "Spec Sheet" }
+        ]
+      }
     ];
 
     const cardsEl = document.getElementById("cards");
@@ -354,7 +411,25 @@
       });
     }
 
+    function applyTheme() {
+      const hour = new Date().getHours();
+      const theme = (hour >= 19 || hour < 7) ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", theme);
+
+      const logoPath = theme === "dark" ? "logo-night.png" : "logo.png";
+
+      const mainLogo = document.getElementById("main-logo");
+      const favicon = document.getElementById("favicon-icon");
+      const appleTouchIcon = document.getElementById("apple-touch-icon");
+
+      if (mainLogo) mainLogo.src = logoPath;
+      if (favicon) favicon.href = logoPath;
+      if (appleTouchIcon) appleTouchIcon.href = logoPath;
+    }
+
     renderCards();
+    applyTheme();
+    setInterval(applyTheme, 60000);
   </script>
 </body>
 </html>
