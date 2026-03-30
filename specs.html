@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Himmelblå – Specifications & Manuals</title>
+  <title>Himmelblå – Specifications & User Manuals</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Himmelblå">
@@ -116,12 +116,28 @@
       line-height: 1.4;
     }
 
+    .image-gallery {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+      scroll-snap-type: x proximity;
+    }
+
+    .image-gallery::-webkit-scrollbar {
+      display: none;
+    }
+
     .card-image {
-      width: 100%;
+      flex: 0 0 auto;
+      width: 80%;
+      max-width: 280px;
       display: block;
       border-radius: 14px;
-      margin: 0 0 14px;
       box-shadow: 0 6px 18px rgba(24, 50, 74, 0.10);
+      scroll-snap-align: start;
+      cursor: pointer;
     }
 
     .manual-link {
@@ -201,8 +217,11 @@
     const entries = [
       {
         title: "Sauna Oven",
-        description: "Main sauna heater TYLO SM6 / MP6. 220 V 6 kW",
-        image: "images/sauna_1.jpg",   // optional
+        description: "Main sauna heater. Add model details, serial number, power rating, or any operating notes here.",
+        images: [
+          "images/sauna_1.jpg",
+          "images/sauna_2.jpg"
+        ],
         manual: {
           href: "files/sauna-oven-user-manual.pdf",
           label: "User Manual"
@@ -211,7 +230,10 @@
       {
         title: "Heat Pump",
         description: "Living room heat pump. Include model designation and any notes about winter settings or filter cleaning.",
-        image: "images/heat-pump-label.jpg",        // optional
+        images: [
+          "images/heat-pump-label.jpg",
+          "images/heat-pump-remote.jpg"
+        ],
         manual: {
           href: "files/heat-pump-manual.pdf",
           label: "Heat Pump Manual"
@@ -220,7 +242,7 @@
       {
         title: "Dishwasher",
         description: "Kitchen dishwasher specifications and operating notes.",
-        image: "",                                  // optional
+        images: [],
         manual: {
           href: "files/dishwasher-manual.pdf",
           label: "User Manual"
@@ -229,8 +251,10 @@
       {
         title: "WiFi Repeater",
         description: "Network repeater located in the bod. Add reset instructions or model info here.",
-        image: "",                                  // optional
-        manual: null                                // optional
+        images: [
+          "images/wifi-repeater-label.jpg"
+        ],
+        manual: null
       }
     ];
 
@@ -257,15 +281,25 @@
 
         const desc = document.createElement("p");
         desc.className = "card-desc";
-        desc.textContent = entry.description || "";
+        desc.innerHTML = entry.description || "";
         card.appendChild(desc);
 
-        if (entry.image && entry.image.trim() !== "") {
-          const img = document.createElement("img");
-          img.className = "card-image";
-          img.src = entry.image;
-          img.alt = entry.title;
-          card.appendChild(img);
+        if (entry.images && entry.images.length) {
+          const gallery = document.createElement("div");
+          gallery.className = "image-gallery";
+
+          entry.images.forEach(src => {
+            const img = document.createElement("img");
+            img.className = "card-image";
+            img.src = src;
+            img.alt = entry.title;
+            img.addEventListener("click", () => {
+              window.open(src, "_blank");
+            });
+            gallery.appendChild(img);
+          });
+
+          card.appendChild(gallery);
         }
 
         if (entry.manual && entry.manual.href) {
