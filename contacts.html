@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Himmelblå – Kontakter</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" href="logo.png">
+
+  <style>
+    :root {
+      --bg: #eef3f7;
+      --card: rgba(255, 255, 255, 0.9);
+      --text: #18324a;
+      --muted: #58718a;
+      --accent: #2c5f87;
+      --accent-2: #6fa8dc;
+      --border: rgba(44, 95, 135, 0.12);
+      --shadow: 0 10px 30px rgba(24, 50, 74, 0.10);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at top, rgba(111, 168, 220, 0.18), transparent 35%),
+        linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100%;
+    }
+
+    body {
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+    }
+
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 14px 14px 28px;
+    }
+
+    .header {
+      margin-bottom: 18px;
+    }
+
+    .logo-wrap {
+      background: rgba(255,255,255,0.65);
+      border: 1px solid rgba(255,255,255,0.65);
+      border-radius: 24px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+    }
+
+    .page-title {
+      margin: 18px 4px 6px;
+      font-size: 1.75rem;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
+    .page-subtitle {
+      margin: 0 10px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.35;
+    }
+
+    .cards {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .contact-name {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .contact-number {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      min-height: 52px;
+      padding: 0 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(44, 95, 135, 0.14);
+      transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.985);
+    }
+
+    .btn-call {
+      background: linear-gradient(180deg, #2f6f9f 0%, #25577d 100%);
+      color: white;
+    }
+
+    .btn-sms {
+      background: linear-gradient(180deg, #ffffff 0%, #eef4f8 100%);
+      color: var(--accent);
+      border: 1px solid rgba(44, 95, 135, 0.18);
+    }
+
+    .back-row {
+      margin-top: 18px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 700;
+      background: rgba(255,255,255,0.8);
+      color: var(--accent);
+      border: 1px solid rgba(44, 95, 135, 0.14);
+      box-shadow: var(--shadow);
+    }
+
+    @media (min-width: 700px) {
+      .cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="Himmelblå logo" class="logo">
+      </div>
+      <h1 class="page-title">Kontakter</h1>
+      <p class="page-subtitle">
+        Nyttige kontaktpunkter for drift og praktiske behov ved hytta.
+      </p>
+    </header>
+
+    <section class="cards">
+      <article class="card">
+        <h2 class="card-title">Strøing</h2>
+        <p class="card-desc">Vakttelefon for strøing, åpen fra 09:00–21:00.</p>
+        <p class="contact-name">Ola Nordmann</p>
+        <p class="contact-number">+47 900 00 000</p>
+        <div class="actions">
+          <a class="btn btn-call" href="tel:+4790000000">Ring</a>
+          <a class="btn btn-sms" href="sms:+4790000000">SMS</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2 class="card-title">Brøyting</h2>
+        <p class="card-desc">Kontakt ved behov for brøyting av vei eller gårdsplass.</p>
+        <p class="contact-name">Kari Hansen</p>
+        <p class="contact-number">+47 911 11 111</p>
+        <div class="actions">
+          <a class="btn btn-call" href="tel:+4791111111">Ring</a>
+          <a class="btn btn-sms" href="sms:+4791111111">SMS</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2 class="card-title">Elektriker</h2>
+        <p class="card-desc">Ved feil på strøm, varmekabler, sikringer eller annen el-installasjon.</p>
+        <p class="contact-name">Per Johansen</p>
+        <p class="contact-number">+47 922 22 222</p>
+        <div class="actions">
+          <a class="btn btn-call" href="tel:+4792222222">Ring</a>
+          <a class="btn btn-sms" href="sms:+4792222222">SMS</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="back-row">
+      <a class="back-link" href="index.html">Tilbake</a>
+    </div>
+  </main>
+</body>
+</html>
