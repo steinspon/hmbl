@@ -301,81 +301,110 @@
       </header>
 
       <section class="section">
-        <div class="tool-list">
-          <a class="tool-button" href="rigdown.html" aria-label="Rig-down checklist">
-            <div class="tool-left">
-              <div class="tool-icon" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 12.5L11.2 14.7L15.5 9.8" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M7 4.5H17C18.1046 4.5 19 5.39543 19 6.5V19.5L16 17.2L13 19.5L10 17.2L7 19.5V6.5C7 5.39543 7.89543 4.5 9 4.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="tool-text">
-                <span class="tool-title">Rig-down checklist</span>
-                <span class="tool-desc">Shutdown and departure checklist for the cabin.</span>
-              </div>
-            </div>
-            <svg class="chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-
-          <a class="tool-button" href="contacts.html" aria-label="Open Contacts">
-            <div class="tool-left">
-              <div class="tool-icon" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.5 4.5H17.5C18.3284 4.5 19 5.17157 19 6V18C19 18.8284 18.3284 19.5 17.5 19.5H6.5C5.67157 19.5 5 18.8284 5 18V6C5 5.17157 5.67157 4.5 6.5 4.5Z" stroke="currentColor" stroke-width="2"/>
-                  <path d="M9 10C9 8.89543 9.89543 8 11 8H13C14.1046 8 15 8.89543 15 10C15 11.1046 14.1046 12 13 12H11C9.89543 12 9 11.1046 9 10Z" stroke="currentColor" stroke-width="2"/>
-                  <path d="M8 16C8.8 14.8 10.2 14 12 14C13.8 14 15.2 14.8 16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="tool-text">
-                <span class="tool-title">Contacts</span>
-                <span class="tool-desc">Useful contacts related to the cabin.</span>
-              </div>
-            </div>
-            <svg class="chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-
-          <a class="tool-button" href="specs.html" aria-label="Open Specs">
-            <div class="tool-left">
-              <div class="tool-icon" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 4.5H13.5L17 8V18.5C17 19.0523 16.5523 19.5 16 19.5H8C7.44772 19.5 7 19.0523 7 18.5V5.5C7 4.94772 7.44772 4.5 8 4.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                  <path d="M13 4.5V8H16.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                  <path d="M9.5 11H14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M9.5 14H14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M9.5 17H12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="tool-text">
-                <span class="tool-title">Technical Reference</span>
-                <span class="tool-desc">Device specifications and User Manuals.</span>
-              </div>
-            </div>
-            <svg class="chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
+        <div id="tool-list" class="tool-list"></div>
       </section>
     </div>
   </main>
 
   <script>
     (function () {
-      const DARK_HOUR_START = 19;
+      const tools = [
+        {
+          title: "Contacts",
+          description: "Useful contacts related to the cabin.",
+          href: "contacts.html",
+          ariaLabel: "Open Contacts",
+          icon: `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M6.5 4.5H17.5C18.3284 4.5 19 5.17157 19 6V18C19 18.8284 18.3284 19.5 17.5 19.5H6.5C5.67157 19.5 5 18.8284 5 18V6C5 5.17157 5.67157 4.5 6.5 4.5Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M9 10C9 8.89543 9.89543 8 11 8H13C14.1046 8 15 8.89543 15 10C15 11.1046 14.1046 12 13 12H11C9.89543 12 9 11.1046 9 10Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 16C8.8 14.8 10.2 14 12 14C13.8 14 15.2 14.8 16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          `
+        },
+        {
+          title: "Guides",
+          description: "Step-by-step guides for operating and shutting down cabin systems.",
+          href: "guides.html",
+          ariaLabel: "Open Guides",
+          icon: `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M6.5 5.5C6.5 4.94772 6.94772 4.5 7.5 4.5H15.5C16.0523 4.5 16.5 4.94772 16.5 5.5V19.5L13 17.7L9.5 19.5V5.5C9.5 4.94772 9.05228 4.5 8.5 4.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M8 7.5H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 10.5H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 13.5H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          `
+        },
+        {
+          title: "Rig-down checklist",
+          description: "Shutdown and departure checklist for the cabin.",
+          href: "rigdown.html",
+          ariaLabel: "Rig-down checklist",
+          icon: `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M9 12.5L11.2 14.7L15.5 9.8" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 4.5H17C18.1046 4.5 19 5.39543 19 6.5V19.5L16 17.2L13 19.5L10 17.2L7 19.5V6.5C7 5.39543 7.89543 4.5 9 4.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          `
+        },
+        {
+          title: "Technical Reference",
+          description: "Device specifications and User Manuals.",
+          href: "specs.html",
+          ariaLabel: "Open Specs",
+          icon: `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M8 4.5H13.5L17 8V18.5C17 19.0523 16.5523 19.5 16 19.5H8C7.44772 19.5 7 19.0523 7 18.5V5.5C7 4.94772 7.44772 4.5 8 4.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M13 4.5V8H16.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9.5 11H14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9.5 14H14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9.5 17H12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          `
+        }
+      ];
 
+      const toolList = document.getElementById("tool-list");
       const logo = document.getElementById("main-logo");
       const favicon = document.getElementById("favicon-icon");
       const appleTouchIcon = document.getElementById("apple-touch-icon");
 
+      function renderTools() {
+        toolList.innerHTML = "";
+
+        const sortedTools = [...tools].sort((a, b) =>
+          a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+        );
+
+        sortedTools.forEach(tool => {
+          const link = document.createElement("a");
+          link.className = "tool-button";
+          link.href = tool.href;
+          link.setAttribute("aria-label", tool.ariaLabel || tool.title);
+
+          link.innerHTML = `
+            <div class="tool-left">
+              <div class="tool-icon" aria-hidden="true">
+                ${tool.icon}
+              </div>
+              <div class="tool-text">
+                <span class="tool-title">${tool.title}</span>
+                <span class="tool-desc">${tool.description}</span>
+              </div>
+            </div>
+            <svg class="chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          `;
+
+          toolList.appendChild(link);
+        });
+      }
+
       function getThemeByTime() {
-        const now = new Date();
-        const hour = now.getHours();
-        return hour >= DARK_HOUR_START ? "dark" : "light";
+        const hour = new Date().getHours();
+        return (hour >= 19 || hour < 7) ? "dark" : "light";
       }
 
       function applyTheme() {
@@ -389,8 +418,8 @@
         if (appleTouchIcon) appleTouchIcon.href = logoPath;
       }
 
+      renderTools();
       applyTheme();
-
       setInterval(applyTheme, 60000);
     })();
   </script>
