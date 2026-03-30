@@ -5,15 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Himmelblå Checklist</title>
 
-<!-- iOS Web App -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Himmelblå">
-
-<!-- App Icons -->
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="icon" href="logo.png">
-
 <style>
     body {
         margin: 0;
@@ -64,7 +55,7 @@
     .controls {
         display: flex;
         gap: 10px;
-        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     button {
@@ -83,15 +74,15 @@
 
 <div class="container">
 
-    <!-- LOCAL FILE -->
+    <!-- Local File -->
     <img src="logo.png" class="logo">
-
-    <div id="list"></div>
 
     <div class="controls">
         <button onclick="resetList()">Reset</button>
         <button onclick="checkAll()">All Done</button>
     </div>
+
+    <div id="list"></div>
 
 </div>
 
