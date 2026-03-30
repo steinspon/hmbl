@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" href="logo.png">
+
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --card: rgba(255,255,255,0.82);
+      --card-strong: rgba(255,255,255,0.92);
+      --text: #10233f;
+      --muted: #516784;
+      --border: rgba(16,35,63,0.10);
+      --shadow: 0 12px 32px rgba(16,35,63,0.12);
+      --accent: #143b73;
+      --accent-2: #2457a6;
+      --accent-soft: rgba(36,87,166,0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(70,142,226,0.22), transparent 38%),
+        linear-gradient(180deg, #f6fbff 0%, #eaf2fb 100%);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      padding: calc(14px + var(--safe-top)) 14px calc(24px + var(--safe-bottom));
+    }
+
+    .shell {
+      background: linear-gradient(180deg, rgba(255,255,255,0.74), rgba(255,255,255,0.88));
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(17,38,68,0.14);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 16px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.18));
+    }
+
+    .logo-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 100%;
+      display: block;
+      border-radius: 22px;
+      object-fit: contain;
+      background: white;
+      box-shadow: 0 8px 24px rgba(16,35,63,0.10);
+    }
+
+    .header {
+      padding: 18px 18px 6px;
+      text-align: center;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 1.85rem;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      font-size: 0.98rem;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .section {
+      padding: 12px 14px 18px;
+    }
+
+    .section-label {
+      margin: 0 4px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .tool-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .tool-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 18px 18px;
+      border: 1px solid rgba(20,59,115,0.10);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, var(--card-strong), var(--card));
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .tool-button:active {
+      transform: scale(0.985);
+      box-shadow: 0 8px 18px rgba(16,35,63,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(241,247,255,0.96));
+    }
+
+    .tool-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+      flex: 0 0 auto;
+    }
+
+    .tool-text {
+      min-width: 0;
+      text-align: left;
+    }
+
+    .tool-title {
+      display: block;
+      font-size: 1.02rem;
+      font-weight: 750;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .tool-desc {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.92rem;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .chevron {
+      color: var(--accent);
+      flex: 0 0 auto;
+      opacity: 0.9;
+    }
+
+    .footer-note {
+      margin: 14px 4px 0;
+      font-size: 0.86rem;
+      line-height: 1.4;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (min-width: 520px) {
+      .app { padding-left: 18px; padding-right: 18px; }
+      .hero { padding: 18px 18px 10px; }
+      .header { padding: 20px 22px 8px; }
+      .section { padding: 14px 18px 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="shell">
+      <section class="hero">
+        <div class="logo-wrap">
+          <img src="logo.png" alt="Himmelblå logo" class="logo">
+        </div>
+      </section>
+
+      <header class="header">
+        <h1 class="title">Himmelblå</h1>
+        <p class="subtitle">Cabin tools and checklists for quick one-handed use on phone.</p>
+      </header>
+
+      <section class="section">
+        <p class="section-label">Tools</p>
+
+        <div class="tool-list">
+          <a class="tool-button" href="rigdown.html" aria-label="Open rig-down checklist">
+            <div class="tool-left">
+              <div class="tool-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12.5L11.2 14.7L15.5 9.8" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7 4.5H17C18.1046 4.5 19 5.39543 19 6.5V19.5L16 17.2L13 19.5L10 17.2L7 19.5V6.5C7 5.39543 7.89543 4.5 9 4.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="tool-text">
+                <span class="tool-title">Rig-down checklist</span>
+                <span class="tool-desc">Shutdown and departure checklist for the cabin.</span>
+              </div>
+            </div>
+            <svg class="chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <p class="footer-note">More tools can be added here later while keeping the same visual style.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
