@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå – Specifications & Manuals</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" href="logo.png">
+
+  <style>
+    :root {
+      --bg: #eef3f7;
+      --card: rgba(255, 255, 255, 0.9);
+      --text: #18324a;
+      --muted: #58718a;
+      --accent: #2c5f87;
+      --accent-2: #6fa8dc;
+      --border: rgba(44, 95, 135, 0.12);
+      --shadow: 0 10px 30px rgba(24, 50, 74, 0.10);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at top, rgba(111, 168, 220, 0.18), transparent 35%),
+        linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100%;
+    }
+
+    body {
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+    }
+
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 14px 14px 28px;
+    }
+
+    .header {
+      margin-bottom: 18px;
+    }
+
+    .logo-wrap {
+      background: rgba(255,255,255,0.65);
+      border: 1px solid rgba(255,255,255,0.65);
+      border-radius: 24px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+    }
+
+    .page-title {
+      margin: 18px 4px 6px;
+      font-size: 1.75rem;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
+    .page-subtitle {
+      margin: 0 10px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.35;
+    }
+
+    .cards {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .card-image {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+      margin: 0 0 14px;
+      box-shadow: 0 6px 18px rgba(24, 50, 74, 0.10);
+    }
+
+    .manual-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 16px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      background: linear-gradient(180deg, #2f6f9f 0%, #25577d 100%);
+      color: white;
+      box-shadow: 0 6px 16px rgba(44, 95, 135, 0.14);
+    }
+
+    .manual-link:active {
+      transform: scale(0.985);
+    }
+
+    .back-row {
+      margin-top: 18px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 700;
+      background: rgba(255,255,255,0.8);
+      color: var(--accent);
+      border: 1px solid rgba(44, 95, 135, 0.14);
+      box-shadow: var(--shadow);
+    }
+
+    .empty-note {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (min-width: 700px) {
+      .cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="Himmelblå logo" class="logo">
+      </div>
+      <h1 class="page-title">Specifications & User Manuals</h1>
+      <p class="page-subtitle">
+        Device information, model details, and stored manuals for equipment at the cabin.
+      </p>
+    </header>
+
+    <section id="cards" class="cards"></section>
+
+    <div class="back-row">
+      <a class="back-link" href="index.html">Tilbake</a>
+    </div>
+  </main>
+
+  <script>
+    const entries = [
+      {
+        title: "Sauna Oven",
+        description: "Main sauna heater. Add model details, serial number, power rating, or any operating notes here.",
+        image: "images/sauna-oven-info-card.jpg",   // optional
+        manual: {
+          href: "files/sauna-oven-user-manual.pdf",
+          label: "User Manual"
+        }
+      },
+      {
+        title: "Heat Pump",
+        description: "Living room heat pump. Include model designation and any notes about winter settings or filter cleaning.",
+        image: "images/heat-pump-label.jpg",        // optional
+        manual: {
+          href: "files/heat-pump-manual.pdf",
+          label: "Heat Pump Manual"
+        }
+      },
+      {
+        title: "Dishwasher",
+        description: "Kitchen dishwasher specifications and operating notes.",
+        image: "",                                  // optional
+        manual: {
+          href: "files/dishwasher-manual.pdf",
+          label: "User Manual"
+        }
+      },
+      {
+        title: "WiFi Repeater",
+        description: "Network repeater located in the bod. Add reset instructions or model info here.",
+        image: "",                                  // optional
+        manual: null                                // optional
+      }
+    ];
+
+    const cardsEl = document.getElementById("cards");
+
+    function renderCards() {
+      const sortedEntries = [...entries].sort((a, b) =>
+        a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+      );
+
+      if (!sortedEntries.length) {
+        cardsEl.innerHTML = '<div class="empty-note">No specifications or manuals added yet.</div>';
+        return;
+      }
+
+      sortedEntries.forEach(entry => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const title = document.createElement("h2");
+        title.className = "card-title";
+        title.textContent = entry.title;
+        card.appendChild(title);
+
+        const desc = document.createElement("p");
+        desc.className = "card-desc";
+        desc.textContent = entry.description || "";
+        card.appendChild(desc);
+
+        if (entry.image && entry.image.trim() !== "") {
+          const img = document.createElement("img");
+          img.className = "card-image";
+          img.src = entry.image;
+          img.alt = entry.title;
+          card.appendChild(img);
+        }
+
+        if (entry.manual && entry.manual.href) {
+          const link = document.createElement("a");
+          link.className = "manual-link";
+          link.href = entry.manual.href;
+          link.textContent = entry.manual.label || "Manual";
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          card.appendChild(link);
+        }
+
+        cardsEl.appendChild(card);
+      });
+    }
+
+    renderCards();
+  </script>
+</body>
+</html>
