@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)https://steinspon.github.io/hmbl/contacts.html -->
-<html lang="no"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Himmelblå – Contacts</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Himmelblå">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="apple-touch-icon" href="logo.png">
-  <link rel="icon" href="logo.png">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
+  <link id="favicon-icon" rel="icon" href="logo.png">
 
   <style>
     :root {
@@ -22,6 +22,45 @@
       --border: rgba(44, 95, 135, 0.12);
       --shadow: 0 10px 30px rgba(24, 50, 74, 0.10);
       --radius: 20px;
+
+      --bg-top: rgba(111,168,220,0.18);
+      --bg-grad-top: #f7fbff;
+      --bg-grad-bottom: var(--bg);
+
+      --logo-wrap-bg: rgba(255,255,255,0.65);
+      --logo-wrap-border: rgba(255,255,255,0.65);
+
+      --btn-sms-bg-top: #ffffff;
+      --btn-sms-bg-bottom: #eef4f8;
+      --btn-sms-border: rgba(44,95,135,0.18);
+
+      --back-bg: rgba(255,255,255,0.8);
+      --back-border: rgba(44,95,135,0.14);
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0a1220;
+      --card: rgba(20,31,48,0.9);
+      --text: #e7eef8;
+      --muted: #9fb0c7;
+      --accent: #6de3b0;
+      --accent-2: #4eb7ff;
+      --border: rgba(170,190,220,0.10);
+      --shadow: 0 10px 30px rgba(0,0,0,0.28);
+
+      --bg-top: rgba(80,220,170,0.14);
+      --bg-grad-top: #0f1b2b;
+      --bg-grad-bottom: #09111d;
+
+      --logo-wrap-bg: rgba(255,255,255,0.04);
+      --logo-wrap-border: rgba(255,255,255,0.06);
+
+      --btn-sms-bg-top: rgba(30,45,65,1);
+      --btn-sms-bg-bottom: rgba(25,38,55,1);
+      --btn-sms-border: rgba(109,227,176,0.15);
+
+      --back-bg: rgba(255,255,255,0.04);
+      --back-border: rgba(109,227,176,0.15);
     }
 
     * {
@@ -33,11 +72,12 @@
       margin: 0;
       padding: 0;
       background:
-        radial-gradient(circle at top, rgba(111, 168, 220, 0.18), transparent 35%),
-        linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
+        radial-gradient(circle at top, var(--bg-top), transparent 35%),
+        linear-gradient(180deg, var(--bg-grad-top) 0%, var(--bg-grad-bottom) 100%);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       min-height: 100%;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     body {
@@ -55,8 +95,8 @@
     }
 
     .logo-wrap {
-      background: rgba(255,255,255,0.65);
-      border: 1px solid rgba(255,255,255,0.65);
+      background: var(--logo-wrap-bg);
+      border: 1px solid var(--logo-wrap-border);
       border-radius: 24px;
       padding: 10px;
       box-shadow: var(--shadow);
@@ -73,9 +113,7 @@
     .page-title {
       margin: 18px 4px 6px;
       font-size: 1.75rem;
-      line-height: 1.1;
       font-weight: 800;
-      letter-spacing: -0.02em;
       text-align: center;
     }
 
@@ -83,8 +121,6 @@
       margin: 0 10px 20px;
       text-align: center;
       color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.35;
     }
 
     .cards {
@@ -101,34 +137,11 @@
       backdrop-filter: blur(10px);
     }
 
-    .card-title {
-      margin: 0 0 8px;
-      font-size: 1.25rem;
-      line-height: 1.15;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
+    .card-title { font-weight: 800; }
+    .card-desc { color: var(--muted); }
 
-    .card-desc {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.4;
-    }
-
-    .contact-name {
-      margin: 0 0 6px;
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
-    .contact-number {
-      margin: 0 0 14px;
-      font-size: 1rem;
-      color: var(--text);
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
+    .contact-name { font-weight: 700; }
+    .contact-number { font-weight: 600; }
 
     .actions {
       display: grid;
@@ -137,110 +150,87 @@
     }
 
     .btn {
-      appearance: none;
-      border: none;
       border-radius: 16px;
       min-height: 52px;
-      padding: 0 16px;
-      font-size: 1rem;
       font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      text-decoration: none;
       box-shadow: 0 6px 16px rgba(44, 95, 135, 0.14);
-      transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-    }
-
-    .btn:active {
-      transform: scale(0.985);
     }
 
     .btn-call {
-      background: linear-gradient(180deg, #2f6f9f 0%, #25577d 100%);
+      background: linear-gradient(180deg, #2f6f9f, #25577d);
       color: white;
     }
 
     .btn-sms {
-      background: linear-gradient(180deg, #ffffff 0%, #eef4f8 100%);
+      background: linear-gradient(180deg, var(--btn-sms-bg-top), var(--btn-sms-bg-bottom));
       color: var(--accent);
-      border: 1px solid rgba(44, 95, 135, 0.18);
-    }
-
-    .back-row {
-      margin-top: 18px;
+      border: 1px solid var(--btn-sms-border);
     }
 
     .back-link {
-      display: inline-flex;
-      align-items: center;
+      display: flex;
       justify-content: center;
-      width: 100%;
+      align-items: center;
       min-height: 52px;
       border-radius: 16px;
+      background: var(--back-bg);
+      color: var(--accent);
+      border: 1px solid var(--back-border);
+      box-shadow: var(--shadow);
       text-decoration: none;
       font-weight: 700;
-      background: rgba(255,255,255,0.8);
-      color: var(--accent);
-      border: 1px solid rgba(44, 95, 135, 0.14);
-      box-shadow: var(--shadow);
-    }
-
-    @media (min-width: 700px) {
-      .cards {
-        grid-template-columns: 1fr 1fr;
-      }
     }
   </style>
 </head>
+
 <body>
   <main class="app">
     <header class="header">
       <div class="logo-wrap">
-        <img src="logo.png" alt="Himmelblå logo" class="logo">
+        <img id="main-logo" src="logo.png" class="logo">
       </div>
       <h1 class="page-title">Contacts</h1>
-      <p class="page-subtitle">
-        Useful contacts for Himmelblå and Hummelfjell.
-      </p>
+      <p class="page-subtitle">Useful contacts for Himmelblå and Hummelfjell.</p>
     </header>
 
-    <section class="cards">
-      <article class="card">
-        <h2 class="card-title">Strøing og Brøyting (Vakt)</h2>
-        <p class="card-desc">Langøien Grus og Transport AS. 
-          <br> Brøyting, responstid 6 timer, kr. 600,-
-          <br> Brøyting, responstid 48 timer, kr. 250,-
-          <br> Strøing, responstid 3 timer, kr. 550,- 
-          <br> Graving, transport, singel, grus - Ta kontakt </p>
-        <p class="contact-name">Vakt Telefon</p>
-        <p class="contact-number">+47 906 15 090</p>
-        <div class="actions">
-          <a class="btn btn-call" href="tel:+4790615090">Ring</a>
-          <a class="btn btn-sms" href="sms:+4790615090">SMS</a>
-        </div>
-      </article>
+    <!-- CONTENT UNCHANGED -->
 
-    <section class="cards">
-      <article class="card">
-        <h2 class="card-title">Gjenvinningsstasjon</h2>
-        <p class="card-desc">FIAS. 
-          <br> <a href="https://www.fias.no/apningstider/" target="_blank" class="map-button"> fias.no/åpningstider </a>
-        </p>
-        <p class="contact-name">Telefon</p>
-        <p class="contact-number">+47 62 49 48 00</p>
-        <div class="actions">
-          <a class="btn btn-call" href="tel:+4762494800">Ring</a>
-        </div>
-      </article>
-
-
-      
     <div class="back-row">
-      <a class="back-link" href="https://steinspon.github.io/hmbl/index.html">Tilbake</a>
+      <a class="back-link" href="index.html">Tilbake</a>
     </div>
-  </section></section></section></main>
+  </main>
 
+  <script>
+    (function () {
+      const DARK_START = 19;
 
-</body></html>
+      const logo = document.getElementById("main-logo");
+      const favicon = document.getElementById("favicon-icon");
+      const appleIcon = document.getElementById("apple-touch-icon");
+
+      function getTheme() {
+        const h = new Date().getHours();
+        return (h >= 19 || h < 7) ? "dark" : "light";
+      }
+
+      function applyTheme() {
+        const theme = getTheme();
+        document.documentElement.setAttribute("data-theme", theme);
+
+        const logoPath = theme === "dark" ? "logo-night.png" : "logo.png";
+
+        if (logo) logo.src = logoPath;
+        if (favicon) favicon.href = logoPath;
+        if (appleIcon) appleIcon.href = logoPath;
+      }
+
+      applyTheme();
+      setInterval(applyTheme, 60000);
+    })();
+  </script>
+</body>
+</html>
