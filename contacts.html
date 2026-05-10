@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -10,6 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles/common.css">
 
   <style>
     :root {
@@ -134,7 +135,6 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 16px;
-      backdrop-filter: blur(10px);
     }
 
     .card-title {
@@ -185,7 +185,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      box-shadow: 0 6px 16px rgba(44, 95, 135, 0.14);
+      box-shadow: var(--shadow);
       transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease;
     }
 
@@ -194,12 +194,12 @@
     }
 
     .btn-call {
-      background: linear-gradient(180deg, #2f6f9f 0%, #25577d 100%);
+      background: var(--accent);
       color: white;
     }
 
     .btn-sms {
-      background: linear-gradient(180deg, var(--btn-sms-bg-top), var(--btn-sms-bg-bottom));
+      background: var(--card);
       color: var(--accent);
       border: 1px solid var(--btn-sms-border);
     }
@@ -281,7 +281,7 @@
         <p class="card-desc">
           FIAS.
           <br>
-          <a href="https://www.fias.no/apningstider/" target="_blank" class="map-button">fias.no/åpningstider</a>
+          <a href="https://www.fias.no/apningstider/" target="_blank" rel="noopener noreferrer" class="map-button">fias.no/åpningstider</a>
         </p>
         <p class="contact-name">Telefon</p>
         <p class="contact-number">+47 62 49 48 00</p>
@@ -296,31 +296,9 @@
     </div>
   </main>
 
+  <script src="scripts/theme.js"></script>
   <script>
-    (function () {
-      const logo = document.getElementById("main-logo");
-      const favicon = document.getElementById("favicon-icon");
-      const appleIcon = document.getElementById("apple-touch-icon");
-
-      function getTheme() {
-        const h = new Date().getHours();
-        return (h >= 19 || h < 7) ? "dark" : "light";
-      }
-
-      function applyTheme() {
-        const theme = getTheme();
-        document.documentElement.setAttribute("data-theme", theme);
-
-        const logoPath = theme === "dark" ? "logo-night.png" : "logo.png";
-
-        if (logo) logo.src = logoPath;
-        if (favicon) favicon.href = logoPath;
-        if (appleIcon) appleIcon.href = logoPath;
-      }
-
-      applyTheme();
-      setInterval(applyTheme, 60000);
-    })();
+    initializeTheme();
   </script>
 </body>
 </html>

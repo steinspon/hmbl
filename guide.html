@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå – Guide</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
+  <link id="favicon-icon" rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles/common.css">
+
+  <style>
+    .page-description {
+      margin: 0 10px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .guide-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .step {
+      margin-bottom: 24px;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .step-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .step-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0 0 12px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .step-image.bottom {
+      margin: 12px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <img id="main-logo" src="logo.png" alt="Himmelblå logo" class="logo">
+      </div>
+      <h1 id="page-title" class="page-title">Guide</h1>
+      <p id="page-description" class="page-description"></p>
+    </header>
+
+    <section id="guide-card" class="guide-card"></section>
+
+    <div class="back-row">
+      <a class="back-link" href="guides.html">Back</a>
+    </div>
+  </main>
+
+  <script>
+    const guides = {
+      "sauna-shutoff": {
+        title: "Sauna Shutoff Guide",
+        description: "Use this guide to confirm that the sauna is fully shut down before leaving the cabin.",
+        steps: [
+          {
+            title: "Step 1",
+            text: "Locate the sauna control dials and confirm you are looking at the correct heater controls.",
+            imageTop: "images/sauna_2.jpg",
+            imageTopAlt: "Sauna control dials"
+          },
+          {
+            title: "Step 2",
+            text: "Turn the left dial fully back to zero. Confirm that the setting is not left on a timer or delayed start position.",
+            imageBottom: "images/sauna_2.jpg",
+            imageBottomAlt: "Left sauna dial at zero"
+          },
+          {
+            title: "Step 3",
+            text: "Check that the sauna is no longer heating and that the heater is cooling down safely before you leave."
+          }
+        ]
+      },
+      "bath-water-shutoff": {
+        title: "Bathroom Water Shutoff Guide",
+        description: "How to locate and close the bathroom water shutoff valve safely.",
+        steps: [
+          { title: "Step 1", text: "Open the service access area in the bathroom.", imageTop: "images/water_10.jpg", imageTopAlt: "Bathroom service access area" },
+          { title: "Step 2", text: "Locate the main shut off valve.", imageTop: "images/water_20.jpg", imageTopAlt: "Main shut off valve" },
+          { title: "Step 3", text: "Turn the handle down to the 3 o'clock position (OFF)." }
+        ]
+      },
+      "dishwasher-open": {
+        title: "Dishwasher Leave-Open Guide",
+        description: "How to leave the dishwasher correctly after use to reduce moisture and odour.",
+        steps: [
+          { title: "Step 1", text: "Check that the dishwasher is switched off." },
+          { title: "Step 2", text: "Leave the door slightly ajar to reduce moisture and odour build-up.", imageBottom: "images/example.png", imageBottomAlt: "Dishwasher left slightly open" }
+        ]
+      },
+      "fireplace": {
+        title: "Fireplace Ready Guide",
+        description: "How to leave the fireplace safe, tidy, and ready for the next arrival.",
+        steps: [
+          { title: "Step 1", text: "Check that all embers are fully out and the fireplace is safe." },
+          { title: "Step 2", text: "Remove excess ash if needed.", imageBottom: "images/example.png", imageBottomAlt: "Prepared fireplace" },
+          { title: "Step 3", text: "Leave the area tidy and ready for the next arrival." }
+        ]
+      }
+    };
+
+    function renderGuide() {
+      const params = new URLSearchParams(window.location.search);
+      const guideId = params.get("id");
+      const guide = guides[guideId] || guides["sauna-shutoff"];
+
+      document.title = `Himmelblå – ${guide.title}`;
+      document.getElementById("page-title").textContent = guide.title;
+      document.getElementById("page-description").textContent = guide.description;
+
+      const guideCard = document.getElementById("guide-card");
+      guideCard.innerHTML = "";
+
+      guide.steps.forEach((step) => {
+        const stepEl = document.createElement("div");
+        stepEl.className = "step";
+
+        const titleEl = document.createElement("p");
+        titleEl.className = "step-number";
+        titleEl.textContent = step.title;
+        stepEl.appendChild(titleEl);
+
+        if (step.imageTop) {
+          const imgTop = document.createElement("img");
+          imgTop.className = "step-image";
+          imgTop.src = step.imageTop;
+          imgTop.alt = step.imageTopAlt || "";
+          stepEl.appendChild(imgTop);
+        }
+
+        const textEl = document.createElement("p");
+        textEl.className = "step-text";
+        textEl.textContent = step.text;
+        stepEl.appendChild(textEl);
+
+        if (step.imageBottom) {
+          const imgBottom = document.createElement("img");
+          imgBottom.className = "step-image bottom";
+          imgBottom.src = step.imageBottom;
+          imgBottom.alt = step.imageBottomAlt || "";
+          stepEl.appendChild(imgBottom);
+        }
+
+        guideCard.appendChild(stepEl);
+      });
+    }
+
+    renderGuide();
+  </script>
+  <script src="scripts/theme.js"></script>
+  <script>
+    initializeTheme();
+  </script>
+</body>
+</html>

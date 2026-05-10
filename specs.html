@@ -10,6 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles/common.css">
 
   <style>
     :root {
@@ -152,8 +153,6 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -212,7 +211,7 @@
       border-radius: 14px;
       text-decoration: none;
       font-weight: 700;
-      background: linear-gradient(180deg, var(--manual-bg-top) 0%, var(--manual-bg-bottom) 100%);
+      background: var(--accent);
       color: white;
       box-shadow: var(--manual-shadow);
       transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.3s ease;
@@ -294,7 +293,10 @@
     const entries = [
       {
         title: "Sauna Oven",
-        description: "Main sauna heater. Add model details: <br>E.g., serial number, power rating, or any operating notes here.",
+        descriptionLines: [
+          "Main sauna heater.",
+          "Add model details: serial number, power rating, or operating notes."
+        ],
         images: [
           "images/sauna_0.jpg",
           "images/sauna_1.jpg",
@@ -330,9 +332,15 @@
         ],
         manuals: []
       },
-           {
+      {
         title: "Hoover",
-        description: "Bosch BSGL5S3055 <br><a href='https://www.bosch-home.no/no/product/BSGL5S3055' target='_blank' rel='noopener noreferrer'>Bosch Website</a>",
+        descriptionLines: ["Bosch BSGL5S3055"],
+        descriptionLinks: [
+          {
+            href: "https://www.bosch-home.no/no/product/BSGL5S3055",
+            label: "Bosch Website"
+          }
+        ],
         images: [
           "images/hoover_1.jpg",
           "images/hoover_2.jpg"
@@ -346,7 +354,11 @@
       },
       {
         title: "Heat Pump",
-        description: "Wilfa Nordkapp 40W.<br>7 year warranty<br>Installed May 2025",
+        descriptionLines: [
+          "Wilfa Nordkapp 40W.",
+          "7 year warranty",
+          "Installed May 2025"
+        ],
         images: [
           "images/heat_pump_1.jpg"
         ],
@@ -358,14 +370,20 @@
 
       {
         title: "Wifi",
-        description: "SSID: Himmelblå<br>Password: RubixCube2338",
+        descriptionLines: [
+          "SSID: Himmelblå",
+          "Password: RubixCube2338"
+        ],
         images: null,
         manuals: null
       },
 
       {
         title: "Electricity",
-        description: "Nettleie: Klive<br>Strømavtale: cheapenergy.no",
+        descriptionLines: [
+          "Nettleie: Klive",
+          "Strømavtale: cheapenergy.no"
+        ],
         images: null,
         manuals: null
       },
@@ -379,13 +397,17 @@
 
       {
         title: "Internet",
-        description: "Supplier: Neas Energi Telekom AS<br>Trådløs Fast Hytte 18/4<br> 398 kr/mnd",
+        descriptionLines: [
+          "Supplier: Neas Energi Telekom AS",
+          "Trådløs Fast Hytte 18/4",
+          "398 kr/mnd"
+        ],
         images: null,
         manuals: null
       },
-            {
+      {
         title: "Floor Plans",
-        description: "Floor plans crated with Onshape",
+        description: "Floor plans created with Onshape",
         images: null,
         manuals: [
           { href: "files/floorplan_1.pdf", label: "Floorplan 1" }
@@ -422,7 +444,33 @@
 
         const desc = document.createElement("p");
         desc.className = "card-desc";
-        desc.innerHTML = entry.description || "";
+        const descriptionLines = entry.descriptionLines || (entry.description ? [entry.description] : []);
+        const descriptionLinks = entry.descriptionLinks || [];
+
+        if (descriptionLines.length) {
+          descriptionLines.forEach((line, index) => {
+            if (index > 0) {
+              desc.appendChild(document.createElement("br"));
+            }
+            desc.appendChild(document.createTextNode(line));
+          });
+        }
+
+        if (descriptionLinks.length) {
+          descriptionLinks.forEach((linkItem) => {
+            desc.appendChild(document.createElement("br"));
+            const link = document.createElement("a");
+            link.href = linkItem.href;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = linkItem.label;
+            link.style.color = "var(--map-link)";
+            link.style.fontWeight = "600";
+            link.style.textDecoration = "none";
+            desc.appendChild(link);
+          });
+        }
+
         card.appendChild(desc);
 
         if (entry.images && entry.images.length) {
@@ -468,25 +516,11 @@
       });
     }
 
-    function applyTheme() {
-      const hour = new Date().getHours();
-      const theme = (hour >= 19 || hour < 7) ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", theme);
-
-      const logoPath = theme === "dark" ? "logo-night.png" : "logo.png";
-
-      const mainLogo = document.getElementById("main-logo");
-      const favicon = document.getElementById("favicon-icon");
-      const appleTouchIcon = document.getElementById("apple-touch-icon");
-
-      if (mainLogo) mainLogo.src = logoPath;
-      if (favicon) favicon.href = logoPath;
-      if (appleTouchIcon) appleTouchIcon.href = logoPath;
-    }
-
     renderCards();
-    applyTheme();
-    setInterval(applyTheme, 60000);
+  </script>
+  <script src="scripts/theme.js"></script>
+  <script>
+    initializeTheme();
   </script>
 </body>
 </html>

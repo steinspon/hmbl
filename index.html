@@ -13,36 +13,35 @@
 
   <style>
     :root {
-      --bg: #eef4fb;
-      --bg-top-glow: rgba(70,142,226,0.22);
-      --bg-grad-top: #f6fbff;
-      --bg-grad-bottom: #eaf2fb;
+      --bg: #f5f7fa;
+      --bg-top-glow: rgba(38, 84, 124, 0.08);
+      --bg-grad-top: #f9fafc;
+      --bg-grad-bottom: #f3f5f8;
 
-      --shell-top: rgba(255,255,255,0.74);
-      --shell-bottom: rgba(255,255,255,0.88);
-      --shell-border: rgba(255,255,255,0.7);
-      --shell-shadow: 0 18px 40px rgba(17,38,68,0.14);
+      --shell-top: rgba(255,255,255,0.94);
+      --shell-bottom: rgba(255,255,255,0.94);
+      --shell-border: rgba(16,35,63,0.08);
+      --shell-shadow: 0 8px 24px rgba(16,38,62,0.08);
 
-      --hero-top: rgba(255,255,255,0.52);
-      --hero-bottom: rgba(255,255,255,0.18);
+      --hero-top: rgba(255,255,255,0.72);
+      --hero-bottom: rgba(255,255,255,0.72);
 
-      --card: rgba(255,255,255,0.82);
-      --card-strong: rgba(255,255,255,0.92);
+      --card: rgba(255,255,255,0.98);
+      --card-strong: rgba(255,255,255,0.98);
       --text: #10233f;
-      --muted: #516784;
+      --muted: #64758b;
       --border: rgba(16,35,63,0.10);
-      --shadow: 0 12px 32px rgba(16,35,63,0.12);
-      --accent: #143b73;
-      --accent-2: #2457a6;
-      --accent-soft: rgba(36,87,166,0.10);
+      --shadow: 0 4px 14px rgba(16,35,63,0.08);
+      --accent: #1f4f7d;
+      --accent-2: #1f4f7d;
 
-      --logo-bg: white;
-      --logo-shadow: 0 8px 24px rgba(16,35,63,0.10);
+      --logo-bg: #ffffff;
+      --logo-shadow: 0 4px 14px rgba(16,35,63,0.08);
 
-      --tool-border: rgba(20,59,115,0.10);
-      --tool-active-top: rgba(255,255,255,0.96);
-      --tool-active-bottom: rgba(241,247,255,0.96);
-      --tool-active-shadow: 0 8px 18px rgba(16,35,63,0.12);
+      --tool-border: rgba(16,35,63,0.10);
+      --tool-active-top: rgba(248,250,252,1);
+      --tool-active-bottom: rgba(248,250,252,1);
+      --tool-active-shadow: 0 3px 10px rgba(16,35,63,0.08);
 
       --radius-xl: 24px;
       --radius-lg: 18px;
@@ -52,36 +51,35 @@
     }
 
     html[data-theme="dark"] {
-      --bg: #0a1220;
-      --bg-top-glow: rgba(80, 220, 170, 0.16);
-      --bg-grad-top: #0f1b2b;
-      --bg-grad-bottom: #09111d;
+      --bg: #0f1722;
+      --bg-top-glow: rgba(94, 126, 158, 0.18);
+      --bg-grad-top: #0f1722;
+      --bg-grad-bottom: #0c131d;
 
-      --shell-top: rgba(17,27,42,0.82);
-      --shell-bottom: rgba(14,22,35,0.90);
-      --shell-border: rgba(130,170,220,0.10);
-      --shell-shadow: 0 18px 40px rgba(0,0,0,0.34);
+      --shell-top: rgba(20,29,43,0.96);
+      --shell-bottom: rgba(20,29,43,0.96);
+      --shell-border: rgba(148,163,184,0.16);
+      --shell-shadow: 0 10px 28px rgba(0,0,0,0.34);
 
-      --hero-top: rgba(255,255,255,0.04);
-      --hero-bottom: rgba(255,255,255,0.02);
+      --hero-top: rgba(255,255,255,0.03);
+      --hero-bottom: rgba(255,255,255,0.03);
 
-      --card: rgba(20,31,48,0.84);
-      --card-strong: rgba(24,37,56,0.92);
-      --text: #e7eef8;
-      --muted: #9fb0c7;
-      --border: rgba(170,190,220,0.10);
-      --shadow: 0 12px 32px rgba(0,0,0,0.28);
-      --accent: #6de3b0;
-      --accent-2: #4eb7ff;
-      --accent-soft: rgba(109,227,176,0.10);
+      --card: rgba(23,34,49,0.98);
+      --card-strong: rgba(23,34,49,0.98);
+      --text: #e6edf7;
+      --muted: #9aa9bc;
+      --border: rgba(148,163,184,0.16);
+      --shadow: 0 6px 20px rgba(0,0,0,0.28);
+      --accent: #8db7e1;
+      --accent-2: #8db7e1;
 
-      --logo-bg: rgba(255,255,255,0.03);
-      --logo-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      --logo-bg: rgba(255,255,255,0.02);
+      --logo-shadow: 0 6px 20px rgba(0,0,0,0.24);
 
-      --tool-border: rgba(109,227,176,0.12);
-      --tool-active-top: rgba(32,45,64,0.98);
-      --tool-active-bottom: rgba(25,37,54,0.98);
-      --tool-active-shadow: 0 8px 18px rgba(0,0,0,0.24);
+      --tool-border: rgba(148,163,184,0.18);
+      --tool-active-top: rgba(30,42,58,1);
+      --tool-active-bottom: rgba(30,42,58,1);
+      --tool-active-shadow: 0 4px 12px rgba(0,0,0,0.24);
     }
 
     * {
@@ -110,7 +108,7 @@
 
     .app {
       width: 100%;
-      max-width: 520px;
+      max-width: 720px;
       min-height: 100vh;
       padding: calc(14px + var(--safe-top)) 14px calc(24px + var(--safe-bottom));
     }
@@ -118,11 +116,9 @@
     .shell {
       background: linear-gradient(180deg, var(--shell-top), var(--shell-bottom));
       border: 1px solid var(--shell-border);
-      border-radius: 28px;
+      border-radius: 20px;
       box-shadow: var(--shell-shadow);
       overflow: hidden;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       transition:
         background 0.35s ease,
         border-color 0.35s ease,
@@ -149,7 +145,7 @@
       width: 100%;
       max-width: 100%;
       display: block;
-      border-radius: 22px;
+      border-radius: 14px;
       object-fit: contain;
       background: var(--logo-bg);
       box-shadow: var(--logo-shadow);
@@ -239,7 +235,7 @@
       place-items: center;
       background: linear-gradient(180deg, var(--accent), var(--accent-2));
       color: white;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+      box-shadow: none;
       flex: 0 0 auto;
       transition: background 0.35s ease;
     }
@@ -255,14 +251,6 @@
       font-weight: 750;
       line-height: 1.2;
       color: var(--text);
-    }
-
-    .tool-desc {
-      display: block;
-      margin-top: 4px;
-      font-size: 0.92rem;
-      line-height: 1.35;
-      color: var(--muted);
     }
 
     .chevron {
@@ -311,7 +299,6 @@
       const tools = [
         {
           title: "Contacts",
-          description: "Useful contacts related to the cabin.",
           href: "contacts.html",
           ariaLabel: "Open Contacts",
           icon: `
@@ -324,7 +311,6 @@
         },
         {
           title: "Guides",
-          description: "Step-by-step guides for operating and shutting down cabin systems.",
           href: "guides.html",
           ariaLabel: "Open Guides",
           icon: `
@@ -338,20 +324,17 @@
         },
         {
           title: "Navigate To",
-          description: "Quickly open navigation destinations in Google Maps.",
           href: "navigate.html",
           ariaLabel: "Open Navigate To",
           icon: `
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 19C15.3137 19 18 16.3137 18 13C18 9.68629 15.3137 7 12 7C8.68629 7 6 9.68629 6 13C6 16.3137 8.68629 19 12 19Z" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M12 13L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 20C12 20 18 14.3 18 10.2C18 6.78 15.31 4 12 4C8.69 4 6 6.78 6 10.2C6 14.3 12 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M12 12.7C13.38 12.7 14.5 11.58 14.5 10.2C14.5 8.82 13.38 7.7 12 7.7C10.62 7.7 9.5 8.82 9.5 10.2C9.5 11.58 10.62 12.7 12 12.7Z" stroke="currentColor" stroke-width="2"/>
             </svg>
           `
         },
         {
           title: "Rig-down checklist",
-          description: "Shutdown and departure checklist for the cabin.",
           href: "rigdown.html",
           ariaLabel: "Rig-down checklist",
           icon: `
@@ -363,7 +346,6 @@
         },
         {
           title: "Technical Reference",
-          description: "Device specifications and User Manuals.",
           href: "specs.html",
           ariaLabel: "Open Specs",
           icon: `
@@ -403,7 +385,6 @@
               </div>
               <div class="tool-text">
                 <span class="tool-title">${tool.title}</span>
-                <span class="tool-desc">${tool.description}</span>
               </div>
             </div>
             <svg class="chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

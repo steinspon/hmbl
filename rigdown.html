@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Himmelblå Checklist</title>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,39 +10,44 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
 <link id="favicon-icon" rel="icon" href="logo.png">
+<link rel="stylesheet" href="styles/common.css">
 
 <style>
     :root {
-        --bg: #f4f6f8;
+        --bg: #f5f7fa;
         --card: #ffffff;
-        --text: #222;
-        --muted: #5f6b7a;
-        --primary: #1e3a5f;
-        --primary-soft: #e8eef5;
-        --success-bg: #d4edda;
-        --success-text: #155724;
-        --shadow: 0 2px 6px rgba(0,0,0,0.05);
+        --text: #0f253f;
+        --muted: #65758b;
+        --primary: #1f4f7d;
+        --accent: #1f4f7d;
+        --border: rgba(15, 37, 63, 0.10);
+        --primary-soft: #edf2f7;
+        --success-bg: #e8f5ee;
+        --success-text: #2f6a4f;
+        --shadow: 0 4px 14px rgba(15,37,63,0.08);
         --radius: 12px;
 
-        --modal-overlay: rgba(0,0,0,0.45);
+        --modal-overlay: rgba(11,18,28,0.38);
         --modal-sheet-bg: white;
-        --modal-shadow: 0 -8px 30px rgba(0,0,0,0.18);
+        --modal-shadow: 0 -8px 24px rgba(11,18,28,0.20);
     }
 
     html[data-theme="dark"] {
-        --bg: #0b1320;
-        --card: #172232;
-        --text: #e8eef7;
-        --muted: #a2b0c3;
-        --primary: #6de3b0;
+        --bg: #0f1722;
+        --card: #172231;
+        --text: #e6edf7;
+        --muted: #99a8bc;
+        --primary: #8db7e1;
+        --accent: #8db7e1;
+        --border: rgba(148,163,184,0.16);
         --primary-soft: #223247;
-        --success-bg: #1e4b2f;
-        --success-text: #d8f3df;
-        --shadow: 0 4px 12px rgba(0,0,0,0.22);
+        --success-bg: #243a2f;
+        --success-text: #dceee3;
+        --shadow: 0 6px 20px rgba(0,0,0,0.28);
 
-        --modal-overlay: rgba(0,0,0,0.62);
-        --modal-sheet-bg: #172232;
-        --modal-shadow: 0 -8px 30px rgba(0,0,0,0.38);
+        --modal-overlay: rgba(0,0,0,0.58);
+        --modal-sheet-bg: #172231;
+        --modal-shadow: 0 -8px 24px rgba(0,0,0,0.38);
     }
 
     * {
@@ -59,7 +64,7 @@
     }
 
     .container {
-        max-width: 500px;
+        max-width: 720px;
         margin: auto;
         padding: 10px;
     }
@@ -144,14 +149,15 @@
         border: none;
         border-radius: 10px;
         font-size: 16px;
-        background: var(--primary);
+        background: var(--card);
         color: white;
         cursor: pointer;
+        border: 1px solid var(--border);
+        color: var(--accent);
     }
 
     html[data-theme="dark"] button.main-btn {
-        color: #0b1320;
-        font-weight: 700;
+        color: var(--accent);
     }
 
     .back-row {
@@ -165,16 +171,17 @@
         justify-content: center;
         width: 100%;
         min-height: 52px;
-        border-radius: 10px;
+        border-radius: 12px;
         text-decoration: none;
         font-weight: 700;
-        background: var(--primary);
-        color: white;
+        background: var(--card);
+        color: var(--accent);
+        border: 1px solid var(--border);
         box-shadow: var(--shadow);
     }
 
     html[data-theme="dark"] .back-link {
-        color: #0b1320;
+        color: var(--accent);
     }
 
     .modal {
@@ -245,7 +252,7 @@
         padding: 12px;
         border: none;
         border-radius: 10px;
-        background: var(--primary);
+        background: var(--accent);
         color: white;
         font-size: 16px;
         font-weight: 700;
@@ -346,7 +353,7 @@ const data = [
             
             {
                 id: "bath-floor-heating",
-                label: "Bathroom floor heating 20˚C",
+                label: "Bathroom floor heating 20°C",
                 guide: {
                     blocks: [
                         {
@@ -362,7 +369,7 @@ const data = [
                         {
                             type: "text",
                             title: "Step 2",
-                            text: "Wake the display if necessary and set the target temperature to 20˚C."
+                            text: "Wake the display if necessary and set the target temperature to 20°C."
                         },
                         {
                             type: "text",
@@ -403,7 +410,7 @@ const data = [
         ]
     },
     {
-        section: "Kitchen and Livingroom",
+        section: "Kitchen and Living Room",
         items: [
             {
                 id: "living-floor-heating",
@@ -428,7 +435,7 @@ const data = [
                         {
                             type: "text",
                             title: "Step 2",
-                            text: "Turn the valve to the upwards / 12'oclock position (OFF)."
+                            text: "Turn the valve to the upwards / 12 o'clock position (OFF)."
                         },
                         {
                             type: "image",
@@ -473,12 +480,12 @@ const data = [
             },
             {
                 id: "heat-pump-mode",
-                label: "Heat pump mode: HEATING 17˚C",
+                label: "Heat pump mode: HEATING 17°C",
                 guide: null
             },
             {
                 id: "mill-heat",
-                label: "Panel Ovens ON 15˚C",
+                label: "Panel Ovens ON 15°C",
                 guide: null
             },
             {
@@ -571,7 +578,7 @@ const data = [
             },
             {
                 id: "underfloor",
-                label: "Under floor heating 20 DEG",
+                label: "Under floor heating 20°C",
                 guide: null
             },
             {
@@ -749,25 +756,11 @@ function checkAll() {
     saveState();
 }
 
-function applyTheme() {
-    const hour = new Date().getHours();
-    const theme = (hour >= 19 || hour < 7) ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", theme);
-
-    const logoPath = theme === "dark" ? "logo-night.png" : "logo.png";
-
-    const mainLogo = document.getElementById("main-logo");
-    const favicon = document.getElementById("favicon-icon");
-    const appleTouchIcon = document.getElementById("apple-touch-icon");
-
-    if (mainLogo) mainLogo.src = logoPath;
-    if (favicon) favicon.href = logoPath;
-    if (appleTouchIcon) appleTouchIcon.href = logoPath;
-}
-
 createList();
-applyTheme();
-setInterval(applyTheme, 60000);
+</script>
+<script src="scripts/theme.js"></script>
+<script>
+initializeTheme();
 </script>
 
 </body>

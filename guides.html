@@ -10,6 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles/common.css">
 
   <style>
     :root {
@@ -141,8 +142,6 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       transition:
         background 0.3s ease,
         border-color 0.3s ease,
@@ -157,7 +156,7 @@
     }
 
     .guide-card:active {
-      transform: scale(0.99);
+      transform: scale(0.995);
     }
 
     .guide-title {
@@ -236,22 +235,12 @@
       {
         title: "Sauna Shutoff Guide",
         description: "How to confirm that the sauna is fully shut down before leaving the cabin.",
-        href: "guidetemp.html"
+        href: "guide.html?id=sauna-shutoff"
       },
       {
         title: "Bathroom Water Shutoff Guide",
         description: "How to locate and close the bathroom water shutoff valve safely.",
-        href: "guidetemp.html"
-      },
-      {
-        title: "Dishwasher Leave-Open Guide",
-        description: "How to leave the dishwasher correctly after use to reduce moisture and odour.",
-        href: "guidetemp.html"
-      },
-      {
-        title: "Fireplace Ready Guide",
-        description: "How to leave the fireplace safe, tidy, and ready for the next arrival.",
-        href: "guidetemp.html"
+        href: "guide.html?id=bath-water-shutoff"
       }
     ];
 
@@ -294,25 +283,11 @@
       }
     }
 
-    function applyTheme() {
-      const hour = new Date().getHours();
-      const theme = (hour >= 19 || hour < 7) ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", theme);
-
-      const logoPath = theme === "dark" ? "logo-night.png" : "logo.png";
-
-      const mainLogo = document.getElementById("main-logo");
-      const favicon = document.getElementById("favicon-icon");
-      const appleTouchIcon = document.getElementById("apple-touch-icon");
-
-      if (mainLogo) mainLogo.src = logoPath;
-      if (favicon) favicon.href = logoPath;
-      if (appleTouchIcon) appleTouchIcon.href = logoPath;
-    }
-
     renderGuides();
-    applyTheme();
-    setInterval(applyTheme, 60000);
+  </script>
+  <script src="scripts/theme.js"></script>
+  <script>
+    initializeTheme();
   </script>
 </body>
 </html>

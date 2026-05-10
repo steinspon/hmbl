@@ -10,6 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles/common.css">
 
   <style>
     :root {
@@ -131,8 +132,6 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 18px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
       transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -236,24 +235,10 @@
   </main>
 
   <script>
-    function applyTheme() {
-      const hour = new Date().getHours();
-      const theme = (hour >= 19 || hour < 7) ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", theme);
-
-      const logoPath = theme === "dark" ? "logo-night.png" : "logo.png";
-
-      const mainLogo = document.getElementById("main-logo");
-      const favicon = document.getElementById("favicon-icon");
-      const appleTouchIcon = document.getElementById("apple-touch-icon");
-
-      if (mainLogo) mainLogo.src = logoPath;
-      if (favicon) favicon.href = logoPath;
-      if (appleTouchIcon) appleTouchIcon.href = logoPath;
-    }
-
-    applyTheme();
-    setInterval(applyTheme, 60000);
+  </script>
+  <script src="scripts/theme.js"></script>
+  <script>
+    initializeTheme();
   </script>
 </body>
 </html>
