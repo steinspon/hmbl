@@ -52,6 +52,7 @@
     }
     .result-page { margin: 0 0 6px; font-size: 0.86rem; color: var(--accent); font-weight: 700; }
     .result-title { margin: 0 0 6px; font-size: 1rem; color: var(--text); font-weight: 700; }
+    .result-meta { margin: 0 0 6px; font-size: 0.85rem; color: var(--muted); }
     .result-snippet { margin: 0; color: var(--text); line-height: 1.4; font-size: 0.95rem; }
     .result-snippet mark { background: rgba(141,183,225,0.35); color: inherit; padding: 0 1px; }
   </style>
@@ -98,6 +99,22 @@
         .replace(/[\u0300-\u036f]/g, "");
     }
 
+    function tokenizeQuery(value) {
+      const normalized = normalizeForSearch(value);
+      const matches = normalized.match(/[\p{L}\p{N}]+/gu) || [];
+      return matches.filter(Boolean);
+    }
+
+    function getWordTokensWithIndex(value) {
+      const normalized = normalizeForSearch(value);
+      const matches = normalized.matchAll(/[\p{L}\p{N}]+/gu);
+      const out = [];
+      for (const m of matches) {
+        out.push({ token: m[0], index: m.index || 0 });
+      }
+      return out;
+    }
+
     function escapeHtml(value) {
       return value
         .replace(/&/g, "&amp;")
@@ -119,6 +136,16 @@
       return `${prefix}${text.slice(start, end).trim()}${suffix}`;
     }
 
+    function makeBestContentSnippet(content, token) {
+      const text = (content || "").trim();
+      if (!text) return "";
+      const normalizedText = normalizeForSearch(text);
+      const normalizedToken = normalizeForSearch(token || "");
+      const idx = normalizedToken ? normalizedText.indexOf(normalizedToken) : -1;
+      if (idx < 0) return text.length > 140 ? `${text.slice(0, 140)}...` : text;
+      return makeSnippet(text, idx, normalizedToken.length || 1);
+    }
+
     function runSearch() {
       const query = (searchInput.value || "").trim();
       if (!query) {
@@ -127,38 +154,97 @@
         return;
       }
 
-      const normalizedQuery = normalizeForSearch(query);
+      const tokens = tokenizeQuery(query);
+      if (!tokens.length) {
+        resultsEl.innerHTML = "";
+        searchStatus.textContent = "Enter a search term.";
+        return;
+      }
 
       const pageHitCount = {};
-      const hits = [];
+      const strictHits = [];
+      const relaxedHits = [];
 
       searchIndex.forEach((item) => {
-        const fullText = `${item.title || ""} ${item.content || ""}`.trim();
+        const pageLabelText = item.pageLabel || "";
+        const pagePathText = item.page || "";
+        const fullText = `${item.title || ""} ${pageLabelText} ${item.content || ""}`.trim();
         if (!fullText) return;
 
-        const normalized = normalizeForSearch(fullText);
-        let idx = 0;
-        while (true) {
-          idx = normalized.indexOf(normalizedQuery, idx);
-          if (idx === -1) break;
+        const words = getWordTokensWithIndex(fullText);
+        if (!words.length) return;
+        const titleWords = getWordTokensWithIndex(item.title || "");
+        const pageLabelWords = getWordTokensWithIndex(pageLabelText);
+        const pagePathWords = getWordTokensWithIndex(pagePathText.replace(/[^a-zA-Z0-9]+/g, " "));
+        const contentWords = getWordTokensWithIndex(item.content || "");
 
-          const pageKey = item.page || "";
-          const hitIndex = pageHitCount[pageKey] || 0;
-          pageHitCount[pageKey] = hitIndex + 1;
+        const firstIndexByToken = {};
+        words.forEach(w => {
+          if (firstIndexByToken[w.token] === undefined) firstIndexByToken[w.token] = w.index;
+        });
 
-          hits.push({
-            ...item,
-            score: idx,
-            hit: hitIndex,
-            snippet: makeSnippet(fullText, idx, query.length)
-          });
+        const matchedTokens = tokens.filter(t => firstIndexByToken[t] !== undefined);
+        if (!matchedTokens.length) return;
+        const titleTokenSet = new Set(titleWords.map(w => w.token));
+        const pageLabelTokenSet = new Set(pageLabelWords.map(w => w.token));
+        const pagePathTokenSet = new Set(pagePathWords.map(w => w.token));
+        const contentTokenSet = new Set(contentWords.map(w => w.token));
+        const titleMatchedTokenCount = matchedTokens.filter(t => titleTokenSet.has(t)).length;
+        const pageLabelMatchedTokenCount = matchedTokens.filter(t => pageLabelTokenSet.has(t)).length;
+        const pagePathMatchedTokenCount = matchedTokens.filter(t => pagePathTokenSet.has(t)).length;
 
-          idx += Math.max(1, normalizedQuery.length);
-          if (hits.length >= 120) break;
+        const contentMatchedTokens = matchedTokens.filter(t => contentTokenSet.has(t));
+        const jumpToken = (contentMatchedTokens.length
+          ? contentMatchedTokens
+          : matchedTokens
+        ).slice().sort((a, b) => b.length - a.length)[0];
+
+        const matchSource = contentMatchedTokens.length ? "Checklist/Page content" :
+          (titleMatchedTokenCount ? "Entry title" : "Page heading");
+
+        const primaryToken = [...matchedTokens].sort((a, b) => {
+          const ai = firstIndexByToken[a];
+          const bi = firstIndexByToken[b];
+          if (ai !== bi) return ai - bi;
+          return b.length - a.length;
+        })[0];
+        const firstIdx = firstIndexByToken[primaryToken];
+
+        const pageKey = item.page || "";
+        const hitIndex = pageHitCount[pageKey] || 0;
+        pageHitCount[pageKey] = hitIndex + 1;
+
+        const entry = {
+          ...item,
+          score: firstIdx,
+          hit: hitIndex,
+          matchedTokenCount: matchedTokens.length,
+          titleMatchedTokenCount,
+          pageLabelMatchedTokenCount,
+          pagePathMatchedTokenCount,
+          jumpToken,
+          matchSource,
+          primaryToken,
+          snippet: makeBestContentSnippet(item.content || fullText, jumpToken || primaryToken)
+        };
+
+        if (matchedTokens.length === tokens.length) {
+          strictHits.push(entry);
+        } else {
+          relaxedHits.push(entry);
         }
       });
 
-      hits.sort((a, b) => a.score - b.score || (a.title || "").localeCompare(b.title || ""));
+      const hits = (strictHits.length ? strictHits : relaxedHits)
+        .sort((a, b) =>
+          b.matchedTokenCount - a.matchedTokenCount ||
+          b.pageLabelMatchedTokenCount - a.pageLabelMatchedTokenCount ||
+          b.pagePathMatchedTokenCount - a.pagePathMatchedTokenCount ||
+          b.titleMatchedTokenCount - a.titleMatchedTokenCount ||
+          a.score - b.score ||
+          (a.title || "").localeCompare(b.title || "")
+        )
+        .slice(0, 120);
 
       resultsEl.innerHTML = "";
 
@@ -172,11 +258,12 @@
       hits.forEach((hit) => {
         const link = document.createElement("a");
         link.className = "result-link";
-        link.href = `${hit.page}${hit.page.includes("?") ? "&" : "?"}q=${encodeURIComponent(query)}&target=${encodeURIComponent(query)}&hit=${hit.hit || 0}`;
+        link.href = `${hit.page}${hit.page.includes("?") ? "&" : "?"}q=${encodeURIComponent(query)}&target=${encodeURIComponent(hit.jumpToken || hit.primaryToken || query)}&hit=${hit.hit || 0}`;
 
         link.innerHTML = `
           <p class="result-page">${escapeHtml(hit.pageLabel)}</p>
           <p class="result-title">${escapeHtml(hit.title)}</p>
+          <p class="result-meta">Matched in: ${escapeHtml(hit.matchSource)}${hit.jumpToken ? ` (${escapeHtml(hit.jumpToken)})` : ""}</p>
           <p class="result-snippet">${highlight(hit.snippet, query)}</p>
         `;
 
