@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå – Settings</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
+  <link id="favicon-icon" rel="icon" href="logo.png">
+  <link rel="stylesheet" href="styles/common.css">
+
+  <style>
+    .settings-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .setting-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .setting-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .mode-group {
+      display: inline-flex;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    .mode-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .mode-label {
+      min-width: 58px;
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .mode-input:checked + .mode-label {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    html[data-theme="dark"] .mode-label {
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo.png" alt="Himmelblå logo" class="logo"></a>
+      </div>
+      <h1 class="page-title">Settings</h1>
+    </header>
+
+    <section class="settings-list">
+      <article class="setting-card">
+        <p class="setting-title">Theme mode</p>
+        <div class="mode-group" role="radiogroup" aria-label="Theme mode">
+          <input class="mode-input" type="radio" id="theme-auto" name="theme-mode" value="auto">
+          <label class="mode-label" for="theme-auto">Auto</label>
+
+          <input class="mode-input" type="radio" id="theme-light" name="theme-mode" value="light">
+          <label class="mode-label" for="theme-light">Light</label>
+
+          <input class="mode-input" type="radio" id="theme-dark" name="theme-mode" value="dark">
+          <label class="mode-label" for="theme-dark">Dark</label>
+        </div>
+      </article>
+    </section>
+
+    <div class="back-row">
+      <a class="back-link" href="index.html">Back</a>
+    </div>
+  </main>
+
+  <script src="scripts/theme.js"></script>
+  <script>
+    initializeTheme();
+
+    const modeInputs = Array.from(document.querySelectorAll("input[name='theme-mode']"));
+
+    function syncThemeMode() {
+      const mode = getThemeMode();
+      const selected = modeInputs.find(i => i.value === mode) || modeInputs[0];
+      if (selected) selected.checked = true;
+    }
+
+    modeInputs.forEach(input => {
+      input.addEventListener("change", () => {
+        if (!input.checked) return;
+        setThemeMode(input.value);
+        syncThemeMode();
+      });
+    });
+
+    syncThemeMode();
+  </script>
+</body>
+</html>

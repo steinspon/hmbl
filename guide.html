@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Himmelblå – Guide</title>
+  <title>HimmelblÃ¥ â€“ Guide</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <meta name="apple-mobile-web-app-title" content="HimmelblÃ¥">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
@@ -70,7 +70,7 @@
   <main class="app">
     <header class="header">
       <div class="logo-wrap">
-        <img id="main-logo" src="logo.png" alt="Himmelblå logo" class="logo">
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo.png" alt="Himmelblå logo" class="logo"></a>
       </div>
       <h1 id="page-title" class="page-title">Guide</h1>
       <p id="page-description" class="page-description"></p>
@@ -140,7 +140,7 @@
       const guideId = params.get("id");
       const guide = guides[guideId] || guides["sauna-shutoff"];
 
-      document.title = `Himmelblå – ${guide.title}`;
+      document.title = `HimmelblÃ¥ â€“ ${guide.title}`;
       document.getElementById("page-title").textContent = guide.title;
       document.getElementById("page-description").textContent = guide.description;
 
@@ -189,3 +189,5 @@
   </script>
 </body>
 </html>
+
+
