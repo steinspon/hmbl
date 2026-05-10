@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>HimmelblÃ¥ â€“ Guide Template</title>
+  <title>Himmelblå – Guide Template</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="HimmelblÃ¥">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
@@ -190,6 +190,26 @@
       box-shadow: var(--shadow);
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
+
+    /* Unified dark-mode tokens across all pages */
+    html[data-theme="dark"] {
+      --bg: #0f1722;
+      --card: #172231;
+      --text: #e6edf7;
+      --muted: #99a8bc;
+      --accent: #8db7e1;
+      --accent-2: #8db7e1;
+      --border: rgba(148,163,184,0.16);
+      --shadow: 0 6px 20px rgba(0,0,0,0.28);
+      --bg-top: rgba(141, 183, 225, 0.16);
+      --bg-grad-top: #0f1722;
+      --bg-grad-bottom: #0c131d;
+      --logo-wrap-bg: rgba(255,255,255,0.02);
+      --logo-wrap-border: rgba(148,163,184,0.14);
+      --back-bg: #172231;
+      --back-border: rgba(148,163,184,0.16);
+      --image-shadow: 0 6px 18px rgba(0,0,0,0.24);
+    }
   </style>
 </head>
 <body>
@@ -242,5 +262,6 @@
   </script>
 </body>
 </html>
+
 
 

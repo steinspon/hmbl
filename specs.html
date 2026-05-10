@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>HimmelblÃ¥ â€“ Specifications & User Manuals</title>
+  <title>Himmelblå – Specifications & User Manuals</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="HimmelblÃ¥">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
@@ -252,6 +252,30 @@
       transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    /* Unified dark-mode tokens across all pages */
+    html[data-theme="dark"] {
+      --bg: #0f1722;
+      --card: #172231;
+      --text: #e6edf7;
+      --muted: #99a8bc;
+      --accent: #8db7e1;
+      --accent-2: #8db7e1;
+      --border: rgba(148,163,184,0.16);
+      --shadow: 0 6px 20px rgba(0,0,0,0.28);
+      --bg-top: rgba(141, 183, 225, 0.16);
+      --bg-grad-top: #0f1722;
+      --bg-grad-bottom: #0c131d;
+      --logo-wrap-bg: rgba(255,255,255,0.02);
+      --logo-wrap-border: rgba(148,163,184,0.14);
+      --back-bg: #172231;
+      --back-border: rgba(148,163,184,0.16);
+      --manual-bg-top: #8db7e1;
+      --manual-bg-bottom: #8db7e1;
+      --manual-shadow: 0 6px 16px rgba(0,0,0,0.24);
+      --image-shadow: 0 6px 18px rgba(0,0,0,0.24);
+      --map-link: #8db7e1;
+    }
+
     @media (min-width: 700px) {
       .cards {
         grid-template-columns: 1fr 1fr;
@@ -267,17 +291,17 @@
       </div>
       <h1 class="page-title">Technical Reference</h1>
       <p class="page-subtitle">
-        GÃ¥rdsnummer.: 107 
+        Gårdsnummer.: 107 
         <br>Bruksnummer: 71
-        <br>MÃ¥ssÃ¥rabben 3
-        <br>2550 Os i Ã˜sterdalen
+        <br>Måssårabben 3
+        <br>2550 Os i Østerdalen
         <br>-
         <br><a href="https://ut.no/kart#17/62.47479/11.224522" target="_blank" rel="noopener noreferrer">Open map (UT.no)</a>
         <br>-
         <br>Internal Area (BRA/P-ROM): 72/66 m2
         <br>Roof Area: 110 m2
         <br>Plot: 1871 m2
-        <br>ByggeÃ¥r: 2002
+        <br>Byggeår: 2002
         <br>807 moh.
       </p>
     </header>
@@ -371,7 +395,7 @@
       {
         title: "Wifi",
         descriptionLines: [
-          "SSID: HimmelblÃ¥",
+          "SSID: Himmelblå",
           "Password: RubixCube2338"
         ],
         images: null,
@@ -382,7 +406,7 @@
         title: "Electricity",
         descriptionLines: [
           "Nettleie: Klive",
-          "StrÃ¸mavtale: cheapenergy.no"
+          "Strømavtale: cheapenergy.no"
         ],
         images: null,
         manuals: null
@@ -399,7 +423,7 @@
         title: "Internet",
         descriptionLines: [
           "Supplier: Neas Energi Telekom AS",
-          "TrÃ¥dlÃ¸s Fast Hytte 18/4",
+          "Trådløs Fast Hytte 18/4",
           "398 kr/mnd"
         ],
         images: null,
@@ -524,5 +548,6 @@
   </script>
 </body>
 </html>
+
 
 

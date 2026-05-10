@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>HimmelblÃ¥ â€“ Navigate To</title>
+  <title>Himmelblå – Navigate To</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="HimmelblÃ¥">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
   <link id="favicon-icon" rel="icon" href="logo.png">
@@ -16,22 +16,6 @@
     .cards {
       display: grid;
       gap: 14px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
-    }
-
-    .card-title {
-      margin: 0 0 10px;
-      font-size: 1.25rem;
-      line-height: 1.15;
-      font-weight: 800;
-      letter-spacing: -0.02em;
     }
 
     .btn-map {
@@ -62,6 +46,25 @@
       border-color: var(--border);
       background: #172231;
     }
+
+    /* Unified dark-mode tokens across all pages */
+    html[data-theme="dark"] {
+      --bg: #0f1722;
+      --card: #172231;
+      --text: #e6edf7;
+      --muted: #99a8bc;
+      --accent: #8db7e1;
+      --accent-2: #8db7e1;
+      --border: rgba(148,163,184,0.16);
+      --shadow: 0 6px 20px rgba(0,0,0,0.28);
+      --bg-top: rgba(141, 183, 225, 0.16);
+      --bg-grad-top: #0f1722;
+      --bg-grad-bottom: #0c131d;
+      --logo-wrap-bg: rgba(255,255,255,0.02);
+      --logo-wrap-border: rgba(148,163,184,0.14);
+      --back-bg: #172231;
+      --back-border: rgba(148,163,184,0.16);
+    }
   </style>
 </head>
 
@@ -76,17 +79,22 @@
     </header>
 
     <section class="cards">
-      <article class="card">
-        <h2 class="card-title">Destination</h2>
-        <a
-          class="btn-map"
-          href="https://maps.app.goo.gl/gVxNmkVdDLs93uTh6"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Bytteplassen SingsÃ¥s
-        </a>
-      </article>
+      <a
+        class="btn-map"
+        href="https://maps.app.goo.gl/xkxXKJmaVfxgRC2Y7"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Himmelblå
+      </a>
+      <a
+        class="btn-map"
+        href="https://maps.app.goo.gl/gVxNmkVdDLs93uTh6"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Bytteplassen Singsås
+      </a>
     </section>
 
     <div class="back-row">
@@ -100,5 +108,6 @@
   </script>
 </body>
 </html>
+
 
 
