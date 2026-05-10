@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå - Search</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f7fa">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1722">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo_winter_daytime.png">
+  <link id="favicon-icon" rel="icon" href="logo_winter_daytime.png">
+  <link rel="stylesheet" href="styles/common.css">
+
+  <style>
+    .search-wrap { display: grid; gap: 10px; }
+    .search-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    .search-input {
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 0.98rem;
+      color: var(--text);
+      background: var(--card);
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--accent); }
+    .search-btn {
+      min-height: 48px;
+      padding: 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .search-status { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .results { margin-top: 12px; display: grid; gap: 10px; }
+    .result-link {
+      display: block;
+      text-decoration: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      color: inherit;
+    }
+    .result-page { margin: 0 0 6px; font-size: 0.86rem; color: var(--accent); font-weight: 700; }
+    .result-title { margin: 0 0 6px; font-size: 1rem; color: var(--text); font-weight: 700; }
+    .result-snippet { margin: 0; color: var(--text); line-height: 1.4; font-size: 0.95rem; }
+    .result-snippet mark { background: rgba(141,183,225,0.35); color: inherit; padding: 0 1px; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.png" alt="Himmelblå logo" class="logo"></a>
+      </div>
+      <h1 class="page-title">Search</h1>
+    </header>
+
+    <section class="search-wrap">
+      <div class="search-row">
+        <input id="search-input" class="search-input" type="search" placeholder="Search across pages">
+        <button id="search-btn" class="search-btn" type="button">Search</button>
+      </div>
+      <p id="search-status" class="search-status"></p>
+    </section>
+
+    <section id="results" class="results"></section>
+
+    <div class="back-row">
+      <a class="back-link" href="index.html">Back</a>
+    </div>
+  </main>
+
+  <script src="scripts/theme.js"></script>
+  <script src="scripts/search-index.js"></script>
+  <script>
+    initializeTheme();
+    const searchIndex = Array.isArray(window.SEARCH_INDEX) ? window.SEARCH_INDEX : [];
+
+    const searchInput = document.getElementById("search-input");
+    const searchBtn = document.getElementById("search-btn");
+    const searchStatus = document.getElementById("search-status");
+    const resultsEl = document.getElementById("results");
+
+    function normalizeForSearch(value) {
+      return (value || "")
+        .toLocaleLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function highlight(snippet, query) {
+      const esc = escapeHtml(snippet);
+      const q = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc.replace(new RegExp(q, "ig"), (m) => `<mark>${m}</mark>`);
+    }
+
+    function makeSnippet(text, idx, queryLength) {
+      const start = Math.max(0, idx - 60);
+      const end = Math.min(text.length, idx + queryLength + 60);
+      const prefix = start > 0 ? "..." : "";
+      const suffix = end < text.length ? "..." : "";
+      return `${prefix}${text.slice(start, end).trim()}${suffix}`;
+    }
+
+    function runSearch() {
+      const query = (searchInput.value || "").trim();
+      if (!query) {
+        resultsEl.innerHTML = "";
+        searchStatus.textContent = "Enter a search term.";
+        return;
+      }
+
+      const normalizedQuery = normalizeForSearch(query);
+
+      const pageHitCount = {};
+      const hits = [];
+
+      searchIndex.forEach((item) => {
+        const fullText = `${item.title || ""} ${item.content || ""}`.trim();
+        if (!fullText) return;
+
+        const normalized = normalizeForSearch(fullText);
+        let idx = 0;
+        while (true) {
+          idx = normalized.indexOf(normalizedQuery, idx);
+          if (idx === -1) break;
+
+          const pageKey = item.page || "";
+          const hitIndex = pageHitCount[pageKey] || 0;
+          pageHitCount[pageKey] = hitIndex + 1;
+
+          hits.push({
+            ...item,
+            score: idx,
+            hit: hitIndex,
+            snippet: makeSnippet(fullText, idx, query.length)
+          });
+
+          idx += Math.max(1, normalizedQuery.length);
+          if (hits.length >= 120) break;
+        }
+      });
+
+      hits.sort((a, b) => a.score - b.score || (a.title || "").localeCompare(b.title || ""));
+
+      resultsEl.innerHTML = "";
+
+      if (!hits.length) {
+        searchStatus.textContent = "No matches.";
+        return;
+      }
+
+      searchStatus.textContent = `${hits.length} result${hits.length === 1 ? "" : "s"}.`;
+
+      hits.forEach((hit) => {
+        const link = document.createElement("a");
+        link.className = "result-link";
+        link.href = `${hit.page}${hit.page.includes("?") ? "&" : "?"}q=${encodeURIComponent(query)}&target=${encodeURIComponent(query)}&hit=${hit.hit || 0}`;
+
+        link.innerHTML = `
+          <p class="result-page">${escapeHtml(hit.pageLabel)}</p>
+          <p class="result-title">${escapeHtml(hit.title)}</p>
+          <p class="result-snippet">${highlight(hit.snippet, query)}</p>
+        `;
+
+        resultsEl.appendChild(link);
+      });
+    }
+
+    searchBtn.addEventListener("click", runSearch);
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        runSearch();
+      }
+    });
+  </script>
+</body>
+</html>
+

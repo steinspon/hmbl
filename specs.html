@@ -10,8 +10,8 @@
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f7fa">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1722">
   <meta name="apple-mobile-web-app-title" content="Himmelblå">
-  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
-  <link id="favicon-icon" rel="icon" href="logo.png">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo_winter_daytime.png">
+  <link id="favicon-icon" rel="icon" href="logo_winter_daytime.png">
   <link rel="stylesheet" href="styles/common.css">
 
   <style>
@@ -147,6 +147,58 @@
     .cards {
       display: grid;
       gap: 14px;
+    }
+
+    .search-wrap {
+      margin: 0 0 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .search-input {
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 0.98rem;
+      color: var(--text);
+      background: var(--card);
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .search-btn {
+      min-height: 48px;
+      padding: 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .search-status {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .search-active-hit {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 8px;
+      transition: outline-color 0.2s ease;
     }
 
     .card {
@@ -289,7 +341,7 @@
   <main class="app">
     <header class="header">
       <div class="logo-wrap">
-        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo.png" alt="Himmelblå logo" class="logo"></a>
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.png" alt="Himmelblå logo" class="logo"></a>
       </div>
       <h1 class="page-title">Technical Reference</h1>
       <p class="page-subtitle">
@@ -307,6 +359,14 @@
         <br>807 moh.
       </p>
     </header>
+
+    <section class="search-wrap" aria-label="Search technical reference">
+      <div class="search-row">
+        <input id="search-input" class="search-input" type="search" placeholder="Search technical reference">
+        <button id="search-btn" class="search-btn" type="button">Search</button>
+      </div>
+      <p id="search-status" class="search-status"></p>
+    </section>
 
     <section id="cards" class="cards"></section>
 
@@ -446,6 +506,13 @@
     ];
 
     const cardsEl = document.getElementById("cards");
+    const searchInput = document.getElementById("search-input");
+    const searchBtn = document.getElementById("search-btn");
+    const searchStatus = document.getElementById("search-status");
+
+    let matches = [];
+    let currentMatchIndex = -1;
+    let lastQuery = "";
 
     function renderCards() {
       cardsEl.innerHTML = "";
@@ -542,14 +609,91 @@
       });
     }
 
+    function clearActiveHit() {
+      document.querySelectorAll(".search-active-hit").forEach(el =>
+        el.classList.remove("search-active-hit")
+      );
+    }
+
+    function getSearchableElements() {
+      return Array.from(document.querySelectorAll(
+        ".page-subtitle, .card-title, .card-desc, .manual-link"
+      ));
+    }
+
+    function computeMatches(query) {
+      const q = query.trim().toLocaleLowerCase();
+      if (!q) return [];
+
+      return getSearchableElements().filter(el =>
+        (el.textContent || "").toLocaleLowerCase().includes(q)
+      );
+    }
+
+    function jumpToMatch(index) {
+      clearActiveHit();
+      const el = matches[index];
+      if (!el) return;
+
+      el.classList.add("search-active-hit");
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function runSearchCycle() {
+      const query = searchInput.value || "";
+
+      if (!query.trim()) {
+        matches = [];
+        currentMatchIndex = -1;
+        lastQuery = "";
+        clearActiveHit();
+        searchStatus.textContent = "Enter a search term.";
+        return;
+      }
+
+      if (query !== lastQuery || !matches.length) {
+        matches = computeMatches(query);
+        currentMatchIndex = -1;
+        lastQuery = query;
+      }
+
+      if (!matches.length) {
+        clearActiveHit();
+        searchStatus.textContent = "No matches.";
+        return;
+      }
+
+      currentMatchIndex = (currentMatchIndex + 1) % matches.length;
+      jumpToMatch(currentMatchIndex);
+      searchStatus.textContent = `${currentMatchIndex + 1} of ${matches.length}`;
+    }
+
     renderCards();
+    searchBtn.addEventListener("click", runSearchCycle);
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        runSearchCycle();
+      }
+    });
+    searchInput.addEventListener("input", () => {
+      lastQuery = "";
+      currentMatchIndex = -1;
+      matches = [];
+      clearActiveHit();
+      searchStatus.textContent = "";
+    });
   </script>
   <script src="scripts/theme.js"></script>
+  <script src="scripts/search-target.js"></script>
   <script>
     initializeTheme();
   </script>
 </body>
 </html>
+
+
+
 
 
 

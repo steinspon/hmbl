@@ -10,8 +10,8 @@
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f7fa">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1722">
   <meta name="apple-mobile-web-app-title" content="Himmelblå">
-  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo.png">
-  <link id="favicon-icon" rel="icon" href="logo.png">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo_winter_daytime.png">
+  <link id="favicon-icon" rel="icon" href="logo_winter_daytime.png">
   <link rel="stylesheet" href="styles/common.css">
 
   <style>
@@ -98,7 +98,7 @@
   <main class="app">
     <header class="header">
       <div class="logo-wrap">
-        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo.png" alt="Himmelblå logo" class="logo"></a>
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.png" alt="Himmelblå logo" class="logo"></a>
       </div>
       <h1 class="page-title">Settings</h1>
     </header>
@@ -117,6 +117,20 @@
           <label class="mode-label" for="theme-dark">Dark</label>
         </div>
       </article>
+
+      <article class="setting-card">
+        <p class="setting-title">Daytime style</p>
+        <div class="mode-group" role="radiogroup" aria-label="Daytime style">
+          <input class="mode-input" type="radio" id="daystyle-auto" name="daystyle-mode" value="auto">
+          <label class="mode-label" for="daystyle-auto">Auto</label>
+
+          <input class="mode-input" type="radio" id="daystyle-classic" name="daystyle-mode" value="classic">
+          <label class="mode-label" for="daystyle-classic">Classic</label>
+
+          <input class="mode-input" type="radio" id="daystyle-summer-mono" name="daystyle-mode" value="summer-mono">
+          <label class="mode-label" for="daystyle-summer-mono">Mono</label>
+        </div>
+      </article>
     </section>
 
     <div class="back-row">
@@ -125,10 +139,12 @@
   </main>
 
   <script src="scripts/theme.js"></script>
+  <script src="scripts/search-target.js"></script>
   <script>
     initializeTheme();
 
     const modeInputs = Array.from(document.querySelectorAll("input[name='theme-mode']"));
+    const daytimeStyleInputs = Array.from(document.querySelectorAll("input[name='daystyle-mode']"));
 
     function syncThemeMode() {
       const mode = getThemeMode();
@@ -144,10 +160,28 @@
       });
     });
 
+    function syncDaytimeStyle() {
+      const style = getDaytimeStyle();
+      const selected = daytimeStyleInputs.find(i => i.value === style) || daytimeStyleInputs[0];
+      if (selected) selected.checked = true;
+    }
+
+    daytimeStyleInputs.forEach(input => {
+      input.addEventListener("change", () => {
+        if (!input.checked) return;
+        setDaytimeStyle(input.value);
+        syncDaytimeStyle();
+      });
+    });
+
     syncThemeMode();
+    syncDaytimeStyle();
   </script>
 </body>
 </html>
+
+
+
 
 
 
