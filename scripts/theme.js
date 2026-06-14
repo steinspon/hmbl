@@ -80,7 +80,7 @@
   }
 
   function getDaytimeLogoPath(date) {
-    return isSummerSeason(date) ? "logo_summer_daytime.png" : "logo_winter_daytime.png";
+    return isSummerSeason(date) ? "logo_summer_daytime.webp" : "logo_winter_daytime.webp";
   }
 
   function getDaytimeStyle() {
@@ -180,14 +180,12 @@
     document.documentElement.setAttribute("data-daytime-style", shouldUseSummerMono ? "summer-mono" : "default");
     if (shouldUseSummerMono) applySummerMonoOverrides();
 
-    const logoPath = theme === "dark" ? "logo-night.png" : getDaytimeLogoPath(now);
+    const logoPath = theme === "dark" ? "logo-night.webp" : getDaytimeLogoPath(now);
     const mainLogo = document.getElementById("main-logo");
-    const favicon = document.getElementById("favicon-icon");
-    const appleTouchIcon = document.getElementById("apple-touch-icon");
 
+    // Only swap the hero logo with the theme/season. The favicon and
+    // apple-touch icon stay as the dedicated small icons set in the markup.
     if (mainLogo) mainLogo.src = logoPath;
-    if (favicon) favicon.href = logoPath;
-    if (appleTouchIcon) appleTouchIcon.href = logoPath;
   }
 
   window.initializeTheme = function initializeTheme() {

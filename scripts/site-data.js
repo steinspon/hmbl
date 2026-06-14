@@ -21,11 +21,11 @@ window.SITE_DATA = {
         "Add model details: serial number, power rating, or operating notes."
       ],
       images: [
-        "images/sauna_0.jpg",
-        "images/sauna_1.jpg",
-        "images/sauna_2.jpg",
-        "images/sauna_3.jpg",
-        "images/sauna_4.jpg"
+        "images/sauna_0.webp",
+        "images/sauna_1.webp",
+        "images/sauna_2.webp",
+        "images/sauna_3.webp",
+        "images/sauna_4.webp"
       ],
       manuals: [
         { href: "files/sauna.pdf", label: "User Manual" }
@@ -35,11 +35,11 @@ window.SITE_DATA = {
       title: "Electricity Cupboard",
       description: "230V / 40A",
       images: [
-        "images/Sikring_0.jpg",
-        "images/Sikring_1.jpg",
-        "images/Sikring_2.jpg",
-        "images/Sikring_3.jpg",
-        "images/Sikring_4.jpg"
+        "images/Sikring_0.webp",
+        "images/Sikring_1.webp",
+        "images/Sikring_2.webp",
+        "images/Sikring_3.webp",
+        "images/Sikring_4.webp"
       ],
       manuals: []
     },
@@ -47,8 +47,8 @@ window.SITE_DATA = {
       title: "Paint, Kitchen",
       description: "Dark grey colour, kitchen and kitchen furniture.",
       images: [
-        "images/paint_kitchen_1.jpg",
-        "images/paint_kitchen_2.jpg"
+        "images/paint_kitchen_1.webp",
+        "images/paint_kitchen_2.webp"
       ],
       manuals: []
     },
@@ -59,8 +59,8 @@ window.SITE_DATA = {
         { href: "https://www.bosch-home.no/no/product/BSGL5S3055", label: "Bosch Website" }
       ],
       images: [
-        "images/hoover_1.jpg",
-        "images/hoover_2.jpg"
+        "images/hoover_1.webp",
+        "images/hoover_2.webp"
       ],
       manuals: [
         { href: "files/hoover.pdf", label: "User Manual" }
@@ -80,7 +80,7 @@ window.SITE_DATA = {
         { href: "https://www.bosch-home.no/no/productservice/SGI5636EU-35", label: "Bosch Website" }
       ],
       images: [
-        "images/dishwasher_1.jpg"
+        "images/dishwasher_1.webp"
       ],
       manuals: [
         { href: "files/dishwasher.pdf", label: "User Manual" }
@@ -94,7 +94,7 @@ window.SITE_DATA = {
         "Installed May 2025"
       ],
       images: [
-        "images/heat_pump_1.jpg"
+        "images/heat_pump_1.webp"
       ],
       manuals: [
         { href: "files/heatpump.pdf", label: "User Manual" },
@@ -159,13 +159,13 @@ window.SITE_DATA = {
         {
           title: "Step 1",
           text: "Locate the sauna control dials and confirm you are looking at the correct heater controls.",
-          imageTop: "images/sauna_2.jpg",
+          imageTop: "images/sauna_2.webp",
           imageTopAlt: "Sauna control dials"
         },
         {
           title: "Step 2",
           text: "Turn the left dial fully back to zero. Confirm that the setting is not left on a timer or delayed start position.",
-          imageBottom: "images/sauna_2.jpg",
+          imageBottom: "images/sauna_2.webp",
           imageBottomAlt: "Left sauna dial at zero"
         },
         {
@@ -181,8 +181,8 @@ window.SITE_DATA = {
       summary: "How to locate and close the bathroom water shutoff valve safely.",
       description: "How to locate and close the bathroom water shutoff valve safely.",
       steps: [
-        { title: "Step 1", text: "Open the service access area in the bathroom.", imageTop: "images/water_10.jpg", imageTopAlt: "Bathroom service access area" },
-        { title: "Step 2", text: "Locate the main shut off valve.", imageTop: "images/water_20.jpg", imageTopAlt: "Main shut off valve" },
+        { title: "Step 1", text: "Open the service access area in the bathroom.", imageTop: "images/water_10.webp", imageTopAlt: "Bathroom service access area" },
+        { title: "Step 2", text: "Locate the main shut off valve.", imageTop: "images/water_20.webp", imageTopAlt: "Main shut off valve" },
         { title: "Step 3", text: "Turn the handle down to the 3 o'clock position (OFF)." }
       ]
     },
@@ -194,7 +194,7 @@ window.SITE_DATA = {
       description: "How to leave the dishwasher correctly after use to reduce moisture and odour.",
       steps: [
         { title: "Step 1", text: "Check that the dishwasher is switched off." },
-        { title: "Step 2", text: "Leave the door slightly ajar to reduce moisture and odour build-up.", imageBottom: "images/example.png", imageBottomAlt: "Dishwasher left slightly open" }
+        { title: "Step 2", text: "Leave the door slightly ajar to reduce moisture and odour build-up.", imageBottom: "images/example.webp", imageBottomAlt: "Dishwasher left slightly open" }
       ]
     },
     {
@@ -205,7 +205,7 @@ window.SITE_DATA = {
       description: "How to leave the fireplace safe, tidy, and ready for the next arrival.",
       steps: [
         { title: "Step 1", text: "Check that all embers are fully out and the fireplace is safe." },
-        { title: "Step 2", text: "Remove excess ash if needed.", imageBottom: "images/example.png", imageBottomAlt: "Prepared fireplace" },
+        { title: "Step 2", text: "Remove excess ash if needed.", imageBottom: "images/example.webp", imageBottomAlt: "Prepared fireplace" },
         { title: "Step 3", text: "Leave the area tidy and ready for the next arrival." }
       ]
     }
@@ -222,9 +222,9 @@ window.SITE_DATA = {
           guide: {
             blocks: [
               { type: "text", title: "Step 1", text: "Open the service access area in the bathroom." },
-              { type: "image", src: "images/water_10.jpg", alt: "Bathroom service access area" },
+              { type: "image", src: "images/water_10.webp", alt: "Bathroom service access area" },
               { type: "text", title: "Step 2", text: "Locate the main shut off valve." },
-              { type: "image", src: "images/water_20.jpg", alt: "Main shut off valve" },
+              { type: "image", src: "images/water_20.webp", alt: "Main shut off valve" },
               { type: "text", title: "Step 3", text: "Turn the handle down to the 3 o'clock position (OFF)." }
             ]
           }
@@ -235,7 +235,7 @@ window.SITE_DATA = {
           guide: {
             blocks: [
               { type: "text", title: "Step 1", text: "Left Dial (see image) is pointing to zero and sauna is not hot." },
-              { type: "image", src: "images/sauna_2.jpg", alt: "Sauna Power Dials" }
+              { type: "image", src: "images/sauna_2.webp", alt: "Sauna Power Dials" }
             ]
           }
         },
@@ -245,7 +245,7 @@ window.SITE_DATA = {
           guide: {
             blocks: [
               { type: "text", title: "Step 1", text: "Find the bathroom thermostat." },
-              { type: "image", src: "images/example.png", alt: "Bathroom thermostat" },
+              { type: "image", src: "images/example.webp", alt: "Bathroom thermostat" },
               { type: "text", title: "Step 2", text: "Wake the display if necessary and set the target temperature to 20°C." },
               { type: "text", title: "Step 3", text: "Confirm the setpoint is saved." }
             ]
@@ -263,7 +263,7 @@ window.SITE_DATA = {
             blocks: [
               { type: "text", title: "Step 1", text: "After shutting off the water supply, open the bathroom tap." },
               { type: "text", title: "Step 2", text: "Leave it open so the line is not left pressurised." },
-              { type: "image", src: "images/example.png", alt: "Bathroom tap left open" }
+              { type: "image", src: "images/example.webp", alt: "Bathroom tap left open" }
             ]
           }
         }
@@ -279,9 +279,9 @@ window.SITE_DATA = {
           guide: {
             blocks: [
               { type: "text", title: "Step 1", text: "Locate the valve just below the tap." },
-              { type: "image", src: "images/tap_20.png", alt: "Kitchen sink valve location" },
+              { type: "image", src: "images/tap_20.webp", alt: "Kitchen sink valve location" },
               { type: "text", title: "Step 2", text: "Turn the valve to the upwards / 12 o'clock position (OFF)." },
-              { type: "image", src: "images/tap_10.png", alt: "tap off" }
+              { type: "image", src: "images/tap_10.webp", alt: "tap off" }
             ]
           }
         },
@@ -294,7 +294,7 @@ window.SITE_DATA = {
             blocks: [
               { type: "text", title: "Step 1", text: "Check that the dishwasher is switched off." },
               { type: "text", title: "Step 2", text: "Leave the door slightly ajar to reduce moisture and odour build-up." },
-              { type: "image", src: "images/example.png", alt: "Dishwasher left slightly open" }
+              { type: "image", src: "images/example.webp", alt: "Dishwasher left slightly open" }
             ]
           }
         },
@@ -312,7 +312,7 @@ window.SITE_DATA = {
             blocks: [
               { type: "text", title: "Step 1", text: "Check that all embers are fully out and the fireplace is safe." },
               { type: "text", title: "Step 2", text: "Remove excess ash if needed." },
-              { type: "image", src: "images/example.png", alt: "Prepared fireplace" },
+              { type: "image", src: "images/example.webp", alt: "Prepared fireplace" },
               { type: "text", title: "Step 3", text: "Leave the area tidy and ready for the next arrival." }
             ]
           }
