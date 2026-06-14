@@ -253,19 +253,15 @@
     </div>
   </main>
 
+  <script src="scripts/site-data.js"></script>
   <script>
-    const guides = [
-      {
-        title: "Sauna Shutoff Guide",
-        description: "How to confirm that the sauna is fully shut down before leaving the cabin.",
-        href: "guide.html?id=sauna-shutoff"
-      },
-      {
-        title: "Bathroom Water Shutoff Guide",
-        description: "How to locate and close the bathroom water shutoff valve safely.",
-        href: "guide.html?id=bath-water-shutoff"
-      }
-    ];
+    const guides = window.SITE_DATA.guides
+      .filter(g => g.listed)
+      .map(g => ({
+        title: g.title,
+        description: g.summary,
+        href: `guide.html?id=${g.id}`
+      }));
 
     const guideListEl = document.getElementById("guide-list");
 
