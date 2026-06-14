@@ -82,10 +82,76 @@
   </main>
 
   <script src="scripts/theme.js"></script>
-  <script src="scripts/search-index.js"></script>
+  <script src="scripts/site-data.js"></script>
   <script>
     initializeTheme();
-    const searchIndex = Array.isArray(window.SEARCH_INDEX) ? window.SEARCH_INDEX : [];
+
+    // Build the search index from the single source of truth (SITE_DATA) at
+    // runtime, so it can never drift out of sync with the pages.
+    const searchIndex = buildSearchIndex(window.SITE_DATA || {});
+
+    function specEntryText(entry) {
+      const lines = entry.descriptionLines || (entry.description ? [entry.description] : []);
+      const linkLabels = (entry.descriptionLinks || []).map(l => l.label);
+      const manualLabels = (entry.manuals || []).map(m => m.label);
+      return [...lines, ...linkLabels, ...manualLabels].join(" ");
+    }
+
+    function guideStepsText(guide) {
+      return (guide.steps || [])
+        .map(s => [s.text, s.imageTopAlt, s.imageBottomAlt].filter(Boolean).join(" "))
+        .join(" ");
+    }
+
+    function checklistGuideText(item) {
+      const blocks = (item.guide && item.guide.blocks) || [];
+      return blocks.map(b => [b.text, b.alt].filter(Boolean).join(" ")).join(" ");
+    }
+
+    function buildSearchIndex(data) {
+      const docs = [];
+
+      (data.specs || []).forEach(entry => {
+        docs.push({
+          page: "specs.html",
+          pageLabel: "Technical Reference",
+          title: entry.title,
+          content: specEntryText(entry)
+        });
+      });
+
+      (data.guides || []).forEach(guide => {
+        docs.push({
+          page: `guide.html?id=${guide.id}`,
+          pageLabel: "Guides",
+          title: guide.title,
+          content: [guide.summary, guide.description, guideStepsText(guide)]
+            .filter(Boolean).join(" ")
+        });
+      });
+
+      (data.checklist || []).forEach(section => {
+        (section.items || []).forEach(item => {
+          docs.push({
+            page: "rigdown.html",
+            pageLabel: "Rig-down checklist",
+            title: item.label,
+            content: [section.section, checklistGuideText(item)].filter(Boolean).join(" ")
+          });
+        });
+      });
+
+      (data.staticPages || []).forEach(p => {
+        docs.push({
+          page: p.page,
+          pageLabel: p.pageLabel,
+          title: p.title,
+          content: p.content || ""
+        });
+      });
+
+      return docs;
+    }
 
     const searchInput = document.getElementById("search-input");
     const searchBtn = document.getElementById("search-btn");
@@ -101,15 +167,13 @@
 
     function tokenizeQuery(value) {
       const normalized = normalizeForSearch(value);
-      const matches = normalized.match(/[\p{L}\p{N}]+/gu) || [];
-      return matches.filter(Boolean);
+      return (normalized.match(/[\p{L}\p{N}]+/gu) || []).filter(Boolean);
     }
 
     function getWordTokensWithIndex(value) {
       const normalized = normalizeForSearch(value);
-      const matches = normalized.matchAll(/[\p{L}\p{N}]+/gu);
       const out = [];
-      for (const m of matches) {
+      for (const m of normalized.matchAll(/[\p{L}\p{N}]+/gu)) {
         out.push({ token: m[0], index: m.index || 0 });
       }
       return out;
@@ -122,38 +186,111 @@
         .replace(/>/g, "&gt;");
     }
 
-    function highlight(snippet, query) {
-      const esc = escapeHtml(snippet);
-      const q = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      return esc.replace(new RegExp(q, "ig"), (m) => `<mark>${m}</mark>`);
+    // Match a single query token against a field's words.
+    // Returns the best match kind (exact > prefix > substring) and the index
+    // of the matched word, or null when there is no match. Substring matching
+    // means partial queries like "dish" find "dishwasher".
+    function matchToken(words, token) {
+      let best = null;
+      for (const w of words) {
+        let kind = null;
+        if (w.token === token) kind = "exact";
+        else if (w.token.startsWith(token)) kind = "prefix";
+        else if (w.token.includes(token)) kind = "substring";
+        if (!kind) continue;
+        const rank = kind === "exact" ? 3 : kind === "prefix" ? 2 : 1;
+        if (!best || rank > best.rank) {
+          best = { kind, rank, index: w.index, word: w.token };
+          if (kind === "exact") break;
+        }
+      }
+      return best;
     }
 
-    function makeSnippet(text, idx, queryLength) {
+    const FIELD_WEIGHT = { title: 12, pageLabel: 5, content: 3 };
+    const KIND_WEIGHT = { exact: 3, prefix: 2, substring: 1 };
+
+    function makeSnippet(text, idx, matchLength) {
       const start = Math.max(0, idx - 60);
-      const end = Math.min(text.length, idx + queryLength + 60);
-      const prefix = start > 0 ? "..." : "";
-      const suffix = end < text.length ? "..." : "";
+      const end = Math.min(text.length, idx + matchLength + 60);
+      const prefix = start > 0 ? "\u2026" : "";
+      const suffix = end < text.length ? "\u2026" : "";
       return `${prefix}${text.slice(start, end).trim()}${suffix}`;
     }
 
-    function makeBestContentSnippet(content, token) {
+    function makeBestContentSnippet(content, words, token) {
       const text = (content || "").trim();
       if (!text) return "";
-      const normalizedText = normalizeForSearch(text);
-      const normalizedToken = normalizeForSearch(token || "");
-      const idx = normalizedToken ? normalizedText.indexOf(normalizedToken) : -1;
-      if (idx < 0) return text.length > 140 ? `${text.slice(0, 140)}...` : text;
-      return makeSnippet(text, idx, normalizedToken.length || 1);
+      const match = token ? matchToken(words, token) : null;
+      if (!match) return text.length > 140 ? `${text.slice(0, 140).trim()}\u2026` : text;
+      return makeSnippet(text, match.index, match.word.length);
+    }
+
+    function highlightTokens(snippet, tokens) {
+      let html = escapeHtml(snippet);
+      // Highlight each query token (and longer words containing it) once.
+      const sorted = [...new Set(tokens)].sort((a, b) => b.length - a.length);
+      sorted.forEach(t => {
+        const safe = t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        html = html.replace(new RegExp(`(${safe}[\\p{L}\\p{N}]*)`, "giu"), "<mark>$1</mark>");
+      });
+      // Avoid nested <mark> from overlapping passes.
+      return html.replace(/<mark>(<mark>)+/g, "<mark>").replace(/(<\/mark>)+<\/mark>/g, "</mark>");
+    }
+
+    function scoreDocument(item, tokens) {
+      const titleWords = getWordTokensWithIndex(item.title || "");
+      const pageLabelWords = getWordTokensWithIndex(item.pageLabel || "");
+      const contentWords = getWordTokensWithIndex(item.content || "");
+
+      let matchedCount = 0;
+      let score = 0;
+      let jumpToken = "";
+      let jumpRank = -1;
+      let matchedInContent = false;
+      let matchedInTitle = false;
+
+      tokens.forEach(t => {
+        const inTitle = matchToken(titleWords, t);
+        const inLabel = matchToken(pageLabelWords, t);
+        const inContent = matchToken(contentWords, t);
+        if (!inTitle && !inLabel && !inContent) return;
+
+        matchedCount += 1;
+        if (inTitle) score += FIELD_WEIGHT.title * KIND_WEIGHT[inTitle.kind];
+        if (inLabel) score += FIELD_WEIGHT.pageLabel * KIND_WEIGHT[inLabel.kind];
+        if (inContent) score += FIELD_WEIGHT.content * KIND_WEIGHT[inContent.kind];
+        if (inTitle) matchedInTitle = true;
+        if (inContent) matchedInContent = true;
+
+        // Pick the strongest, longest matched token to drive the on-page jump.
+        const best = inContent || inTitle || inLabel;
+        const rank = best.rank * 100 + t.length;
+        if (rank > jumpRank) {
+          jumpRank = rank;
+          jumpToken = t;
+        }
+      });
+
+      if (!matchedCount) return null;
+
+      const matchSource = matchedInTitle ? "Entry title"
+        : matchedInContent ? "Page content"
+        : "Page heading";
+
+      return {
+        ...item,
+        score,
+        matchedCount,
+        matchedAll: matchedCount === tokens.length,
+        jumpToken,
+        matchSource,
+        snippet: makeBestContentSnippet(item.content || item.title || "", contentWords, jumpToken)
+      };
     }
 
     function runSearch() {
       const query = (searchInput.value || "").trim();
-      if (!query) {
-        resultsEl.innerHTML = "";
-        searchStatus.textContent = "Enter a search term.";
-        return;
-      }
-
       const tokens = tokenizeQuery(query);
       if (!tokens.length) {
         resultsEl.innerHTML = "";
@@ -161,90 +298,30 @@
         return;
       }
 
-      const pageHitCount = {};
-      const strictHits = [];
-      const relaxedHits = [];
-
-      searchIndex.forEach((item) => {
-        const pageLabelText = item.pageLabel || "";
-        const pagePathText = item.page || "";
-        const fullText = `${item.title || ""} ${pageLabelText} ${item.content || ""}`.trim();
-        if (!fullText) return;
-
-        const words = getWordTokensWithIndex(fullText);
-        if (!words.length) return;
-        const titleWords = getWordTokensWithIndex(item.title || "");
-        const pageLabelWords = getWordTokensWithIndex(pageLabelText);
-        const pagePathWords = getWordTokensWithIndex(pagePathText.replace(/[^a-zA-Z0-9]+/g, " "));
-        const contentWords = getWordTokensWithIndex(item.content || "");
-
-        const firstIndexByToken = {};
-        words.forEach(w => {
-          if (firstIndexByToken[w.token] === undefined) firstIndexByToken[w.token] = w.index;
-        });
-
-        const matchedTokens = tokens.filter(t => firstIndexByToken[t] !== undefined);
-        if (!matchedTokens.length) return;
-        const titleTokenSet = new Set(titleWords.map(w => w.token));
-        const pageLabelTokenSet = new Set(pageLabelWords.map(w => w.token));
-        const pagePathTokenSet = new Set(pagePathWords.map(w => w.token));
-        const contentTokenSet = new Set(contentWords.map(w => w.token));
-        const titleMatchedTokenCount = matchedTokens.filter(t => titleTokenSet.has(t)).length;
-        const pageLabelMatchedTokenCount = matchedTokens.filter(t => pageLabelTokenSet.has(t)).length;
-        const pagePathMatchedTokenCount = matchedTokens.filter(t => pagePathTokenSet.has(t)).length;
-
-        const contentMatchedTokens = matchedTokens.filter(t => contentTokenSet.has(t));
-        const jumpToken = (contentMatchedTokens.length
-          ? contentMatchedTokens
-          : matchedTokens
-        ).slice().sort((a, b) => b.length - a.length)[0];
-
-        const matchSource = contentMatchedTokens.length ? "Checklist/Page content" :
-          (titleMatchedTokenCount ? "Entry title" : "Page heading");
-
-        const primaryToken = [...matchedTokens].sort((a, b) => {
-          const ai = firstIndexByToken[a];
-          const bi = firstIndexByToken[b];
-          if (ai !== bi) return ai - bi;
-          return b.length - a.length;
-        })[0];
-        const firstIdx = firstIndexByToken[primaryToken];
-
-        const pageKey = item.page || "";
-        const hitIndex = pageHitCount[pageKey] || 0;
-        pageHitCount[pageKey] = hitIndex + 1;
-
-        const entry = {
-          ...item,
-          score: firstIdx,
-          hit: hitIndex,
-          matchedTokenCount: matchedTokens.length,
-          titleMatchedTokenCount,
-          pageLabelMatchedTokenCount,
-          pagePathMatchedTokenCount,
-          jumpToken,
-          matchSource,
-          primaryToken,
-          snippet: makeBestContentSnippet(item.content || fullText, jumpToken || primaryToken)
-        };
-
-        if (matchedTokens.length === tokens.length) {
-          strictHits.push(entry);
-        } else {
-          relaxedHits.push(entry);
-        }
+      const scored = [];
+      searchIndex.forEach(item => {
+        const hit = scoreDocument(item, tokens);
+        if (hit) scored.push(hit);
       });
 
-      const hits = (strictHits.length ? strictHits : relaxedHits)
+      // Prefer documents matching every query token; fall back to partial.
+      const full = scored.filter(h => h.matchedAll);
+      const pool = full.length ? full : scored;
+
+      const pageHitCount = {};
+      const hits = pool
         .sort((a, b) =>
-          b.matchedTokenCount - a.matchedTokenCount ||
-          b.pageLabelMatchedTokenCount - a.pageLabelMatchedTokenCount ||
-          b.pagePathMatchedTokenCount - a.pagePathMatchedTokenCount ||
-          b.titleMatchedTokenCount - a.titleMatchedTokenCount ||
-          a.score - b.score ||
+          b.matchedCount - a.matchedCount ||
+          b.score - a.score ||
           (a.title || "").localeCompare(b.title || "")
         )
-        .slice(0, 120);
+        .slice(0, 120)
+        .map(hit => {
+          const pageKey = hit.page || "";
+          const idx = pageHitCount[pageKey] || 0;
+          pageHitCount[pageKey] = idx + 1;
+          return { ...hit, hit: idx };
+        });
 
       resultsEl.innerHTML = "";
 
@@ -258,26 +335,35 @@
       hits.forEach((hit) => {
         const link = document.createElement("a");
         link.className = "result-link";
-        link.href = `${hit.page}${hit.page.includes("?") ? "&" : "?"}q=${encodeURIComponent(query)}&target=${encodeURIComponent(hit.jumpToken || hit.primaryToken || query)}&hit=${hit.hit || 0}`;
+        const sep = hit.page.includes("?") ? "&" : "?";
+        link.href = `${hit.page}${sep}q=${encodeURIComponent(query)}&target=${encodeURIComponent(hit.jumpToken || query)}&hit=${hit.hit || 0}`;
 
         link.innerHTML = `
           <p class="result-page">${escapeHtml(hit.pageLabel)}</p>
           <p class="result-title">${escapeHtml(hit.title)}</p>
-          <p class="result-meta">Matched in: ${escapeHtml(hit.matchSource)}${hit.jumpToken ? ` (${escapeHtml(hit.jumpToken)})` : ""}</p>
-          <p class="result-snippet">${highlight(hit.snippet, query)}</p>
+          <p class="result-meta">Matched in: ${escapeHtml(hit.matchSource)}</p>
+          <p class="result-snippet">${highlightTokens(hit.snippet, tokens)}</p>
         `;
 
         resultsEl.appendChild(link);
       });
     }
 
+    let searchDebounce = null;
+    function runSearchDebounced() {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(runSearch, 150);
+    }
+
     searchBtn.addEventListener("click", runSearch);
     searchInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
+        clearTimeout(searchDebounce);
         runSearch();
       }
     });
+    searchInput.addEventListener("input", runSearchDebounced);
   </script>
 </body>
 </html>
