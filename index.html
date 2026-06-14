@@ -10,8 +10,9 @@
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f7fa">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1722">
   <meta name="apple-mobile-web-app-title" content="Himmelblå">
-  <link id="apple-touch-icon" rel="apple-touch-icon" href="logo_winter_daytime.png">
-  <link id="favicon-icon" rel="icon" href="logo_winter_daytime.png">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="icon-180.png">
+  <link id="favicon-icon" rel="icon" href="favicon-32.png">
+  <link rel="manifest" href="manifest.json">
 
   <style>
     :root {
@@ -178,6 +179,69 @@
     .tool-title { display: block; font-size: 1.02rem; font-weight: 750; line-height: 1.2; color: var(--text); }
     .chevron { color: var(--accent); flex: 0 0 auto; opacity: 0.9; transition: color 0.35s ease; }
 
+    .home-search { display: flex; gap: 10px; margin-bottom: 14px; }
+    .home-search-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 50px;
+      border: 1px solid var(--tool-border);
+      border-radius: var(--radius-lg);
+      padding: 0 16px;
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--card);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .home-search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(31, 79, 125, 0.12);
+    }
+    .home-search-btn {
+      flex: 0 0 auto;
+      width: 50px;
+      min-height: 50px;
+      border: none;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .home-search-btn:active { transform: scale(0.97); }
+
+    .quick-info { display: grid; gap: 12px; margin-bottom: 12px; }
+    .quick-card {
+      border: 1px solid var(--tool-border);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, var(--card-strong), var(--card));
+      box-shadow: var(--shadow);
+      padding: 14px 16px;
+    }
+    .quick-card-head {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    }
+    .quick-row { display: flex; align-items: baseline; gap: 8px; font-size: 1rem; }
+    .quick-row + .quick-row { margin-top: 4px; }
+    .quick-label { color: var(--muted); min-width: 84px; }
+    .quick-value { color: var(--text); font-weight: 700; word-break: break-word; }
+    .quick-copy {
+      margin-top: 10px;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--tool-border);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .quick-copy:active { transform: scale(0.98); }
+
     @media (min-width: 520px) {
       .app { padding-left: 18px; padding-right: 18px; }
       .hero { padding: 18px 18px 10px; }
@@ -190,16 +254,31 @@
     <div class="shell">
       <section class="hero">
         <div class="logo-wrap">
-          <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.png" alt="Himmelblå logo" class="logo"></a>
+          <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.webp" alt="Himmelblå logo" class="logo"></a>
         </div>
       </section>
 
       <section class="section">
+        <form class="home-search" role="search" action="search.html" method="get">
+          <input id="home-search-input" name="q" class="home-search-input" type="search"
+                 placeholder="Search the cabin guide…" aria-label="Search the cabin guide"
+                 autocomplete="off" enterkeyhint="search">
+          <button class="home-search-btn" type="submit" aria-label="Search">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/>
+              <path d="M16 16L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </form>
+
+        <div id="quick-info" class="quick-info"></div>
+
         <div id="tool-list" class="tool-list"></div>
       </section>
     </div>
   </main>
 
+  <script src="scripts/site-data.js"></script>
   <script>
     (function () {
       const tools = [
@@ -322,6 +401,55 @@
       }
 
       renderTools();
+    })();
+  </script>
+  <script>
+    // Surface the Wi-Fi credentials from the shared data as a quick-access card.
+    (function () {
+      const data = window.SITE_DATA || {};
+      const wifi = (data.specs || []).find(s => (s.title || "").toLowerCase() === "wifi");
+      const container = document.getElementById("quick-info");
+      if (!wifi || !container) return;
+
+      const lines = wifi.descriptionLines || (wifi.description ? [wifi.description] : []);
+      const field = (label) => {
+        const line = lines.find(l => l.toLowerCase().startsWith(label.toLowerCase()));
+        return line ? line.slice(line.indexOf(":") + 1).trim() : "";
+      };
+      const ssid = field("SSID");
+      const password = field("Password");
+      if (!ssid && !password) return;
+
+      const card = document.createElement("div");
+      card.className = "quick-card";
+      card.innerHTML = `
+        <div class="quick-card-head">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M5 12.5C9 8.5 15 8.5 19 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 15.5C10.2 13.5 13.8 13.5 16 15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="18.5" r="1.3" fill="currentColor"/>
+          </svg>
+          Wi-Fi
+        </div>
+        ${ssid ? `<div class="quick-row"><span class="quick-label">Network</span><span class="quick-value">${ssid}</span></div>` : ""}
+        ${password ? `<div class="quick-row"><span class="quick-label">Password</span><span class="quick-value">${password}</span></div>` : ""}
+      `;
+
+      if (password && navigator.clipboard) {
+        const btn = document.createElement("button");
+        btn.className = "quick-copy";
+        btn.type = "button";
+        btn.textContent = "Copy password";
+        btn.addEventListener("click", () => {
+          navigator.clipboard.writeText(password).then(() => {
+            btn.textContent = "Copied ✓";
+            setTimeout(() => { btn.textContent = "Copy password"; }, 1600);
+          }).catch(() => {});
+        });
+        card.appendChild(btn);
+      }
+
+      container.appendChild(card);
     })();
   </script>
   <script src="scripts/theme.js"></script>
