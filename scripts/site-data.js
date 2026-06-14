@@ -77,12 +77,14 @@ window.SITE_DATA = {
         "Made in Germany"
       ],
       descriptionLinks: [
-        { href: "https://www.bosch-home.no/no/productlist?searchText=SGI5636EU", label: "Bosch Website" }
+        { href: "https://www.bosch-home.no/no/productservice/SGI5636EU-35", label: "Bosch Website" }
       ],
       images: [
         "images/dishwasher_1.jpg"
       ],
-      manuals: []
+      manuals: [
+        { href: "files/dishwasher.pdf", label: "User Manual" }
+      ]
     },
     {
       title: "Heat Pump",
