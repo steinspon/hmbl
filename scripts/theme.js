@@ -193,6 +193,13 @@
     setInterval(applyTheme, 60000);
   };
 
+  // Register the service worker so the app works offline after first visit.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+
   window.setThemeOverride = function setThemeOverride(theme) {
     if (theme !== "dark" && theme !== "light") return;
     saveOverride(theme);
