@@ -359,7 +359,7 @@ window.SITE_DATA = {
       page: "navigate.html",
       pageLabel: "Navigate To",
       title: "Navigate To",
-      content: "Open destinations directly in Google Maps. Himmelblå. Bytteplassen Singsås."
+      content: "Open destinations directly in Google Maps. Himmelblå. Bytteplassen Singsås. Støren."
     },
     {
       page: "settings.html",
