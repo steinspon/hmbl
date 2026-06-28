@@ -128,9 +128,8 @@ window.SITE_DATA = {
     {
       title: "Internet",
       descriptionLines: [
-        "Supplier: Neas Energi Telekom AS",
-        "Trådløs Fast Hytte 18/4",
-        "398 kr/mnd"
+        "Supplier: Starlink",
+        "Residential – 100 Mbps"
       ],
       images: null,
       manuals: null
