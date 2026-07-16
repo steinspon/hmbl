@@ -53,6 +53,24 @@ window.SITE_DATA = {
       manuals: []
     },
     {
+      title: "Beis (Cabin Wood Stain)",
+      descriptionLines: [
+        "Tyrilin Tjærebeis (tar-based wood stain).",
+        "Colour: Sort (Black) — code 0018",
+        "Base: C-base",
+        "Product code: SZ424 3636645:2",
+        "Colour origin: Scanox A/S",
+        "Can size: 0.75 L",
+        "Transparent wood protection.",
+        "Tinted with Jotun Colour Manager at Bygger'n Os (art. no. 97054026)."
+      ],
+      images: [
+        "images/beis_1.webp",
+        "images/beis_2.webp"
+      ],
+      manuals: []
+    },
+    {
       title: "Hoover",
       descriptionLines: ["Bosch BSGL5S3055"],
       descriptionLinks: [
