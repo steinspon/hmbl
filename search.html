@@ -151,6 +151,26 @@
         });
       });
 
+      (data.thingsToDo || []).forEach(sub => {
+        docs.push({
+          page: sub.href,
+          pageLabel: "Things to Do",
+          title: sub.title,
+          content: sub.description || ""
+        });
+      });
+
+      (data.bicycleTrips || []).forEach(trip => {
+        const lines = trip.descriptionLines || (trip.description ? [trip.description] : []);
+        const linkLabels = (trip.descriptionLinks || []).map(l => l.label);
+        docs.push({
+          page: "bicycle-trips.html",
+          pageLabel: "Bicycle Trips",
+          title: trip.title,
+          content: [...lines, ...linkLabels].join(" ")
+        });
+      });
+
       return docs;
     }
 

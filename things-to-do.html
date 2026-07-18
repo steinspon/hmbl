@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå – Things to Do</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f7fa">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1722">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="icon-180.png">
+  <link id="favicon-icon" rel="icon" href="favicon-32.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles/common.css">
+
+  <style>
+    .nav-list { display: grid; gap: 14px; }
+
+    .nav-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.12s ease;
+    }
+
+    .nav-card:hover {
+      border-color: var(--card-hover-border);
+      box-shadow: var(--card-hover-shadow);
+      transform: translateY(-1px);
+    }
+
+    .nav-card:active { transform: scale(0.995); }
+
+    .nav-title {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .empty-note {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (min-width: 700px) {
+      .nav-list { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.webp" alt="Himmelblå logo" class="logo"></a>
+      </div>
+      <h1 class="page-title">Things to Do</h1>
+      <p class="page-subtitle">Ideas and activities around the cabin.</p>
+    </header>
+
+    <section id="nav-list" class="nav-list"></section>
+
+    <div class="back-row">
+      <a class="back-link" href="index.html">Back</a>
+    </div>
+  </main>
+
+  <script src="scripts/site-data.js"></script>
+  <script>
+    const subpages = (window.SITE_DATA.thingsToDo || [])
+      .slice()
+      .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+
+    const listEl = document.getElementById("nav-list");
+
+    if (!subpages.length) {
+      listEl.innerHTML = '<div class="empty-note">Nothing added yet.</div>';
+    } else {
+      subpages.forEach(sub => {
+        if (!sub.href) return;
+        const card = document.createElement("a");
+        card.className = "nav-card";
+        card.href = sub.href;
+
+        const title = document.createElement("h2");
+        title.className = "nav-title";
+        title.textContent = sub.title;
+        card.appendChild(title);
+
+        if (sub.description) {
+          const desc = document.createElement("p");
+          desc.className = "nav-desc";
+          desc.textContent = sub.description;
+          card.appendChild(desc);
+        }
+
+        listEl.appendChild(card);
+      });
+    }
+  </script>
+  <script src="scripts/theme.js"></script>
+  <script src="scripts/search-target.js"></script>
+  <script>
+    initializeTheme();
+  </script>
+</body>
+</html>

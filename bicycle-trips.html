@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå – Bicycle Trips</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f7fa">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1722">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="icon-180.png">
+  <link id="favicon-icon" rel="icon" href="favicon-32.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles/common.css">
+
+  <style>
+    .cards { display: grid; gap: 14px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .card-desc a { color: var(--map-link); font-weight: 600; text-decoration: none; }
+
+    .image-gallery {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+      scroll-snap-type: x proximity;
+    }
+
+    .image-gallery::-webkit-scrollbar { display: none; }
+
+    .card-image {
+      flex: 0 0 auto;
+      width: 80%;
+      max-width: 280px;
+      display: block;
+      border-radius: 14px;
+      box-shadow: var(--image-shadow);
+      scroll-snap-align: start;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .trip-links { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .trip-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 16px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--accent);
+      color: white;
+      box-shadow: var(--manual-shadow);
+      transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.3s ease;
+    }
+
+    .trip-link:active { transform: scale(0.985); }
+
+    .empty-note {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (min-width: 700px) {
+      .cards { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.webp" alt="Himmelblå logo" class="logo"></a>
+      </div>
+      <h1 class="page-title">Bicycle Trips</h1>
+      <p class="page-subtitle">Cycling routes around the cabin.</p>
+    </header>
+
+    <section id="cards" class="cards"></section>
+
+    <div class="back-row">
+      <a class="back-link" href="things-to-do.html">Back</a>
+    </div>
+  </main>
+
+  <script src="scripts/site-data.js"></script>
+  <script>
+    const trips = (window.SITE_DATA.bicycleTrips || [])
+      .slice()
+      .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+
+    const cardsEl = document.getElementById("cards");
+
+    if (!trips.length) {
+      cardsEl.innerHTML = '<div class="empty-note">No trips added yet.</div>';
+    } else {
+      trips.forEach(trip => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const title = document.createElement("h2");
+        title.className = "card-title";
+        title.textContent = trip.title;
+        card.appendChild(title);
+
+        const desc = document.createElement("p");
+        desc.className = "card-desc";
+        const lines = trip.descriptionLines || (trip.description ? [trip.description] : []);
+        lines.forEach((line, i) => {
+          if (i > 0) desc.appendChild(document.createElement("br"));
+          desc.appendChild(document.createTextNode(line));
+        });
+        (trip.descriptionLinks || []).forEach(linkItem => {
+          desc.appendChild(document.createElement("br"));
+          const link = document.createElement("a");
+          link.href = linkItem.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = linkItem.label;
+          desc.appendChild(link);
+        });
+        card.appendChild(desc);
+
+        if (trip.images && trip.images.length) {
+          const gallery = document.createElement("div");
+          gallery.className = "image-gallery";
+          trip.images.forEach(src => {
+            const img = document.createElement("img");
+            img.className = "card-image";
+            img.loading = "lazy";
+            img.decoding = "async";
+            img.src = src;
+            img.alt = trip.title;
+            img.addEventListener("click", () => window.open(src, "_blank"));
+            gallery.appendChild(img);
+          });
+          card.appendChild(gallery);
+        }
+
+        cardsEl.appendChild(card);
+      });
+    }
+  </script>
+  <script src="scripts/theme.js"></script>
+  <script src="scripts/search-target.js"></script>
+  <script>
+    initializeTheme();
+  </script>
+</body>
+</html>

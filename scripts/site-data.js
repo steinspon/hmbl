@@ -381,5 +381,33 @@ window.SITE_DATA = {
       title: "Settings",
       content: "Theme mode: Auto, Light, Dark. Daytime style: Auto, Classic, Mono."
     }
+  ],
+
+  // ---- Things to Do (things-to-do.html menu -> sub-pages) ----
+  thingsToDo: [
+    {
+      title: "Bicycle Trips",
+      description: "Cycling routes around the cabin.",
+      href: "bicycle-trips.html"
+    }
+  ],
+
+  // ---- Bicycle Trips (bicycle-trips.html) ----
+  bicycleTrips: [
+    {
+      title: "Halvmilenget",
+      descriptionLines: [
+        "Bike trip to Halvmilenget on forest and gravel trails."
+      ],
+      descriptionLinks: [
+        { href: "https://ut.no/delte-turer/1112252414", label: "View route (UT.no)" }
+      ],
+      images: [
+        "images/halvmilenget_1.webp",
+        "images/halvmilenget_2.webp",
+        "images/halvmilenget_3.webp",
+        "images/halvmilenget_4.webp"
+      ]
+    }
   ]
 };
