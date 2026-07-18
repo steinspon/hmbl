@@ -1,14 +1,18 @@
 /*
  * Himmelblå service worker.
  *
- * - Precaches the app shell (pages, styles, scripts, logos, icons) so the app
- *   opens instantly and works fully offline after the first visit.
- * - Caches photos and PDFs on first access (they are large, so they are not
- *   precached up front).
+ * Strategy:
+ * - Pages (navigations, *.html) and the content file (site-data.js) are
+ *   NETWORK-FIRST: always fresh when online, falling back to the cached copy
+ *   only when offline. This means content edits show up immediately.
+ * - Everything else (CSS, scripts, logos, icons, photos, PDFs) is
+ *   STALE-WHILE-REVALIDATE: served instantly from cache and refreshed in the
+ *   background.
  *
- * Bump CACHE_VERSION whenever shell assets change, to retire the old cache.
+ * The app still works fully offline after the first visit. Bump CACHE_VERSION
+ * whenever the shell asset list changes, to retire the old cache.
  */
-const CACHE_VERSION = "hmbl-v1";
+const CACHE_VERSION = "hmbl-v2";
 
 const SHELL = [
   "./",
@@ -51,6 +55,52 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+function isContent(request, url) {
+  return request.mode === "navigate" ||
+    url.pathname.endsWith(".html") ||
+    url.pathname.endsWith("/site-data.js");
+}
+
+// Network-first: fresh when online, cached copy as offline fallback.
+function networkFirst(request) {
+  return fetch(request)
+    .then((response) => {
+      if (response && response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+      }
+      return response;
+    })
+    .catch(() =>
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+        if (request.mode === "navigate") return caches.match("index.html");
+        return new Response("", { status: 504, statusText: "Offline" });
+      })
+    );
+}
+
+// Stale-while-revalidate: instant from cache, refreshed in the background.
+function staleWhileRevalidate(request) {
+  return caches.match(request).then((cached) => {
+    const network = fetch(request)
+      .then((response) => {
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => null);
+
+    if (cached) return cached;
+    return network.then((response) => {
+      if (response) return response;
+      return new Response("", { status: 504, statusText: "Offline" });
+    });
+  });
+}
+
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -58,30 +108,5 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return; // let cross-origin (CDN, Bosch) pass through
 
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      // Serve from cache, refresh in the background (stale-while-revalidate).
-      const network = fetch(request)
-        .then((response) => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => null);
-
-      if (cached) {
-        network; // fire-and-forget refresh
-        return cached;
-      }
-
-      return network.then((response) => {
-        if (response) return response;
-        // Offline and uncached: fall back to the app shell for page navigations.
-        if (request.mode === "navigate") return caches.match("index.html");
-        return new Response("", { status: 504, statusText: "Offline" });
-      });
-    })
-  );
+  event.respondWith(isContent(request, url) ? networkFirst(request) : staleWhileRevalidate(request));
 });
