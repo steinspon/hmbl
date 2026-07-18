@@ -88,9 +88,14 @@ window.SITE_DATA = {
       title: "Dishwasher",
       descriptionLines: [
         "Bosch SMS4EMC06E",
-        "Freestanding dishwasher"
+        "Serie 4 — freestanding, 60 cm"
       ],
-      images: null,
+      descriptionLinks: [
+        { href: "https://www.bosch-home.no/no/product/oppvaskmaskiner/frittstaaende-oppvaskmaskiner/oppvaskmaskiner-60-cm/SMS4EMC06E", label: "Bosch Website" }
+      ],
+      images: [
+        "images/dishwasher_1.webp"
+      ],
       manuals: [
         { href: "files/dishwasher.pdf", label: "User Manual" }
       ]
