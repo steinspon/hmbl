@@ -87,19 +87,10 @@ window.SITE_DATA = {
     {
       title: "Dishwasher",
       descriptionLines: [
-        "Bosch SGI5636EU/35",
-        "Type: S9GT1B",
-        "FD 8201",
-        "230V // 240V ~50 Hz",
-        "2.3 kW // 2.5 kW",
-        "Made in Germany"
+        "Bosch SMS4EMC06E",
+        "Freestanding dishwasher"
       ],
-      descriptionLinks: [
-        { href: "https://www.bosch-home.no/no/productservice/SGI5636EU-35", label: "Bosch Website" }
-      ],
-      images: [
-        "images/dishwasher_1.webp"
-      ],
+      images: null,
       manuals: [
         { href: "files/dishwasher.pdf", label: "User Manual" }
       ]
