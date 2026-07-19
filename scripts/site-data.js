@@ -407,12 +407,16 @@ window.SITE_DATA = {
   ],
 
   // The unique activity entries. To show an entry on another category's page,
-  // just add that category id to its `categories` array.
+  // just add that category id to its `categories` array. Each entry gets its
+  // own detail page at activity.html?id=<id>; `summary` is the short line
+  // shown on the category list card, `descriptionLines` the full text shown
+  // on the detail page (blank "" strings separate paragraphs).
   activities: [
     {
       id: "halvmilenget",
       title: "Halvmilenget",
       categories: ["bicycle-trips"],
+      summary: "Forest and gravel trails to Halvmilenget.",
       descriptionLines: [
         "Bike trip to Halvmilenget on forest and gravel trails."
       ],
@@ -430,6 +434,7 @@ window.SITE_DATA = {
       id: "molmannsdalsgarden",
       title: "Mølmannsdalsgården",
       categories: ["bicycle-trips", "walks"],
+      summary: "Child-friendly forest trail to a historic farm, about 3.5 km from the Dalsveien car park — good on foot or by bike.",
       descriptionLines: [
         "The trail to Mølmannsdalen farm starts at the end of Dalsveien, 3 km from Røros, where there is a car park. It is well suited to cycling and very child-friendly, running through beautiful pine forest in sheltered terrain past several small tarns. Mølmannsdalen is a rare natural gem — the valley means as much to many Røros locals as Nordmarka does to the people of Oslo. About 3.5 km from the car park you reach Mølmannsdalsgården, used mainly as a country residence for the copper works' successive directors, but also as a breeding farm and summer pasture (seter) for the shareholders of the Røros Copper Works. Today the farm is owned by Sør-Trøndelag county.",
         "",

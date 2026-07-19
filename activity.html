@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Himmelblå – Activity</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f7fa">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1722">
+  <meta name="apple-mobile-web-app-title" content="Himmelblå">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="icon-180.png">
+  <link id="favicon-icon" rel="icon" href="favicon-32.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles/common.css">
+
+  <style>
+    .activity { display: grid; gap: 16px; }
+
+    .activity-para {
+      margin: 0;
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .activity-images { display: grid; gap: 12px; }
+
+    .activity-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      box-shadow: var(--image-shadow);
+      cursor: pointer;
+    }
+
+    .trip-links { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .trip-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 16px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--accent);
+      color: white;
+      box-shadow: var(--manual-shadow);
+      transition: transform 0.06s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.3s ease;
+    }
+
+    .trip-link:active { transform: scale(0.985); }
+
+    .empty-note {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <a href="index.html" aria-label="Go to home page"><img id="main-logo" src="logo_winter_daytime.webp" alt="Himmelblå logo" class="logo"></a>
+      </div>
+      <h1 id="page-title" class="page-title">Activity</h1>
+      <p id="page-cats" class="page-subtitle"></p>
+    </header>
+
+    <section id="activity" class="activity"></section>
+
+    <div class="back-row">
+      <a id="back-link" class="back-link" href="things-to-do.html">Back</a>
+    </div>
+  </main>
+
+  <script src="scripts/site-data.js"></script>
+  <script>
+    (function () {
+      const data = window.SITE_DATA || {};
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+      const activity = (data.activities || []).find(a => a.id === id);
+
+      // Back link: return to the referring category page if it is a known one.
+      const categories = data.activityCategories || [];
+      const knownPages = new Set(["things-to-do.html", ...categories.map(c => c.href)]);
+      const from = params.get("from");
+      document.getElementById("back-link").href = knownPages.has(from) ? from : "things-to-do.html";
+
+      const container = document.getElementById("activity");
+
+      if (!activity) {
+        document.getElementById("page-title").textContent = "Not found";
+        container.innerHTML = '<div class="empty-note">This activity could not be found.</div>';
+        return;
+      }
+
+      document.title = `Himmelblå – ${activity.title}`;
+      document.getElementById("page-title").textContent = activity.title;
+
+      // Show which categories this activity belongs to.
+      const catTitles = categories
+        .filter(c => (activity.categories || []).includes(c.id))
+        .map(c => c.title);
+      document.getElementById("page-cats").textContent = catTitles.join(" · ");
+
+      // Full description: blank "" strings in descriptionLines separate paragraphs.
+      const lines = activity.descriptionLines || (activity.description ? [activity.description] : []);
+      let current = [];
+      const paragraphs = [];
+      lines.forEach(line => {
+        if (line === "") {
+          if (current.length) { paragraphs.push(current.join(" ")); current = []; }
+        } else {
+          current.push(line);
+        }
+      });
+      if (current.length) paragraphs.push(current.join(" "));
+
+      paragraphs.forEach(text => {
+        const p = document.createElement("p");
+        p.className = "activity-para";
+        p.textContent = text;
+        container.appendChild(p);
+      });
+
+      // Photos.
+      if (activity.images && activity.images.length) {
+        const wrap = document.createElement("div");
+        wrap.className = "activity-images";
+        activity.images.forEach(src => {
+          const img = document.createElement("img");
+          img.className = "activity-image";
+          img.loading = "lazy";
+          img.decoding = "async";
+          img.src = src;
+          img.alt = activity.title;
+          img.addEventListener("click", () => window.open(src, "_blank"));
+          wrap.appendChild(img);
+        });
+        container.appendChild(wrap);
+      }
+
+      // Link buttons (route, car park, ...).
+      const links = activity.links || activity.descriptionLinks || [];
+      if (links.length) {
+        const linkWrap = document.createElement("div");
+        linkWrap.className = "trip-links";
+        links.forEach(l => {
+          if (!l.href) return;
+          const a = document.createElement("a");
+          a.className = "trip-link";
+          a.href = l.href;
+          a.textContent = l.label || "Open";
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          linkWrap.appendChild(a);
+        });
+        if (linkWrap.children.length) container.appendChild(linkWrap);
+      }
+    })();
+  </script>
+  <script src="scripts/theme.js"></script>
+  <script src="scripts/search-target.js"></script>
+  <script>
+    initializeTheme();
+  </script>
+</body>
+</html>

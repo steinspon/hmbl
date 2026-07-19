@@ -5,16 +5,18 @@
  * categories it belongs to. A category page declares its category id via a
  * body attribute:
  *   <body data-activity-category="bicycle-trips">
- * and provides a <section id="cards"> to render into. This page then lists
- * every activity whose `categories` include that id — with title,
- * descriptionLines/description, images[], and links[] (rendered as buttons,
- * e.g. a UT.no route link and a Google Maps car-park link).
+ * and provides a <section id="cards"> to render into. This page lists every
+ * activity whose `categories` include that id as a clickable preview card
+ * (title, short `summary`, and photos), linking to the activity's own detail
+ * page at activity.html?id=<id>.
  */
 (function () {
   const data = window.SITE_DATA || {};
   const category = document.body.getAttribute("data-activity-category");
   const cardsEl = document.getElementById("cards");
   if (!cardsEl) return;
+
+  const fromPage = (location.pathname.split("/").pop() || "things-to-do.html");
 
   const items = (data.activities || [])
     .filter(a => Array.isArray(a.categories) && a.categories.includes(category))
@@ -27,22 +29,22 @@
   }
 
   items.forEach(item => {
-    const card = document.createElement("article");
-    card.className = "card";
+    const card = document.createElement("a");
+    card.className = "card card-link";
+    card.href = `activity.html?id=${encodeURIComponent(item.id)}&from=${encodeURIComponent(fromPage)}`;
 
     const title = document.createElement("h2");
     title.className = "card-title";
     title.textContent = item.title;
     card.appendChild(title);
 
-    const lines = item.descriptionLines || (item.description ? [item.description] : []);
-    if (lines.length) {
+    const summaryText = item.summary ||
+      (item.descriptionLines || []).find(Boolean) ||
+      item.description || "";
+    if (summaryText) {
       const desc = document.createElement("p");
       desc.className = "card-desc";
-      lines.forEach((line, i) => {
-        if (i > 0) desc.appendChild(document.createElement("br"));
-        desc.appendChild(document.createTextNode(line));
-      });
+      desc.textContent = summaryText;
       card.appendChild(desc);
     }
 
@@ -56,27 +58,9 @@
         img.decoding = "async";
         img.src = src;
         img.alt = item.title;
-        img.addEventListener("click", () => window.open(src, "_blank"));
         gallery.appendChild(img);
       });
       card.appendChild(gallery);
-    }
-
-    const links = item.links || item.descriptionLinks || [];
-    if (links.length) {
-      const wrap = document.createElement("div");
-      wrap.className = "trip-links";
-      links.forEach(l => {
-        if (!l.href) return;
-        const a = document.createElement("a");
-        a.className = "trip-link";
-        a.href = l.href;
-        a.textContent = l.label || "Open";
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        wrap.appendChild(a);
-      });
-      if (wrap.children.length) card.appendChild(wrap);
     }
 
     cardsEl.appendChild(card);

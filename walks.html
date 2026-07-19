@@ -27,6 +27,14 @@
       transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .card-link { display: block; text-decoration: none; color: inherit; cursor: pointer; }
+    .card-link:hover {
+      border-color: var(--card-hover-border);
+      box-shadow: var(--card-hover-shadow);
+      transform: translateY(-1px);
+    }
+    .card-link:active { transform: scale(0.995); }
+
     .card-title {
       margin: 0 0 8px;
       font-size: 1.25rem;
