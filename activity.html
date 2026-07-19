@@ -25,15 +25,30 @@
       line-height: 1.55;
     }
 
-    .activity-images { display: grid; gap: 12px; }
+    /* Uniform-height gallery: every image the same height, width follows the
+       image's own aspect ratio (never squished). Scrolls horizontally.
+       min-width: 0 keeps the row inside the column instead of widening it. */
+    .activity-images {
+      display: flex;
+      gap: 12px;
+      min-width: 0;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .activity-images::-webkit-scrollbar { display: none; }
 
     .activity-image {
-      width: 100%;
-      height: auto;
+      height: clamp(220px, 55vw, 300px);
+      width: auto;
+      flex: 0 0 auto;
       display: block;
       border-radius: 14px;
       box-shadow: var(--image-shadow);
       cursor: pointer;
+      scroll-snap-align: start;
     }
 
     .trip-links { display: flex; flex-wrap: wrap; gap: 10px; }
