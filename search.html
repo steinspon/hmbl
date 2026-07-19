@@ -160,14 +160,19 @@
         });
       });
 
-      (data.bicycleTrips || []).forEach(trip => {
-        const lines = trip.descriptionLines || (trip.description ? [trip.description] : []);
-        const linkLabels = (trip.descriptionLinks || []).map(l => l.label);
-        docs.push({
-          page: "bicycle-trips.html",
-          pageLabel: "Bicycle Trips",
-          title: trip.title,
-          content: [...lines, ...linkLabels].join(" ")
+      [
+        { key: "bicycleTrips", page: "bicycle-trips.html", label: "Bicycle Trips" },
+        { key: "walks", page: "walks.html", label: "Walks" }
+      ].forEach(({ key, page, label }) => {
+        (data[key] || []).forEach(entry => {
+          const lines = entry.descriptionLines || (entry.description ? [entry.description] : []);
+          const linkLabels = (entry.links || entry.descriptionLinks || []).map(l => l.label);
+          docs.push({
+            page,
+            pageLabel: label,
+            title: entry.title,
+            content: [...lines, ...linkLabels].join(" ")
+          });
         });
       });
 

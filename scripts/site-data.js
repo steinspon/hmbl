@@ -11,6 +11,18 @@
  * Keeping the data here means search can never drift out of sync with the
  * pages. To add or change content, edit this file only.
  */
+// A route that appears under both Bicycle Trips and Walks.
+const ROUTE_MOLMANNSDALSGARDEN = {
+  title: "Mølmannsdalsgården",
+  descriptionLines: [
+    "Vandring til Mølmannsdalsgården (walk to Mølmannsdalsgården)."
+  ],
+  links: [
+    { href: "https://ut.no/kart/tur/1110059", label: "View route (UT.no)" },
+    { href: "https://maps.app.goo.gl/74nApyqDTkEjJFd88", label: "Navigate to car park" }
+  ]
+};
+
 window.SITE_DATA = {
   // ---- Technical Reference (specs.html) ----
   specs: [
@@ -389,6 +401,11 @@ window.SITE_DATA = {
       title: "Bicycle Trips",
       description: "Cycling routes around the cabin.",
       href: "bicycle-trips.html"
+    },
+    {
+      title: "Walks",
+      description: "Walking and hiking routes around the cabin.",
+      href: "walks.html"
     }
   ],
 
@@ -399,7 +416,7 @@ window.SITE_DATA = {
       descriptionLines: [
         "Bike trip to Halvmilenget on forest and gravel trails."
       ],
-      descriptionLinks: [
+      links: [
         { href: "https://ut.no/delte-turer/1112252414", label: "View route (UT.no)" }
       ],
       images: [
@@ -408,6 +425,12 @@ window.SITE_DATA = {
         "images/halvmilenget_3.webp",
         "images/halvmilenget_4.webp"
       ]
-    }
+    },
+    ROUTE_MOLMANNSDALSGARDEN
+  ],
+
+  // ---- Walks (walks.html) ----
+  walks: [
+    ROUTE_MOLMANNSDALSGARDEN
   ]
 };
