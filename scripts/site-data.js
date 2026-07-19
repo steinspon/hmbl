@@ -434,9 +434,11 @@ window.SITE_DATA = {
       id: "molmannsdalsgarden",
       title: "Mølmannsdalsgården",
       categories: ["bicycle-trips", "walks"],
-      summary: "Child-friendly forest trail to a historic farm, about 3.5 km from the Dalsveien car park — good on foot or by bike.",
+      summary: "Child-friendly forest trail to a historic farm — about 3.6 km each way (~1 hour on foot), good on foot or by bike.",
       descriptionLines: [
         "The trail to Mølmannsdalen farm starts at the end of Dalsveien, 3 km from Røros, where there is a car park. It is well suited to cycling and very child-friendly, running through beautiful pine forest in sheltered terrain past several small tarns. Mølmannsdalen is a rare natural gem — the valley means as much to many Røros locals as Nordmarka does to the people of Oslo. About 3.5 km from the car park you reach Mølmannsdalsgården, used mainly as a country residence for the copper works' successive directors, but also as a breeding farm and summer pasture (seter) for the shareholders of the Røros Copper Works. Today the farm is owned by Sør-Trøndelag county.",
+        "",
+        "For small children on bikes, stick to the main path. Walkers can take the southerly track closest to the water. It takes about an hour to walk each way — 3.6 km there and 3.6 km back.",
         "",
         "Many visitors, especially families on a Sunday outing into the valley, have long been captivated by a story tied to the farm. Catharina Borchgrevink, daughter of the copper works' director, was to marry Theodorus Mølmann, then owner of the estate. Riding out to fetch her, he fell from his horse and lost his life. It is said that Catharina still waits for her bridegroom at Mølmannsdalsgården. Several people claim to have seen her, dressed in white or black, in the great room or on the gallery of the storehouse (stabbur), carrying something. A moonlit walk, in winter or summer, can be a memorable experience: the timber of the old buildings shifts colour, the tarn lies mirror-still, and the moon sails between dark night clouds. In such a romantic atmosphere Catharina may appear on the storehouse gallery and then move slowly across the yard to the main building. (Source: Mølmannsdalen, by Thorsen and Evenås.)",
         "",
@@ -445,6 +447,13 @@ window.SITE_DATA = {
         "There are two outhouses and one accessible (wheelchair-friendly) outhouse — the latter by the bathing spot at Nordre Dalstjønna (the northern tarn).",
         "",
         "You can happily return along the same trail the way you came."
+      ],
+      images: [
+        "images/molmannsdalsgarden_1.webp",
+        "images/molmannsdalsgarden_2.webp",
+        "images/molmannsdalsgarden_3.webp",
+        "images/molmannsdalsgarden_4.webp",
+        "images/molmannsdalsgarden_5.webp"
       ],
       links: [
         { href: "https://ut.no/kart/tur/1110059", label: "View route (UT.no)" },
