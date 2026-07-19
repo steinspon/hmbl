@@ -11,18 +11,6 @@
  * Keeping the data here means search can never drift out of sync with the
  * pages. To add or change content, edit this file only.
  */
-// A route that appears under both Bicycle Trips and Walks.
-const ROUTE_MOLMANNSDALSGARDEN = {
-  title: "Mølmannsdalsgården",
-  descriptionLines: [
-    "Vandring til Mølmannsdalsgården (walk to Mølmannsdalsgården)."
-  ],
-  links: [
-    { href: "https://ut.no/kart/tur/1110059", label: "View route (UT.no)" },
-    { href: "https://maps.app.goo.gl/74nApyqDTkEjJFd88", label: "Navigate to car park" }
-  ]
-};
-
 window.SITE_DATA = {
   // ---- Technical Reference (specs.html) ----
   specs: [
@@ -395,24 +383,36 @@ window.SITE_DATA = {
     }
   ],
 
-  // ---- Things to Do (things-to-do.html menu -> sub-pages) ----
-  thingsToDo: [
+  // ---- Things to Do ----------------------------------------------------
+  // Each activity is defined ONCE in `activities` and tagged with the
+  // categories it belongs to. Category pages (bicycle-trips.html, walks.html)
+  // list every activity whose `categories` include their id — so an activity
+  // that is both a walk and a cycle trip is edited in a single place.
+
+  // Category pages, shown as the Things to Do menu. `id` matches the values
+  // used in each activity's `categories`.
+  activityCategories: [
     {
+      id: "bicycle-trips",
       title: "Bicycle Trips",
-      description: "Cycling routes around the cabin.",
-      href: "bicycle-trips.html"
+      href: "bicycle-trips.html",
+      description: "Cycling routes around the cabin."
     },
     {
+      id: "walks",
       title: "Walks",
-      description: "Walking and hiking routes around the cabin.",
-      href: "walks.html"
+      href: "walks.html",
+      description: "Walking and hiking routes around the cabin."
     }
   ],
 
-  // ---- Bicycle Trips (bicycle-trips.html) ----
-  bicycleTrips: [
+  // The unique activity entries. To show an entry on another category's page,
+  // just add that category id to its `categories` array.
+  activities: [
     {
+      id: "halvmilenget",
       title: "Halvmilenget",
+      categories: ["bicycle-trips"],
       descriptionLines: [
         "Bike trip to Halvmilenget on forest and gravel trails."
       ],
@@ -426,11 +426,17 @@ window.SITE_DATA = {
         "images/halvmilenget_4.webp"
       ]
     },
-    ROUTE_MOLMANNSDALSGARDEN
-  ],
-
-  // ---- Walks (walks.html) ----
-  walks: [
-    ROUTE_MOLMANNSDALSGARDEN
+    {
+      id: "molmannsdalsgarden",
+      title: "Mølmannsdalsgården",
+      categories: ["bicycle-trips", "walks"],
+      descriptionLines: [
+        "Vandring til Mølmannsdalsgården (walk to Mølmannsdalsgården)."
+      ],
+      links: [
+        { href: "https://ut.no/kart/tur/1110059", label: "View route (UT.no)" },
+        { href: "https://maps.app.goo.gl/74nApyqDTkEjJFd88", label: "Navigate to car park" }
+      ]
+    }
   ]
 };

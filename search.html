@@ -151,29 +151,28 @@
         });
       });
 
-      (data.thingsToDo || []).forEach(sub => {
+      // Each activity category page, plus every activity that belongs to it
+      // (an activity in two categories is findable under either).
+      (data.activityCategories || []).forEach(cat => {
         docs.push({
-          page: sub.href,
+          page: cat.href,
           pageLabel: "Things to Do",
-          title: sub.title,
-          content: sub.description || ""
+          title: cat.title,
+          content: cat.description || ""
         });
-      });
 
-      [
-        { key: "bicycleTrips", page: "bicycle-trips.html", label: "Bicycle Trips" },
-        { key: "walks", page: "walks.html", label: "Walks" }
-      ].forEach(({ key, page, label }) => {
-        (data[key] || []).forEach(entry => {
-          const lines = entry.descriptionLines || (entry.description ? [entry.description] : []);
-          const linkLabels = (entry.links || entry.descriptionLinks || []).map(l => l.label);
-          docs.push({
-            page,
-            pageLabel: label,
-            title: entry.title,
-            content: [...lines, ...linkLabels].join(" ")
+        (data.activities || [])
+          .filter(a => Array.isArray(a.categories) && a.categories.includes(cat.id))
+          .forEach(entry => {
+            const lines = entry.descriptionLines || (entry.description ? [entry.description] : []);
+            const linkLabels = (entry.links || entry.descriptionLinks || []).map(l => l.label);
+            docs.push({
+              page: cat.href,
+              pageLabel: cat.title,
+              title: entry.title,
+              content: [...lines, ...linkLabels].join(" ")
+            });
           });
-        });
       });
 
       return docs;

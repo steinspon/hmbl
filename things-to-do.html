@@ -87,7 +87,7 @@
 
   <script src="scripts/site-data.js"></script>
   <script>
-    const subpages = (window.SITE_DATA.thingsToDo || [])
+    const subpages = (window.SITE_DATA.activityCategories || [])
       .slice()
       .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 

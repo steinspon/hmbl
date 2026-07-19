@@ -1,19 +1,24 @@
 /*
- * Shared renderer for route-list pages (Bicycle Trips, Walks, ...).
+ * Shared renderer for activity-category pages (Bicycle Trips, Walks, ...).
  *
- * The page declares which SITE_DATA list to render via a body attribute:
- *   <body data-trip-source="bicycleTrips">
- * and provides a <section id="cards"> to render into. Each entry may have
- * title, descriptionLines/description, images[], and links[] (rendered as
- * buttons, e.g. a UT.no route link and a Google Maps car-park link).
+ * Activities are defined once in SITE_DATA.activities, each tagged with the
+ * categories it belongs to. A category page declares its category id via a
+ * body attribute:
+ *   <body data-activity-category="bicycle-trips">
+ * and provides a <section id="cards"> to render into. This page then lists
+ * every activity whose `categories` include that id — with title,
+ * descriptionLines/description, images[], and links[] (rendered as buttons,
+ * e.g. a UT.no route link and a Google Maps car-park link).
  */
 (function () {
   const data = window.SITE_DATA || {};
-  const key = document.body.getAttribute("data-trip-source");
+  const category = document.body.getAttribute("data-activity-category");
   const cardsEl = document.getElementById("cards");
   if (!cardsEl) return;
 
-  const items = (data[key] || []).slice()
+  const items = (data.activities || [])
+    .filter(a => Array.isArray(a.categories) && a.categories.includes(category))
+    .slice()
     .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 
   if (!items.length) {
