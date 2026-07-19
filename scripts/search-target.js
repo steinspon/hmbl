@@ -11,6 +11,8 @@
   function normalizeForSearch(value) {
     return (value || "")
       .toLocaleLowerCase()
+      // Fold Norwegian letters so names are findable without them (\u00f8->o, \u00e6->ae, \u00e5->a).
+      .replace(/\u00f8/g, "o").replace(/\u00e6/g, "ae").replace(/\u00e5/g, "a")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
   }
