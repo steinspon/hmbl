@@ -459,6 +459,59 @@ window.SITE_DATA = {
         { href: "https://ut.no/kart/tur/1110059", label: "View route (UT.no)" },
         { href: "https://maps.app.goo.gl/74nApyqDTkEjJFd88", label: "Navigate to car park" }
       ]
+    },
+    {
+      id: "falkpiggen",
+      title: "Falkpiggen",
+      categories: ["walks"],
+      summary: "Summit hike in the Os \"6 på topp\" challenge, on a marked trail from Falksetra in Vangrøftdalen.",
+      descriptionLines: [
+        "Falkpiggen is one of the peaks in the Os \"6 på topp\" (six-summits) challenge.",
+        "",
+        "Getting there: drive up Vangrøftdalen from Dalsbygda (toll road from Løvli — all payment methods except card). Continue to the Falken signpost and drive to the very end, where there is parking at Falksetra. Take the track/path to the right of the seter and follow the marked trail (yellow ribbons) all the way to the top."
+      ],
+      links: [
+        { href: "https://www.osturforening.no/6-pa-topp/falkpiggen/", label: "View route (Os Turforening)" }
+      ],
+      images: [
+        "images/falkpiggen_1.webp",
+        "images/falkpiggen_2.webp"
+      ]
+    },
+    {
+      id: "setersjoen",
+      title: "Sætersjøen",
+      categories: ["walks"],
+      summary: "Mountain lake and trail area; in winter part of a groomed ski route (Nansenhytta–Østvangen, about 20 km).",
+      descriptionLines: [
+        "Sætersjøen is a mountain lake in gently rolling terrain of mountain birch and open fell, reached by trails from Østvangen.",
+        "",
+        "In winter it is part of the groomed ski route Nansenhytta–Østvangen (about 20 km): a gentle climb from Østvangen to Setersjøen, passing Nansenhytta and Gåstjønnåshytta, and groomed up Vola to Gammelstukletten and Setersjøen when conditions allow."
+      ],
+      links: [
+        { href: "https://www.osturforening.no/skiloyper/setersjoen/", label: "View route (Os Turforening)" }
+      ],
+      images: [
+        "images/setersjoen_1.webp"
+      ]
+    },
+    {
+      id: "gruvasen",
+      title: "Gruvåsen",
+      categories: ["walks"],
+      summary: "Short hike to a viewpoint and mining-heritage site above Dalsbygda, with wide views over the valley and seter valleys.",
+      descriptionLines: [
+        "Gruvåsen is a fine viewpoint and a cultural monument to the area's mining history, just a few kilometres outside the centre of Dalsbygda.",
+        "",
+        "The walk up offers interesting cultural remains alongside a wide view over Dalsbygda and the surrounding seter valleys. On the summit there are also traces (tufter) of old farming."
+      ],
+      links: [
+        { href: "https://ut.no/turforslag/1112182737/gruvasen", label: "View route (UT.no)" }
+      ],
+      images: [
+        "images/gruvasen_1.webp",
+        "images/gruvasen_2.webp"
+      ]
     }
   ]
 };
