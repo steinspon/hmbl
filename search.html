@@ -173,7 +173,7 @@
           page: `activity.html?id=${entry.id}`,
           pageLabel: catLabel,
           title: entry.title,
-          content: [entry.summary || "", ...lines, ...linkLabels].join(" ")
+          content: [entry.notice || "", entry.summary || "", ...lines, ...linkLabels].join(" ")
         });
       });
 

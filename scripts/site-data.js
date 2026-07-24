@@ -403,6 +403,12 @@ window.SITE_DATA = {
       title: "Walks",
       href: "walks.html",
       description: "Walking and hiking routes around the cabin."
+    },
+    {
+      id: "sightseeing",
+      title: "Sightseeing",
+      href: "sightseeing.html",
+      description: "Attractions and points of interest nearby."
     }
   ],
 
@@ -511,6 +517,27 @@ window.SITE_DATA = {
       images: [
         "images/gruvasen_1.webp",
         "images/gruvasen_2.webp"
+      ]
+    },
+    {
+      id: "olavsgruve",
+      title: "Olav's Mine (Olavsgruva)",
+      categories: ["sightseeing"],
+      notice: "Please book your tickets in advance.",
+      summary: "Guided tour deep into a historic Røros copper mine at Storwartz — a walk through mining history.",
+      descriptionLines: [
+        "Olav's Mine (Olavsgruva) is a show mine at Storwartz, one of the Røros Copper Works' most important mining areas. A guided tour takes you underground for a walk through the region's mining history.",
+        "",
+        "Open every day 09.30–16.00, with guided tours daily at 10.00, 12.00, 14.00 and 16.00. It is cold underground, so bring warm clothes and good footwear. Check current opening hours and prices on the Rørosmuseet website before you go."
+      ],
+      links: [
+        { href: "https://rorosmuseet.no/en/olavs-mine", label: "Tickets & info (Rørosmuseet)" },
+        { href: "https://maps.app.goo.gl/xqnfeRSQNrBqojqi6", label: "Navigate (Google Maps)" }
+      ],
+      images: [
+        "images/olavsgruve_1.webp",
+        "images/olavsgruve_2.webp",
+        "images/olavsgruve_3.webp"
       ]
     }
   ]

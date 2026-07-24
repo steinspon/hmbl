@@ -18,6 +18,16 @@
   <style>
     .activity { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 
+    .activity-notice {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
     .activity-para {
       margin: 0;
       color: var(--text);
@@ -128,6 +138,14 @@
         .filter(c => (activity.categories || []).includes(c.id))
         .map(c => c.title);
       document.getElementById("page-cats").textContent = catTitles.join(" · ");
+
+      // Important notice at the very top of the entry (e.g. book in advance).
+      if (activity.notice) {
+        const n = document.createElement("div");
+        n.className = "activity-notice";
+        n.textContent = activity.notice;
+        container.appendChild(n);
+      }
 
       // Full description: blank "" strings in descriptionLines separate paragraphs.
       const lines = activity.descriptionLines || (activity.description ? [activity.description] : []);
