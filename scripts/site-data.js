@@ -539,6 +539,31 @@ window.SITE_DATA = {
         "images/olavsgruve_2.webp",
         "images/olavsgruve_3.webp"
       ]
+    },
+    {
+      id: "rausjodalen",
+      title: "Rausjødalen Setermeieri",
+      categories: ["sightseeing"],
+      summary: "Norway's oldest cooperative dairy — a restored mountain seter with a dairy museum, traditional café and gallery. About a 1 h 15 min drive.",
+      descriptionLines: [
+        "Rausjødalen Setermeieri is Norway's oldest cooperative dairy — the first joint dairy north of the Alps, where Swiss cheese (sveitserost) was made as early as 1856. The restored stone building now houses a dairy museum and a traditional mountain-pasture café (seterkafé).",
+        "",
+        "The café serves and sells the legendary Swiss cheese, along with traditional seter fare such as rømmegrøt, skjørost and rømme with cured meats, freshly baked waffles and coffee. Galleri Stallen shows a summer watercolour exhibition, and there are activities for children and adults plus a summer programme of music and culture.",
+        "",
+        "About a 1 hour 15 minute drive from the cabin. Open 4 July – 2 August 2026, every day 11:00–17:00 — check the website for current opening times before you go."
+      ],
+      links: [
+        { href: "https://www.rausjodalen.no", label: "Website" },
+        { href: "https://www.facebook.com/Rausjodalen", label: "Facebook" },
+        { href: "https://maps.app.goo.gl/psL4qs4LnPzFNQTj6", label: "Navigate (Google Maps)" }
+      ],
+      images: [
+        "images/rausjodalen_1.webp",
+        "images/rausjodalen_2.webp",
+        "images/rausjodalen_3.webp",
+        "images/rausjodalen_4.webp",
+        "images/rausjodalen_5.webp"
+      ]
     }
   ]
 };
