@@ -505,23 +505,30 @@ window.SITE_DATA = {
       id: "gruvasen",
       title: "Gruvåsen",
       categories: ["walks"],
-      summary: "Short hike to a viewpoint above Dalsbygda with a new panorama cabin (fireplace, binoculars) and old mining relics along the way.",
+      summary: "Mining-heritage viewpoint above Dalsbygda with a magnificent valley view and a new day-trip cabin (fireplace, binoculars). Part of the Røros World Heritage.",
       descriptionLines: [
-        "Gruvåsen (historically \"Graftaas Berg\") is a viewpoint and mining-heritage site just outside the centre of Dalsbygda, with wide views over the valley and the surrounding seter valleys. The lime-rich ground gives unusually rich plant and bird life.",
+        "Gruvåsen is a mining-heritage site and viewpoint just outside the centre of Dalsbygda, part of the Røros World Heritage (the mining town of Røros and the Circumference). From the top there is a magnificent view over Os and Dalsbygda, and the lime-rich ground supports rich plant and bird life. The old cultural landscape here was restored and cleared of vegetation in 2022–2025.",
         "",
-        "Fredrik IV's mine here was started in 1707 and worked — later by the Røros Copper Works — until around 1905. Along the way you pass mining relics, including a large steam boiler (dampkjele) that pumped water out of the mine and hauled stone and ore to the surface. On the summit are traces of the old Gruegarden farm (roughly 1792–1813), where up to 19 people once lived. Information boards on site tell the full story.",
+        "Ore was discovered here in 1707 and Fredrik IV's mine was worked in several periods until 1908 — powered for much of that time by horse whims and later by a steam boiler (dampkjele) that pumped water out of the mine and hauled up stone and ore. Beside the mine stood the farm Gruva, farmed from the early 1700s until it was moved down the hill to Øvre Grue in 1811–1813. Farm ruins and information boards can be seen along the way.",
         "",
-        "A new viewpoint cabin has been built at the top — with big windows over the valley, it is a lovely place to rest and shelter from the weather. It has a fireplace, binoculars and an outdoor toilet. Please take off your shoes inside, and clean up after yourself."
+        "At the top is a day-trip cabin (dagsturhytta) for Os municipality, opened in August 2025 and open all year round — a lovely place to rest and shelter from the weather, with big windows over the valley. It has a fireplace, binoculars and an outdoor toilet, and is for day use only (no overnight stays). Please take off your shoes inside, and clean up after yourself."
       ],
       links: [
         { href: "https://ut.no/turforslag/1112182737/gruvasen", label: "View route (UT.no)" }
       ],
       images: [
+        "images/gruvasen_8.webp",
         "images/gruvasen_1.webp",
+        "images/gruvasen_10.webp",
         "images/gruvasen_2.webp",
         "images/gruvasen_3.webp",
+        "images/gruvasen_12.webp",
+        "images/gruvasen_11.webp",
+        "images/gruvasen_9.webp",
         "images/gruvasen_4.webp",
-        "images/gruvasen_5.webp"
+        "images/gruvasen_5.webp",
+        "images/gruvasen_6.webp",
+        "images/gruvasen_7.webp"
       ]
     },
     {
