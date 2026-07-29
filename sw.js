@@ -12,7 +12,7 @@
  * The app still works fully offline after the first visit. Bump CACHE_VERSION
  * whenever the shell asset list changes, to retire the old cache.
  */
-const CACHE_VERSION = "hmbl-v14";
+const CACHE_VERSION = "hmbl-v15";
 
 const SHELL = [
   "./",

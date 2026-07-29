@@ -505,18 +505,23 @@ window.SITE_DATA = {
       id: "gruvasen",
       title: "Gruvåsen",
       categories: ["walks"],
-      summary: "Short hike to a viewpoint and mining-heritage site above Dalsbygda, with wide views over the valley and seter valleys.",
+      summary: "Short hike to a viewpoint above Dalsbygda with a new panorama cabin (fireplace, binoculars) and old mining relics along the way.",
       descriptionLines: [
-        "Gruvåsen is a fine viewpoint and a cultural monument to the area's mining history, just a few kilometres outside the centre of Dalsbygda.",
+        "Gruvåsen (historically \"Graftaas Berg\") is a viewpoint and mining-heritage site just outside the centre of Dalsbygda, with wide views over the valley and the surrounding seter valleys. The lime-rich ground gives unusually rich plant and bird life.",
         "",
-        "The walk up offers interesting cultural remains alongside a wide view over Dalsbygda and the surrounding seter valleys. On the summit there are also traces (tufter) of old farming."
+        "Fredrik IV's mine here was started in 1707 and worked — later by the Røros Copper Works — until around 1905. Along the way you pass mining relics, including a large steam boiler (dampkjele) that pumped water out of the mine and hauled stone and ore to the surface. On the summit are traces of the old Gruegarden farm (roughly 1792–1813), where up to 19 people once lived. Information boards on site tell the full story.",
+        "",
+        "A new viewpoint cabin has been built at the top — with big windows over the valley, it is a lovely place to rest and shelter from the weather. It has a fireplace, binoculars and an outdoor toilet. Please take off your shoes inside, and clean up after yourself."
       ],
       links: [
         { href: "https://ut.no/turforslag/1112182737/gruvasen", label: "View route (UT.no)" }
       ],
       images: [
         "images/gruvasen_1.webp",
-        "images/gruvasen_2.webp"
+        "images/gruvasen_2.webp",
+        "images/gruvasen_3.webp",
+        "images/gruvasen_4.webp",
+        "images/gruvasen_5.webp"
       ]
     },
     {
