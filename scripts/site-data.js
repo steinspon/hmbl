@@ -155,6 +155,20 @@ window.SITE_DATA = {
       manuals: [
         { href: "files/floorplan_1.pdf", label: "Floorplan 1" }
       ]
+    },
+    {
+      title: "Map, Electrical",
+      descriptionLines: [
+        "Electrical network map (Nettkorreksjoner) provided by Klive, 7 July 2026.",
+        "Vennligst ring for å avtale påvisning til 62 78 28 28."
+      ],
+      descriptionLinks: [
+        { href: "tel:+4762782828", label: "Call 62 78 28 28" }
+      ],
+      images: [
+        "images/map_electrical_1.webp"
+      ],
+      manuals: []
     }
   ],
 
