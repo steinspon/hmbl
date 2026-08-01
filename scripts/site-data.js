@@ -564,6 +564,27 @@ window.SITE_DATA = {
       ]
     },
     {
+      id: "kremleskogen",
+      title: "Kremleskogen",
+      categories: ["walks"],
+      summary: "Easy, family-friendly walk through open pine forest with pale reindeer-lichen ground — good for mushroom (kremle) picking.",
+      descriptionLines: [
+        "Kremleskogen (\"the kremle forest\") is an easy, family-friendly walk through open, light pine forest with a soft carpet of pale reindeer-lichen and heather.",
+        "",
+        "The forest is known for its mushrooms — especially kremle (Russula) — making it a fine spot for a gentle stroll and some foraging in late summer and autumn."
+      ],
+      links: [
+        { href: "https://ut.no/delte-turer/1112258565", label: "View route (UT.no)" }
+      ],
+      images: [
+        "images/kremleskogen_1.webp",
+        "images/kremleskogen_2.webp",
+        "images/kremleskogen_3.webp",
+        "images/kremleskogen_4.webp",
+        "images/kremleskogen_5.webp"
+      ]
+    },
+    {
       id: "olavsgruve",
       title: "Olav's Mine (Olavsgruva)",
       categories: ["sightseeing"],
