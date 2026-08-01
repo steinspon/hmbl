@@ -116,6 +116,24 @@ window.SITE_DATA = {
       ]
     },
     {
+      title: "Log Splitter",
+      descriptionLines: [
+        "Meec Tools electric log splitter (item no. 008121).",
+        "230V ~ 50 Hz, 1500 W (S3 50% — 5 min on / 5 min off).",
+        "Max splitting force: 4 tonnes.",
+        "Hydraulic pressure: 16 MPa.",
+        "Max log length: 370 mm.",
+        "Weight: 54 kg."
+      ],
+      images: [
+        "images/logsplitter_1.webp",
+        "images/logsplitter_2.webp"
+      ],
+      manuals: [
+        { href: "files/logsplitter.pdf", label: "User Manual" }
+      ]
+    },
+    {
       title: "Wifi",
       descriptionLines: [
         "SSID: Himmelblå",
