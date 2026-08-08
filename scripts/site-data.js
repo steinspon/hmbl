@@ -629,6 +629,21 @@ window.SITE_DATA = {
         "images/rausjodalen_4.webp",
         "images/rausjodalen_5.webp"
       ]
+    },
+    {
+      id: "utistuvollen",
+      title: "Utistuvollen Seterkafé",
+      categories: ["sightseeing"],
+      notice: "Usually open only for a narrow window in July — check the Facebook page for this year's dates.",
+      summary: "Traditional mountain-pasture café (seterkafé) on the Utistuvollen meadow in Vangrøftdalen — a short walk from the car park.",
+      descriptionLines: [
+        "Utistuvollen Seterkafé is a traditional seter (mountain-pasture) café on the protected Utistuvollen meadow in Vangrøftdalen, Dalsbygda, serving homemade seter fare.",
+        "",
+        "It is a short walk from the car park. The café is usually open only for a short period in July — check the Facebook page for the current year's opening dates and more information."
+      ],
+      links: [
+        { href: "https://www.facebook.com/utistuvollen/", label: "Facebook" }
+      ]
     }
   ]
 };
