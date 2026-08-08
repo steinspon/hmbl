@@ -259,6 +259,39 @@
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       }
     }
+
+    /* Live electricity spot-price card (pinned to the top) */
+    .spot-card { margin-bottom: 14px; }
+    .spot-top {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .spot-area { color: var(--muted); font-size: 0.8rem; font-weight: 600; }
+    .spot-current-wrap { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+    .spot-current {
+      font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;
+      color: var(--text); font-variant-numeric: tabular-nums;
+    }
+    .spot-next { color: var(--muted); font-size: 0.95rem; }
+    .spot-graph svg { display: block; width: 100%; height: 110px; }
+    .spot-graph .bar { fill: var(--accent); opacity: 0.32; transition: opacity 0.3s ease; }
+    .spot-graph .bar.now { opacity: 1; }
+    .spot-axis {
+      display: flex; justify-content: space-between;
+      color: var(--muted); font-size: 0.72rem; margin-top: 2px;
+    }
+    .spot-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+    .spot-stat { background: var(--primary-soft); border-radius: 12px; padding: 8px 10px; text-align: center; }
+    .spot-stat-label {
+      display: block; color: var(--muted); font-size: 0.68rem;
+      text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px;
+    }
+    .spot-stat-val { font-weight: 700; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+    .spot-tomorrow { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 10px; }
+    .spot-tomorrow-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; }
+    .spot-tomorrow-row { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); font-size: 0.85rem; }
+    .spot-status { margin: 10px 0 0; color: var(--muted); font-size: 0.78rem; }
+    .spot-status--error { color: #c0392b; }
   </style>
 </head>
 <body>
@@ -290,6 +323,27 @@
         <button id="search-btn" class="search-btn" type="button">Search</button>
       </div>
       <p id="search-status" class="search-status"></p>
+    </section>
+
+    <!-- Pinned live spot-price card: always the top entry, above the sorted grid. -->
+    <section id="spot-price" class="card spot-card" aria-live="polite">
+      <div class="spot-top">
+        <h2 class="card-title">Strømpris</h2>
+        <span class="spot-area">NO3 · Os i Østerdalen · inkl. mva</span>
+      </div>
+      <div class="spot-current-wrap">
+        <span id="spot-current" class="spot-current">–</span>
+        <span id="spot-next" class="spot-next"></span>
+      </div>
+      <div id="spot-graph" class="spot-graph"></div>
+      <div class="spot-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+      <div class="spot-stats">
+        <div class="spot-stat"><span class="spot-stat-label">Lavest</span><span id="spot-min" class="spot-stat-val">–</span></div>
+        <div class="spot-stat"><span class="spot-stat-label">Snitt</span><span id="spot-avg" class="spot-stat-val">–</span></div>
+        <div class="spot-stat"><span class="spot-stat-label">Høyest</span><span id="spot-max" class="spot-stat-val">–</span></div>
+      </div>
+      <div id="spot-tomorrow" class="spot-tomorrow" hidden></div>
+      <p id="spot-status" class="spot-status">Laster strømpris …</p>
     </section>
 
     <section id="cards" class="cards"></section>
@@ -486,6 +540,7 @@
   </script>
   <script src="scripts/theme.js"></script>
   <script src="scripts/search-target.js"></script>
+  <script src="scripts/electricity-price.js"></script>
   <script>
     initializeTheme();
   </script>
