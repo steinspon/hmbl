@@ -13,6 +13,7 @@
   const ELECTRICITY_PRICE_AREA = "NO3";
   const ELECTRICITY_TIMEZONE = "Europe/Oslo";
   const VAT_MULTIPLIER = 1.25; // 25% VAT (Os i Østerdalen)
+  const NORGESPRIS_NOK_PER_KWH = 0.40; // "Norgespris" reference baseline (kr/kWh), shown on the graph
   const API_BASE = "https://www.hvakosterstrommen.no/api/v1/prices";
   const DATA_REFRESH_MS = 10 * 60 * 1000; // re-fetch the JSON every 10 min
   const TICK_MS = 60 * 1000;              // re-select the active hour every min
@@ -156,19 +157,31 @@
     const W = 320, H = 110, padTop = 6, padBottom = 2;
     const chartH = H - padTop - padBottom;
     const n = prices.length;
-    const maxV = Math.max.apply(null, prices.map(p => withVat(p.NOK_per_kWh)).concat(0.0001));
+    const values = prices.map(p => withVat(p.NOK_per_kWh));
+    // Include the Norgespris baseline in the scale so its line is always visible.
+    const maxV = Math.max.apply(null, values.concat(NORGESPRIS_NOK_PER_KWH, 0.0001));
     const bw = W / n;
     const barW = Math.max(1, bw * 0.72);
     const nowStart = current ? new Date(current.time_start).getTime() : null;
     let bars = "";
     prices.forEach((p, i) => {
-      const h = Math.max(1, (withVat(p.NOK_per_kWh) / maxV) * chartH);
+      const h = Math.max(1, (values[i] / maxV) * chartH);
       const x = i * bw + (bw - barW) / 2;
       const y = padTop + (chartH - h);
       const isNow = nowStart !== null && new Date(p.time_start).getTime() === nowStart;
-      bars += `<rect class="bar${isNow ? " now" : ""}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="1"></rect>`;
+      const cls = "bar" + (isNow ? " now" : "") + (values[i] > NORGESPRIS_NOK_PER_KWH ? " over" : " under");
+      bars += `<rect class="${cls}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="1"></rect>`;
     });
-    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Strømpris per time i dag">${bars}</svg>`;
+    const baseY = padTop + chartH - (NORGESPRIS_NOK_PER_KWH / maxV) * chartH;
+    const baseline = `<line class="baseline" x1="0" y1="${baseY.toFixed(1)}" x2="${W}" y2="${baseY.toFixed(1)}"></line>`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Strømpris per time i dag, med Norgespris som referanse">${bars}${baseline}</svg>`;
+  }
+
+  // Percentage of the current price relative to the Norgespris baseline.
+  function norgesprisComparison(currentInclVat) {
+    const pct = Math.round((currentInclVat - NORGESPRIS_NOK_PER_KWH) / NORGESPRIS_NOK_PER_KWH * 100);
+    const sign = pct > 0 ? "+" : pct < 0 ? "−" : "±";
+    return { pct: pct, text: sign + Math.abs(pct) + " %", over: pct > 0, under: pct < 0 };
   }
 
   function renderTomorrow() {
@@ -203,6 +216,21 @@
 
     el("spot-current").textContent = current ? formatElectricityPrice(withVat(current.NOK_per_kWh)) : "–";
     el("spot-next").textContent = next ? `Neste: ${formatElectricityPrice(withVat(next.NOK_per_kWh))}` : "";
+
+    // Green/red comparison of the current price vs the Norgespris baseline.
+    const vsEl = el("spot-vs");
+    if (vsEl) {
+      if (current) {
+        const cmp = norgesprisComparison(withVat(current.NOK_per_kWh));
+        vsEl.hidden = false;
+        vsEl.textContent = cmp.text;
+        vsEl.title = `Sammenlignet med Norgespris (${Math.round(NORGESPRIS_NOK_PER_KWH * 100)} øre)`;
+        vsEl.classList.toggle("spot-vs--over", cmp.over);
+        vsEl.classList.toggle("spot-vs--under", cmp.under);
+      } else {
+        vsEl.hidden = true;
+      }
+    }
     el("spot-min").textContent = stats.min ? `${formatElectricityPrice(withVat(stats.min.NOK_per_kWh))} · ${formatClock(stats.min.time_start)}` : "–";
     el("spot-avg").textContent = stats.avg != null ? formatElectricityPrice(stats.avg) : "–";
     el("spot-max").textContent = stats.max ? `${formatElectricityPrice(withVat(stats.max.NOK_per_kWh))} · ${formatClock(stats.max.time_start)}` : "–";

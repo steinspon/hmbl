@@ -273,12 +273,30 @@
       color: var(--text); font-variant-numeric: tabular-nums;
     }
     .spot-next { color: var(--muted); font-size: 0.95rem; }
+    .spot-vs {
+      font-weight: 700; font-size: 0.9rem; padding: 2px 9px; border-radius: 999px;
+      font-variant-numeric: tabular-nums;
+    }
+    .spot-vs--under { color: #1f7a4d; background: rgba(31, 122, 77, 0.12); }
+    .spot-vs--over { color: #c0392b; background: rgba(192, 57, 43, 0.12); }
+    html[data-theme="dark"] .spot-vs--under { color: #5fd39a; background: rgba(95, 211, 154, 0.14); }
+    html[data-theme="dark"] .spot-vs--over { color: #ff8f7a; background: rgba(255, 143, 122, 0.14); }
     .spot-graph svg { display: block; width: 100%; height: 110px; }
     .spot-graph .bar { fill: var(--accent); opacity: 0.32; transition: opacity 0.3s ease; }
+    .spot-graph .bar.under { fill: #1f9d57; } /* hours cheaper than Norgespris */
     .spot-graph .bar.now { opacity: 1; }
+    html[data-theme="dark"] .spot-graph .bar.under { fill: #5fd39a; }
+    .spot-graph .baseline { stroke: var(--text); stroke-width: 1; stroke-dasharray: 4 3; opacity: 0.5; }
     .spot-axis {
       display: flex; justify-content: space-between;
       color: var(--muted); font-size: 0.72rem; margin-top: 2px;
+    }
+    .spot-legend {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted); font-size: 0.72rem; margin-top: 4px;
+    }
+    .spot-legend-line {
+      display: inline-block; width: 18px; border-top: 2px dashed currentColor; opacity: 0.7;
     }
     .spot-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
     .spot-stat { background: var(--primary-soft); border-radius: 12px; padding: 8px 10px; text-align: center; }
@@ -333,10 +351,12 @@
       </div>
       <div class="spot-current-wrap">
         <span id="spot-current" class="spot-current">–</span>
+        <span id="spot-vs" class="spot-vs" hidden></span>
         <span id="spot-next" class="spot-next"></span>
       </div>
       <div id="spot-graph" class="spot-graph"></div>
       <div class="spot-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+      <div class="spot-legend"><span class="spot-legend-line"></span>Norgespris (40 øre)</div>
       <div class="spot-stats">
         <div class="spot-stat"><span class="spot-stat-label">Lavest</span><span id="spot-min" class="spot-stat-val">–</span></div>
         <div class="spot-stat"><span class="spot-stat-label">Snitt</span><span id="spot-avg" class="spot-stat-val">–</span></div>
