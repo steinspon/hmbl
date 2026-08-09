@@ -134,6 +134,7 @@ window.SITE_DATA = {
       ]
     },
     {
+      // If SSID/Password change, regenerate the scan-to-connect QR: wifi-qr.svg
       title: "Wifi",
       descriptionLines: [
         "SSID: Himmelblå",

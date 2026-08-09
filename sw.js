@@ -12,7 +12,7 @@
  * The app still works fully offline after the first visit. Bump CACHE_VERSION
  * whenever the shell asset list changes, to retire the old cache.
  */
-const CACHE_VERSION = "hmbl-v25";
+const CACHE_VERSION = "hmbl-v26";
 
 const SHELL = [
   "./",
@@ -43,7 +43,8 @@ const SHELL = [
   "favicon-32.png",
   "icon-180.png",
   "icon-192.png",
-  "icon-512.png"
+  "icon-512.png",
+  "wifi-qr.svg"
 ];
 
 self.addEventListener("install", (event) => {
