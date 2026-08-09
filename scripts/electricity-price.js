@@ -13,7 +13,7 @@
   const ELECTRICITY_PRICE_AREA = "NO3";
   const ELECTRICITY_TIMEZONE = "Europe/Oslo";
   const VAT_MULTIPLIER = 1.25; // 25% VAT (Os i Østerdalen)
-  const NORGESPRIS_NOK_PER_KWH = 0.40; // "Norgespris" reference baseline (kr/kWh), shown on the graph
+  const NORGESPRIS_NOK_PER_KWH = 0.50; // "Norgespris" baseline incl. VAT (50 øre = 40 øre + 25% mva); compared like-for-like with the VAT-inclusive spot price
   const API_BASE = "https://www.hvakosterstrommen.no/api/v1/prices";
   const DATA_REFRESH_MS = 10 * 60 * 1000; // re-fetch the JSON every 10 min
   const TICK_MS = 60 * 1000;              // re-select the active hour every min

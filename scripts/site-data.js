@@ -643,6 +643,13 @@ window.SITE_DATA = {
       ],
       links: [
         { href: "https://www.facebook.com/utistuvollen/", label: "Facebook" }
+      ],
+      images: [
+        "images/utistuvollen_1.webp",
+        "images/utistuvollen_2.webp",
+        "images/utistuvollen_3.webp",
+        "images/utistuvollen_4.webp",
+        "images/utistuvollen_5.webp"
       ]
     }
   ]
