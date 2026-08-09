@@ -391,6 +391,8 @@ window.SITE_DATA = {
       pageLabel: "Contacts",
       title: "Contacts",
       content: "Useful contacts for Himmelblå and Hummelfjell. " +
+        "Bjørkeved (firewood / birchwood) in IBC cages, 1200 L each. " +
+        "Jon Birger Myrberg Meli, +47 91 51 69 29. " +
         "Strøing og Brøyting (Vakt). Langøien Grus og Transport AS. " +
         "Bestilling av faste tjenester gjøres i epost til maren.bakos@langoiengrus.no. " +
         "Ved bestilling oppgi navn, telefonnummer, hytteadresse, fakturaadresse og ønsket avtaleform. " +
