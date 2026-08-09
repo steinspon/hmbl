@@ -286,6 +286,15 @@ window.SITE_DATA = {
           }
         },
         {
+          id: "sauna-bowl",
+          label: "Sauna bowl & spoon EMPTIED & DRY",
+          guide: {
+            blocks: [
+              { type: "text", title: "Why", text: "Empty the sauna water bowl and dry the ladle/spoon before leaving — standing water or a damp spoon grows mould." }
+            ]
+          }
+        },
+        {
           id: "bath-floor-heating",
           label: "Bathroom floor heating 20°C",
           guide: {
