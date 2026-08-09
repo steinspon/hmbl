@@ -169,7 +169,9 @@
       const x = i * bw + (bw - barW) / 2;
       const y = padTop + (chartH - h);
       const isNow = nowStart !== null && new Date(p.time_start).getTime() === nowStart;
-      const cls = "bar" + (isNow ? " now" : "") + (values[i] > NORGESPRIS_NOK_PER_KWH ? " over" : " under");
+      // Colour from the Norgespris customer's view: spot below Norgespris =
+      // you overpay (red); spot above = Norgespris saves you money (green).
+      const cls = "bar" + (isNow ? " now" : "") + (values[i] < NORGESPRIS_NOK_PER_KWH ? " overpay" : " saving");
       bars += `<rect class="${cls}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="1"></rect>`;
     });
     const baseY = padTop + chartH - (NORGESPRIS_NOK_PER_KWH / maxV) * chartH;
@@ -177,9 +179,13 @@
     return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Strømpris per time i dag, med Norgespris som referanse">${bars}${baseline}</svg>`;
   }
 
-  // Percentage of the current price relative to the Norgespris baseline.
-  function norgesprisComparison(currentInclVat) {
-    const pct = Math.round((currentInclVat - NORGESPRIS_NOK_PER_KWH) / NORGESPRIS_NOK_PER_KWH * 100);
+  // From a Norgespris customer's point of view: how much more/less you pay on
+  // the fixed Norgespris than the current spot price. Positive = you pay MORE
+  // than spot (spot is cheaper than Norgespris) → bad, shown red. Negative =
+  // you pay less than spot (Norgespris shields you from a high spot) → good,
+  // shown green.
+  function norgesprisComparison(currentSpotInclVat) {
+    const pct = Math.round((NORGESPRIS_NOK_PER_KWH - currentSpotInclVat) / currentSpotInclVat * 100);
     const sign = pct > 0 ? "+" : pct < 0 ? "−" : "±";
     return { pct: pct, text: sign + Math.abs(pct) + " %", over: pct > 0, under: pct < 0 };
   }
@@ -224,7 +230,7 @@
         const cmp = norgesprisComparison(withVat(current.NOK_per_kWh));
         vsEl.hidden = false;
         vsEl.textContent = cmp.text;
-        vsEl.title = `Sammenlignet med Norgespris (${Math.round(NORGESPRIS_NOK_PER_KWH * 100)} øre)`;
+        vsEl.title = `Norgespris (${Math.round(NORGESPRIS_NOK_PER_KWH * 100)} øre) mot spotpris — positivt/rødt = du betaler mer enn spotprisen`;
         vsEl.classList.toggle("spot-vs--over", cmp.over);
         vsEl.classList.toggle("spot-vs--under", cmp.under);
       } else {
