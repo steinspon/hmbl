@@ -392,6 +392,7 @@ window.SITE_DATA = {
       pageLabel: "Contacts",
       title: "Contacts",
       content: "Useful contacts for Himmelblå and Hummelfjell. " +
+        "Hytteeiere (owners): Darren Wilkinson +47 46 63 65 01. Lene Wilkinson +47 45 50 04 50. " +
         "Bjørkeved (firewood / birchwood) in IBC cages, 1200 L each. " +
         "Jon Birger Myrberg Meli, +47 91 51 69 29. " +
         "Strøing og Brøyting (Vakt). Langøien Grus og Transport AS. " +

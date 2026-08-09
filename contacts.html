@@ -119,6 +119,12 @@
       letter-spacing: 0.01em;
     }
 
+    .contact-person + .contact-person {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
     .actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -201,6 +207,27 @@
     </header>
 
     <section class="cards">
+      <article class="card">
+        <h2 class="card-title">Hytteeiere</h2>
+        <p class="card-desc">Ta kontakt ved spørsmål om hytta.</p>
+        <div class="contact-person">
+          <p class="contact-name">Darren Wilkinson</p>
+          <p class="contact-number">+47 46 63 65 01</p>
+          <div class="actions">
+            <a class="btn btn-call" href="tel:+4746636501">Ring</a>
+            <a class="btn btn-sms" href="sms:+4746636501">SMS</a>
+          </div>
+        </div>
+        <div class="contact-person">
+          <p class="contact-name">Lene Wilkinson</p>
+          <p class="contact-number">+47 45 50 04 50</p>
+          <div class="actions">
+            <a class="btn btn-call" href="tel:+4745500450">Ring</a>
+            <a class="btn btn-sms" href="sms:+4745500450">SMS</a>
+          </div>
+        </div>
+      </article>
+
       <article class="card">
         <h2 class="card-title">Bjørkeved</h2>
         <p class="card-desc">
